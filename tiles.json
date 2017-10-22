@@ -1,0 +1,6 @@
+{
+  "tiles" : [
+    { "id" : "grass", "passable" : true, "sprites" : ["grass1", "grass2"]},
+    { "id" : "fireplace", "animation" : 250, "passable" : true, "sprites" : ["fireplace1", "fireplace2"]}
+  ]
+}

@@ -1,3 +1,3 @@
-texatlas tiles
-texatlas items
-texatlas player
+texatlas data
+tiles tiles.json
+items items.json

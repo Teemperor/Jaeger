@@ -8,46 +8,77 @@
 #include <Logger.h>
 #include "TileData.h"
 #include "TextureAtlas.h"
+#include "ItemData.h"
 
 class GameData {
 
   std::vector<TextureAtlas*> TextureAtlas_;
   std::unordered_map<std::string, TileData*> Tiles;
+  std::unordered_map<std::string, ItemData*> Items;
 
-  void addTile(const std::string& name, const std::string& baseName, bool passable = false, bool platform = false, unsigned height = 32) {
-    Tiles[name] = new TileData(name, baseName);
-    Tiles[name]->sprite(getSprite(name));
-    Tiles[name]->passable(passable);
-    Tiles[name]->platform(platform);
-    Tiles[name]->height(height);
+  void parseItemData(const std::string& path) {
+    nlohmann::json data;
+
+    std::ifstream infile(path);
+
+    infile >> data;
+
+    for (auto item : data["items"]) {
+      std::string id = item["id"];
+      Items[id] = new ItemData();
+
+      int attack = 0;
+      if (item.find("attack") != item.end()) {
+        attack = item["attack"];
+      }
+      Items[id]->setAttack(attack);
+      int value = 0;
+      if (item.find("value") != item.end()) {
+        value = item["value"];
+      }
+      Items[id]->setValue(value);
+      int armor = 0;
+      if (item.find("armor") != item.end()) {
+        armor = item["armor"];
+      }
+      Items[id]->setArmor(armor);
+
+
+      auto sprite = item["sprite"];
+      Items[id]->setSprite(getSprite(sprite));
+    }
   }
 
-  void addMetaTile(const std::string& name, bool passable = false, bool platform = false, unsigned height = 32) {
-    addTile(name + "_ul", name, passable, platform, height);
-    addTile(name + "_u", name, passable, platform, height);
-    addTile(name + "_ur", name, passable, platform, height);
-    addTile(name + "_l", name, passable, platform, height);
-    addTile(name, name, passable, platform, height);
-    addTile(name + "_r", name, passable, platform, height);
-    addTile(name + "_bl", name, passable, platform, height);
-    addTile(name + "_b", name, passable, platform, height);
-    addTile(name + "_br", name, passable, platform, height);
-    addTile(name + "_wvu", name, passable, platform, height);
-    addTile(name + "_wv", name, passable, platform, height);
-    addTile(name + "_wvb", name, passable, platform, height);
-    addTile(name + "_whl", name, passable, platform, height);
-    addTile(name + "_wh", name, passable, platform, height);
-    addTile(name + "_whr", name, passable, platform, height);
-    addTile(name + "_f1", name, passable, platform, height);
-    addTile(name + "_f2", name, passable, platform, height);
+  void parseTileData(const std::string& path) {
+    nlohmann::json data;
+
+    std::ifstream infile(path);
+
+    infile >> data;
+
+    for (auto tile : data["tiles"]) {
+      std::string id = tile["id"];
+
+      bool passable = true;
+      if (tile.find("passable") != tile.end()) {
+        passable = tile["passable"];
+      }
+      int animationTime = -1;
+      if (tile.find("animation") != tile.end()) {
+        animationTime = tile["animation"];
+      }
+
+      Tiles[id] = new TileData(id, passable, animationTime);
+
+      auto sprites = tile["sprites"];
+      for (auto sprite : sprites)
+        Tiles[id]->addSprite(getSprite(sprite));
+    }
   }
 
 public:
   GameData(const std::string& path) {
     parseMetaFile(path);
-    addMetaTile("cave");
-
-    addMetaTile("platform", false, true, 6);
 
   }
 
@@ -64,13 +95,15 @@ public:
         return (*ts)[id];
       }
     }
+    std::cerr << "getSprite(" << id << ")" << std::endl;
     assert(false);
   }
 
-  TileData* operator[](const std::string& id) {
+  TileData* tile(const std::string& id) {
     auto I = Tiles.find(id);
     if (I != Tiles.end())
       return I->second;
+    std::cerr << "couldn't find " << id << std::endl;
     return nullptr;
   }
 
@@ -86,8 +119,14 @@ public:
       if (fileType == "meta") {
         parseMetaFile(filePath);
       } else if (fileType == "texatlas") {
-        mainLogger << "Loading tile set " << filePath << mainLogger;
+        mainLogger << "Loading texture atlas " << filePath << mainLogger;
         TextureAtlas_.push_back(new TextureAtlas(filePath));
+      } else if (fileType == "tiles") {
+        mainLogger << "Loading tile set " << filePath << mainLogger;
+        parseTileData(filePath);
+      } else if (fileType == "items") {
+        mainLogger << "Loading item set " << filePath << mainLogger;
+        parseItemData(filePath);
       } else {
         mainLogger << "Unknown file type in meta file " << path << "/meta.dat: "
                    << mainLogger;

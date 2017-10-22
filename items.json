@@ -1,0 +1,5 @@
+{
+  "items" : [
+    { "id" : "grass", "passable" : true, "sprite" : "grass1"}
+  ]
+}

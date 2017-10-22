@@ -4,27 +4,16 @@
 
 #include <GameObject.h>
 #include <gamedata/TileData.h>
+#include <chrono>
 
-class Tile : public GameObject {
+class Level;
+
+class Tile {
 
   TileData* Data = nullptr;
 
-  void destroyBody(b2World& World) {
-    if (Body) {
-      World.DestroyBody(Body);
-      Body = nullptr;
-    }
-  }
-
 public:
   Tile() {}
-
-  void setData(b2World& world, TileData* d) {
-    Data = d;
-    if (!d->passable()) {
-      createBody(world);
-    }
-  }
 
   const std::string& name() const {
     if (Data)
@@ -35,78 +24,16 @@ public:
     }
   }
 
-  const std::string& baseName() const {
-    if (Data)
-      return Data->baseName();
-    else {
-      static std::string noName;
-      return noName;
-    }
+  void setData(TileData* Data) {
+    this->Data = Data;
   }
-
-  bool hasCliff() const {
-    if (platform())
-      return false;
-    if (name().size() < 2)
-      return false;
-    if (name()[name().size() - 2] == 'u')
-      return true;
-    if (name()[name().size() - 2] == 'f')
-      return true;
-    if (name()[name().size() - 2] == 'v' && name()[name().size() - 1] == 'u')
-      return true;
-    if (name()[name().size() - 2] == 'h' && name()[name().size() - 1] == 'l')
-      return true;
-    if (name()[name().size() - 2] == 'h' && name()[name().size() - 1] == 'r')
-      return true;
-
-    return false;
-  }
-
-  void createBody(b2World& World) {
-    destroyBody(World);
-
-    b2BodyDef BodyDef;
-    BodyDef.position = b2Vec2(x, y - (0.5f - (Data->height() / 2.0f) / SCALE));
-    BodyDef.type = b2_staticBody;
-    BodyDef.fixedRotation = true;
-    Body = World.CreateBody(&BodyDef);
-
-    b2PolygonShape Shape;
-    Shape.SetAsBox((32.f / 2) / SCALE, (Data->height() / 2) / SCALE);
-    b2FixtureDef FixtureDef;
-    FixtureDef.density = 10.f;
-    FixtureDef.friction = 0.9f;
-    FixtureDef.shape = &Shape;
-    FixtureDef.filter.categoryBits = B2D_LEVEL;
-    FixtureDef.userData = (void *) this;
-    Body->CreateFixture(&FixtureDef);
-    Body->SetUserData((void*)this);
-  }
-
-  size_t x, y;
 
   bool empty() {
     return !Data;
   }
 
-  void render(sf::RenderTarget& target) {
-    if (!Data)
-      return;
+  void render(Level& level, sf::RenderTarget& target, int x, int y);
 
-    sf::Sprite sprite = Data->sprite();
-
-    sprite.setOrigin(16.f, 16.f);
-    sprite.setPosition(SCALE * x,
-                       SCALE * y);
-    target.draw(sprite);
-  }
-
-  bool platform() const {
-    if (!Data)
-      return false;
-    return Data->platform();
-  }
 };
 
 

@@ -1,19 +1,16 @@
 #include "LevelGen.h"
 
-Level *LevelGen::generate(GameData &data) {
-  level = new Level(100, 100, data);
+Level *LevelGen::generate(GameData &data, int w, int h) {
+  this->data = &data;
+  level = new Level(w, h, data);
 
-  for (size_t x = 0; x < 100; ++x) {
-    for (size_t y = 0; y < 100; ++y) {
-      auto decision = rand() % 100;
-      if (decision < 30)
-        level->get(x, y).setData(level->World, data["cave"]);
-      else if (decision < 35)
-        level->get(x, y).setData(level->World, data["platform"]);
-
+  for (size_t x = 0; x < w; ++x) {
+    for (size_t y = 0; y < h; ++y) {
+      level->get(x, y).setData(data.tile("grass"));
     }
   }
-  level->finalize();
+  level->getBuilding(5, 5).setData(data.tile("fireplace"));
+  //level->finalize();
 
   return level;
 }

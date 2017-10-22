@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <fstream>
 #include <Logger.h>
+#include <json.hpp>
 
 class TextureAtlas {
   sf::Texture texture;
@@ -13,33 +14,26 @@ class TextureAtlas {
 public:
   TextureAtlas(const std::string& basePath) {
     texture.loadFromFile(basePath + ".png");
+    texture.setSmooth(false);
+    texture.setRepeated(true);
+
+    nlohmann::json data;
+
     std::ifstream infile(basePath + ".atlas");
-    std::string id, centerKeyword;
-    int x, y, wx, wy, cx, cy;
-    bool needsId = true;
 
-    while (true) {
-      if (needsId) {
-        if (!(infile >> id))
-          break;
-      } else
-        id = centerKeyword;
+    infile >> data;
 
-      if (!(infile >> x >> y >> wx >> wy))
-        break;
+    for (auto tex : data["textures"]) {
 
       sf::Sprite sprite(texture);
+      int x = tex["offset"][0];
+      int y = tex["offset"][1];
+      int wx = tex["size"][0];
+      int wy = tex["size"][1];
       sprite.setTextureRect({x, y, wx, wy});
+      sprite.setScale({1.01f, 1.01f});
 
-      infile >> centerKeyword;
-      if (centerKeyword == "center") {
-        infile >> cx >> cy;
-        sprite.setOrigin(cx - x, cy - y);
-        needsId = true;
-      } else {
-        needsId = false;
-      }
-
+      std::string id = tex["id"];
       Sprites[id] = sprite;
     }
   }

@@ -5,14 +5,14 @@
 #include "Level.h"
 
 class LevelGen {
-
+  GameData *data;
   Level* level;
 
 public:
   LevelGen() {
   }
 
-  Level* generate(GameData& data);
+  Level* generate(GameData& data, int w, int h);
 
 };
 

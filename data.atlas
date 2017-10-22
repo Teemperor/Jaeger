@@ -1,0 +1,19 @@
+{
+    "textures" :
+    [
+        { "id" : "grass1" , "offset" : [85, 0], "size" : [16, 16] },
+        { "id" : "grass2" , "offset" : [85, 17], "size" : [16, 16] },
+        { "id" : "fireplace1" , "offset" : [238, 136], "size" : [16, 16] },
+        { "id" : "fireplace2" , "offset" : [255, 136], "size" : [16, 16] },
+        { "id" : "fireplace2" , "offset" : [255, 136], "size" : [16, 16] },
+
+        { "id" : "body_pale", "offset" : [0, 526], "size" : [16, 16] },
+        { "id" : "body_pale_talking", "offset" : [17, 526], "size" : [16, 16] },
+        { "id" : "body_normal", "offset" : [0, 543], "size" : [16, 16] },
+        { "id" : "body_normal_talking", "offset" : [17, 543], "size" : [16, 16] },
+        { "id" : "body_tanned", "offset" : [0, 560], "size" : [16, 16] },
+        { "id" : "body_tanned_talking", "offset" : [17, 560], "size" : [16, 16] },
+        { "id" : "body_green", "offset" : [0, 577], "size" : [16, 16] },
+        { "id" : "body_green_talking", "offset" : [17, 577], "size" : [16, 16] }
+    ]
+}

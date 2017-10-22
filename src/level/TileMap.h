@@ -28,6 +28,14 @@ public:
     return tiles[x + y * width_];
   }
 
+  int width() const {
+    return width_;
+  }
+
+  int height() const {
+    return height_;
+  }
+
   T* begin() {
     return tiles.data();
   }
