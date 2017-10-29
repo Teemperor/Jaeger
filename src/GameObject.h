@@ -1,6 +1,8 @@
 #ifndef ARGOS_GAMEOBJECT_H
 #define ARGOS_GAMEOBJECT_H
 
+#include "Vec2.h"
+
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 
@@ -8,8 +10,7 @@ class Level;
 
 class GameObject {
 
-  float x;
-  float y;
+  Vec2 pos;
 
 protected:
   bool ShouldBeRemoved_ = false;

@@ -17,7 +17,7 @@ public:
 
   Character();
 
-  virtual void render(sf::RenderTarget& target) {
+  virtual void render(sf::RenderTarget& target) override {
 
   }
 

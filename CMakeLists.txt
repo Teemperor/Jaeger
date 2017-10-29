@@ -21,6 +21,8 @@ set(SOURCE_FILES main.cpp
     src/Logger.h
     src/Character.cpp
     src/Character.h
+    src/Vec2.cpp
+    src/Vec2.h
     src/gamedata/TextureAtlas.cpp
     src/gamedata/TextureAtlas.h
     src/level/LevelGen.cpp
@@ -33,6 +35,8 @@ set(SOURCE_FILES main.cpp
     src/level/TileMap.h
     src/controls/PlayerControls.cpp
     src/controls/PlayerControls.h
-        src/gamedata/ItemData.cpp src/gamedata/ItemData.h)
+    src/gamedata/ItemData.cpp
+    src/gamedata/ItemData.h
+)
 add_executable(mambo ${SOURCE_FILES})
 target_link_libraries(mambo sfml-graphics sfml-system sfml-window Box2D)
