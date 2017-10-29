@@ -37,6 +37,8 @@ set(SOURCE_FILES main.cpp
     src/controls/PlayerControls.h
     src/gamedata/ItemData.cpp
     src/gamedata/ItemData.h
+    src/Controlable.h
+    src/Controlable.cpp
 )
 add_executable(mambo ${SOURCE_FILES})
 target_link_libraries(mambo sfml-graphics sfml-system sfml-window Box2D)

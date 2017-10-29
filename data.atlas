@@ -7,6 +7,11 @@
         { "id" : "fireplace2" , "offset" : [255, 136], "size" : [16, 16] },
         { "id" : "fireplace2" , "offset" : [255, 136], "size" : [16, 16] },
 
+        { "id" : "speech_bubble", "offset" : [0, 596], "size" : [12, 10] },
+        { "id" : "speech_bubble_question", "offset" : [0, 596], "size" : [12, 10] },
+        { "id" : "speech_bubble_exclamation", "offset" : [0, 596], "size" : [12, 10] },
+        { "id" : "speech_bubble_coin", "offset" : [0, 596], "size" : [12, 10] },
+
         { "id" : "body_pale", "offset" : [0, 526], "size" : [16, 16] },
         { "id" : "body_pale_talking", "offset" : [17, 526], "size" : [16, 16] },
         { "id" : "body_normal", "offset" : [0, 543], "size" : [16, 16] },

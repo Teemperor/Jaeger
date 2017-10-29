@@ -30,12 +30,15 @@ int main() {
 
   Level& level = *gen.generate(Data, 100, 100);
 
-  Character* player = new Character();
+  Character* player = new Character(level);
   level.add(player);
 
   sf::Vector2f viewCenter;
 
   PlayerControls controls;
+  player->setPlayerControls(&controls);
+
+  sf::Clock clock;
 
   while (Window.isOpen()) {
     std::vector<sf::Event> events;
@@ -51,16 +54,6 @@ int main() {
       if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
         return 0;
 
-        float speed = 256 * 1 / 60.0f;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-          viewCenter.y -= speed;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-          viewCenter.y += speed;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-          viewCenter.x -= speed;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-          viewCenter.x += speed;
-
       if (event.type == sf::Event::Resized) {
         // update the view to the new size of the window
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
@@ -69,8 +62,13 @@ int main() {
         view.zoom(0.5f);
       }
     }
-    controls.update(events);
-    level.update();
+    viewCenter.x = player->getPos().getX();
+    viewCenter.y = player->getPos().getY();
+
+    controls.update();
+
+    sf::Time elapsed = clock.restart();
+    level.update(elapsed.asSeconds());
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
       viewCenter.x = sf::Mouse::getPosition(Window).x;

@@ -45,6 +45,11 @@ public:
   float setY(float v) {
       return y = v;
   }
+  Vec2 mod(float xd, float yd) {
+    x += xd;
+    y += yd;
+    return *this;
+  }
 };
 
 #endif // VEC2_H

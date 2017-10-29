@@ -5,29 +5,28 @@
 #include <SFML/Window.hpp>
 
 class PlayerControls {
+
+  float moveX = 0;
+  float moveY = 0;
+
 public:
+    void update() {
+      moveX = moveY = 0;
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+          moveX += 1;
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+          moveX -= 1;
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+          moveY -= 1;
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+          moveY += 1;
+    }
 
-    void update(std::vector<sf::Event> events) {
-/*
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)
-            == sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-          player->MoveDir = Character::MoveDirection::NONE;
-        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-          player->MoveDir = Character::MoveDirection::RIGHT;
-        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-          player->MoveDir = Character::MoveDirection::LEFT;
-        }
-        player->setFallThrough(sf::Keyboard::isKeyPressed(sf::Keyboard::S));
-
-        for (sf::Event& event : events) {
-
-            if (event.type == sf::Event::EventType::KeyPressed) {
-              if (event.key.code == sf::Keyboard::LShift)
-                player->jump();
-              if (event.key.code == sf::Keyboard::J)
-                player->shoot();
-            }
-        } */
+    float getXInput() {
+      return moveX;
+    }
+    float getYInput() {
+      return moveY;
     }
 };
 

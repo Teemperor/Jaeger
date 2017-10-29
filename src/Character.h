@@ -1,28 +1,38 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+#include "Controlable.h"
+
 #include <GameObject.h>
 
-class Character : public GameObject {
+#include <gamedata/GameData.h>
 
-  sf::Sprite sprite_;
+class Character : public GameObject, public Controlable {
 
 public:
   enum class BodyType {
     Pale,
     Normal,
     Tanned,
-    Ork
+    Green
   };
 
-  Character();
+  Character(Level& level, BodyType type = BodyType::Normal);
 
-  virtual void render(sf::RenderTarget& target) override {
+  void setBodyType(BodyType t);
 
+  virtual void render(sf::RenderTarget& target) override;
+  virtual void update(float dtime) override {
+    if (isControlled()) {
+      setPos(getPos().mod(getXInput() * walkSpeed * dtime, getYInput() * walkSpeed * dtime));
+    }
   }
 
 private:
+  static constexpr float walkSpeed = 45;
   BodyType BodyType_ = BodyType::Pale;
+  sf::Sprite sprite_, talkingSprite_, bubbleSprite_;
+  bool talking_ = true;
 
 };
 

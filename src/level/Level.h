@@ -39,13 +39,13 @@ public:
   }
 
   unsigned timeMillis() {
-    return (unsigned int) (time * 1000);
+    return static_cast<unsigned>(time * 1000);
   }
 
-  void update() {
-    time += 1 / 60.0;
+  void update(float dtime) {
+    time += dtime;
     for (auto I = Objects.begin(); I != Objects.end();) {
-      (*I)->update();
+      (*I)->update(dtime);
       if ((*I)->shouldBeRemoved()) {
         delete *I;
         I = Objects.erase(I);
@@ -57,6 +57,12 @@ public:
 
   double getTime() const {
     return time;
+  }
+
+  double getTimeModulo(double modulo) {
+    unsigned i = static_cast<unsigned>(modulo * 1000);
+    unsigned timeInt = static_cast<unsigned>(time * 1000);
+    return (timeInt % i) / 1000.0;
   }
 
   void add(GameObject* o) {
