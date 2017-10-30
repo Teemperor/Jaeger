@@ -40,5 +40,5 @@ set(SOURCE_FILES main.cpp
     src/Controlable.h
     src/Controlable.cpp
 )
-add_executable(mambo ${SOURCE_FILES})
-target_link_libraries(mambo sfml-graphics sfml-system sfml-window Box2D)
+add_executable(argos ${SOURCE_FILES})
+target_link_libraries(argos sfml-graphics sfml-system sfml-window Box2D)
