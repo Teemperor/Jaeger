@@ -7,7 +7,23 @@
         { "id" : "water_c2" , "offset" : [17, 0], "size" : [16, 16] },
         { "id" : "fireplace1" , "offset" : [238, 136], "size" : [16, 16] },
         { "id" : "fireplace2" , "offset" : [255, 136], "size" : [16, 16] },
-        { "id" : "fireplace2" , "offset" : [255, 136], "size" : [16, 16] },
+
+        { "id" : "tree_green_lower" , "offset" : [221, 187], "size" : [16, 16] },
+        { "id" : "tree_green_upper" , "offset" : [221, 170], "size" : [16, 16] },
+
+        { "id" : "flower_blue" , "offset" : [477, 153], "size" : [16, 16] },
+        { "id" : "flower_red" , "offset" : [494, 153], "size" : [16, 16] },
+        { "id" : "flower_purple" , "offset" : [513, 153], "size" : [16, 16] },
+        { "id" : "flower_white" , "offset" : [530, 153], "size" : [16, 16] },
+        { "id" : "small_bush1" , "offset" : [374, 170], "size" : [16, 16] },
+        { "id" : "small_bush2" , "offset" : [374, 187], "size" : [16, 16] },
+        { "id" : "small_bush3" , "offset" : [378, 187], "size" : [12, 16] },
+        { "id" : "small_bush4" , "offset" : [378, 170], "size" : [12, 16] },
+
+        { "id" : "lilypad1" , "offset" : [425, 187], "size" : [16, 16] },
+        { "id" : "lilypad2" , "offset" : [443, 187], "size" : [16, 16] },
+        { "id" : "lilypad3" , "offset" : [476, 187], "size" : [16, 16] },
+        { "id" : "lilypad4" , "offset" : [476, 170], "size" : [16, 16] },
 
         { "id" : "speech_bubble", "offset" : [0, 596], "size" : [12, 10] },
         { "id" : "speech_bubble_question", "offset" : [0, 596], "size" : [12, 10] },

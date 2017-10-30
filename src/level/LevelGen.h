@@ -8,6 +8,9 @@ class LevelGen {
   GameData *data;
   Level* level;
 
+  void make_tree(int x, int y);
+  void make_bush(int x, int y, float random);
+
 public:
   LevelGen() {
   }

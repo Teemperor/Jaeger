@@ -2,6 +2,13 @@
   "tiles" : [
     { "id" : "grass", "group" : "grass", "passable" : true, "sprites" : ["grass1", "grass2"]},
     { "id" : "fireplace", "animation" : 250, "passable" : false, "sprites" : ["fireplace1", "fireplace2"]},
-    { "id" : "water_c", "group" : "water", "passable" : false, "animation" : 700, "sprites" : ["water_c1", "water_c2"]}
+    { "id" : "water_c", "group" : "water", "passable" : false, "animation" : 700, "sprites" : ["water_c1", "water_c2"]},
+
+    { "id" : "small_bush", "group" : "bush", "passable" : true, "sprites" : ["small_bush1", "small_bush2", "small_bush3", "small_bush4"]},
+    { "id" : "flower", "group" : "bush", "passable" : true, "sprites" : ["flower_blue", "flower_red", "flower_purple", "flower_white"]},
+    { "id" : "lilypad", "group" : "bush", "passable" : true, "sprites" : ["lilypad1", "lilypad2", "lilypad3", "lilypad4"]},
+
+    { "id" : "tree_green_lower", "group" : "tree", "passable" : false, "sprites" : ["tree_green_lower"]},
+    { "id" : "tree_green_upper", "group" : "tree", "passable" : true, "sprites" : ["tree_green_upper"]}
   ]
 }
