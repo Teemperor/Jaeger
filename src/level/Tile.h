@@ -28,7 +28,13 @@ public:
     this->Data = Data;
   }
 
-  bool empty() {
+  bool passable() const {
+    if(empty())
+      return true;
+    return Data->passable();
+  }
+
+  bool empty() const {
     return !Data;
   }
 

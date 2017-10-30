@@ -14,18 +14,29 @@ class TileData {
   std::vector<sf::Sprite> sprites_;
   int animationTime_ = -1;
   std::string name_;
+  std::string group_;
 
 public:
-  TileData(const std::string& name, bool passable, int animationTime)
-      : name_(name), passable_(passable), animationTime_(animationTime) {
+  TileData(const std::string& name, std::string group, bool passable, int animationTime)
+      : name_(name), group_(group), passable_(passable), animationTime_(animationTime) {
+    if (group_.empty())
+      group_ = name;
   }
 
   const std::string& name() const {
     return name_;
   }
 
+  const std::string& group() const {
+    return group_;
+  }
+
   void passable(bool v) {
     passable_ = v;
+  }
+
+  bool passable() {
+    return passable_;
   }
 
   void addSprite(const sf::Sprite& s) {

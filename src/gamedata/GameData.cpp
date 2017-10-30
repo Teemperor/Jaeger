@@ -42,17 +42,22 @@ void GameData::parseTileData(const std::string &path) {
 
   for (auto tile : data["tiles"]) {
       std::string id = tile["id"];
+      std::string group;
+
+      if (tile.find("group") != tile.end()) {
+        group = tile["group"];
+      }
 
       bool passable = true;
       if (tile.find("passable") != tile.end()) {
-          passable = tile["passable"];
-        }
+        passable = tile["passable"];
+      }
       int animationTime = -1;
       if (tile.find("animation") != tile.end()) {
-          animationTime = tile["animation"];
-        }
+        animationTime = tile["animation"];
+      }
 
-      Tiles[id] = new TileData(id, passable, animationTime);
+      Tiles[id] = new TileData(id, group, passable, animationTime);
 
       auto sprites = tile["sprites"];
       for (auto sprite : sprites)

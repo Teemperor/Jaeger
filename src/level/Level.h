@@ -31,6 +31,18 @@ public:
 
   double time = 0;
 
+  bool passable(Vec2 pos) {
+    int x = (int)pos.getX();
+    x /= 16;
+    int y = (int)pos.getY();
+    y /= 16;
+    if (!get(x, y).passable())
+      return false;
+    if (!getBuilding(x, y).passable())
+      return false;
+    return true;
+  }
+
   Tile& get(int x, int y) {
     return FloorTiles.get(x, y);
   }

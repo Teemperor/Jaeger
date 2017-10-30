@@ -35,11 +35,13 @@ public:
   float getY() {
       return y;
   }
-  float modX(float d) {
-      return x += d;
+  Vec2 modX(float d) {
+      x += d;
+      return *this;
   }
-  float modY(float d) {
-      return y += d;
+  Vec2 modY(float d) {
+      y += d;
+      return *this;
   }
   float setX(float v) {
       return x = v;

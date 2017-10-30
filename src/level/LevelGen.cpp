@@ -1,5 +1,6 @@
 #include "LevelGen.h"
 
+
 Level *LevelGen::generate(GameData &data, int w, int h) {
   this->data = &data;
   level = new Level(w, h, data);

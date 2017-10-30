@@ -63,8 +63,18 @@ void Character::render(sf::RenderTarget &target) {
 
 void Character::update(float dtime) {
   if (isControlled()) {
-    setPos(getPos().mod(getXInput() * walkSpeed * dtime, getYInput() * walkSpeed * dtime));
-    setWalking(std::abs(getXInput())+ std::abs(getYInput()) > 0.1f);
+    float dx = getXInput() * walkSpeed * dtime;
+    float dy = getYInput() * walkSpeed * dtime;
+    if (dy < 0 && !getLevel().passable(getPos().modY(dy - 3)))
+      dy = 0;
+    else if (dy > 0 && !getLevel().passable(getPos().modY(dy + 3)))
+      dy = 0;
+    if (dx < 0 && !getLevel().passable(getPos().modX(dx - 4)))
+      dx = 0;
+    else if (dx > 0 && !getLevel().passable(getPos().modX(dx + 4)))
+      dx = 0;
+    setPos(getPos().mod(dx, dy));
+    setWalking(std::abs(dx) + std::abs(dy) > 0.1f);
   }
   talking_ = !isControlled();
 }
