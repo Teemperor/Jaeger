@@ -95,14 +95,15 @@ public:
       }
     }
 
-    for (GameObject* o : Objects)
-      o->render(target);
-
     for (int x = ulx; x <= brx + 1; x++) {
       for (int y = uly; y <= bry + 1; y++) {
         BuildingTiles.get(x, y).render(*this, target, x, y);
       }
     }
+
+    for (GameObject* o : Objects)
+      o->render(target);
+
 
   }
 };
