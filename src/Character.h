@@ -22,17 +22,17 @@ public:
   void setBodyType(BodyType t);
 
   virtual void render(sf::RenderTarget& target) override;
-  virtual void update(float dtime) override {
-    if (isControlled()) {
-      setPos(getPos().mod(getXInput() * walkSpeed * dtime, getYInput() * walkSpeed * dtime));
-    }
-  }
+  virtual void update(float dtime) override;
 
 private:
+
+  void setWalking(bool v);
   static constexpr float walkSpeed = 45;
   BodyType BodyType_ = BodyType::Pale;
-  sf::Sprite sprite_, talkingSprite_, bubbleSprite_;
+  sf::Sprite sprite_, talkingSprite_, bubbleSprite_, shadow_;
   bool talking_ = true;
+  bool walking_ = true;
+  double walkingStartTime_ = 0;
 
 };
 

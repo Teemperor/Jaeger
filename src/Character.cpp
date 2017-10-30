@@ -6,6 +6,7 @@ Character::Character(Level &level, BodyType type) : GameObject(level)
 {
   setBodyType(type);
   bubbleSprite_ = getGameData().getSprite("speech_bubble");
+  shadow_ = getGameData().getSprite("shadow");
 }
 
 void Character::setBodyType(Character::BodyType t) {
@@ -40,12 +41,35 @@ void Character::render(sf::RenderTarget &target) {
       shouldHaveSpeechBubble = true;
     }
   }
-  sf::Sprite& f = shouldUseTalkingSprite ? talkingSprite_ : sprite_;
-  f.setPosition(this->getPos().getX() - 8, this->getPos().getY() - 16);
-  target.draw(f);
+  shadow_.setPosition(this->getPos().getX() - 8, this->getPos().getY() - 2);
+  target.draw(shadow_);
 
+  int offset = 0;
+  if (walking_) {
+    offset = (int)(std::abs(std::sin((getLevel().getTime() - walkingStartTime_) * 10)) * 4);
+  }
+  {
+    sf::Sprite& f = shouldUseTalkingSprite ? talkingSprite_ : sprite_;
+    f.setPosition(this->getPos().getX() - 8, this->getPos().getY() - 16 - offset);
+    target.draw(f);
+  }
   if (shouldHaveSpeechBubble) {
     bubbleSprite_.setPosition(this->getPos().getX() + 2, this->getPos().getY() - 22);
     target.draw(bubbleSprite_);
   }
+
+}
+
+void Character::update(float dtime) {
+  if (isControlled()) {
+      setPos(getPos().mod(getXInput() * walkSpeed * dtime, getYInput() * walkSpeed * dtime));
+      setWalking(std::abs(getXInput())+ std::abs(getYInput()) > 0.1f);
+    }
+}
+
+void Character::setWalking(bool v) {
+  if (v != walking_) {
+      walking_ = true;
+      walkingStartTime_ = getLevel().getTime();
+    }
 }
