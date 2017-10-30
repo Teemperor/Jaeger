@@ -35,7 +35,7 @@ void Character::render(sf::RenderTarget &target) {
   bool shouldUseTalkingSprite = false;
   bool shouldHaveSpeechBubble = false;
   if (talking_) {
-    if (getLevel().getTimeModulo(0.4) > 0.2) {
+    if (getLevel().getTimeModulo(0.4) > 0.2 || getLevel().getTimeModulo(2.5) > 2.1) {
       shouldUseTalkingSprite = true;
     }
     if (getLevel().getTimeModulo(3) > 0.6) {
