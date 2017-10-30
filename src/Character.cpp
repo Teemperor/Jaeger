@@ -2,11 +2,12 @@
 
 #include "level/Level.h"
 
-Character::Character(Level &level, BodyType type) : GameObject(level)
+Character::Character(Level &level, Vec2 pos, BodyType type) : GameObject(level)
 {
   setBodyType(type);
   bubbleSprite_ = getGameData().getSprite("speech_bubble");
   shadow_ = getGameData().getSprite("shadow");
+  setPos(pos);
 }
 
 void Character::setBodyType(Character::BodyType t) {
@@ -62,14 +63,15 @@ void Character::render(sf::RenderTarget &target) {
 
 void Character::update(float dtime) {
   if (isControlled()) {
-      setPos(getPos().mod(getXInput() * walkSpeed * dtime, getYInput() * walkSpeed * dtime));
-      setWalking(std::abs(getXInput())+ std::abs(getYInput()) > 0.1f);
-    }
+    setPos(getPos().mod(getXInput() * walkSpeed * dtime, getYInput() * walkSpeed * dtime));
+    setWalking(std::abs(getXInput())+ std::abs(getYInput()) > 0.1f);
+  }
+  talking_ = !isControlled();
 }
 
 void Character::setWalking(bool v) {
   if (v != walking_) {
-      walking_ = true;
-      walkingStartTime_ = getLevel().getTime();
-    }
+    walking_ = true;
+    walkingStartTime_ = getLevel().getTime();
+  }
 }

@@ -1,6 +1,7 @@
 {
   "tiles" : [
     { "id" : "grass", "passable" : true, "sprites" : ["grass1", "grass2"]},
-    { "id" : "fireplace", "animation" : 250, "passable" : true, "sprites" : ["fireplace1", "fireplace2"]}
+    { "id" : "fireplace", "animation" : 250, "passable" : true, "sprites" : ["fireplace1", "fireplace2"]},
+    { "id" : "water_c", "animation" : 700, "passable" : true, "sprites" : ["water_c1", "water_c2"]}
   ]
 }

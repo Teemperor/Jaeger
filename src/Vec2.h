@@ -10,6 +10,8 @@ class Vec2
     float y = 0;
 public:
   Vec2();
+  Vec2(float x, float y) : x(x), y(y) {
+  }
   Vec2(std::initializer_list<float> l) {
       std::size_t elements = 0;
       for(auto e : l) {

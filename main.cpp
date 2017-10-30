@@ -30,8 +30,9 @@ int main() {
 
   Level& level = *gen.generate(Data, 100, 100);
 
-  Character* player = new Character(level);
+  Character* player = new Character(level, Vec2(22, 32));
   level.add(player);
+  level.add(new Character(level, Vec2(55, 22)));
 
   sf::Vector2f viewCenter;
 

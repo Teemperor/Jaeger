@@ -17,7 +17,7 @@ public:
     Green
   };
 
-  Character(Level& level, BodyType type = BodyType::Normal);
+  Character(Level& level, Vec2 pos, BodyType type = BodyType::Normal);
 
   void setBodyType(BodyType t);
 
@@ -30,8 +30,8 @@ private:
   static constexpr float walkSpeed = 45;
   BodyType BodyType_ = BodyType::Pale;
   sf::Sprite sprite_, talkingSprite_, bubbleSprite_, shadow_;
-  bool talking_ = true;
-  bool walking_ = true;
+  bool talking_ = false;
+  bool walking_ = false;
   double walkingStartTime_ = 0;
 
 };

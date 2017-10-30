@@ -10,6 +10,7 @@ Level *LevelGen::generate(GameData &data, int w, int h) {
     }
   }
   level->getBuilding(5, 5).setData(data.tile("fireplace"));
+  level->get(8, 8).setData(data.tile("water_c"));
   //level->finalize();
 
   return level;

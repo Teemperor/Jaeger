@@ -3,6 +3,8 @@
     [
         { "id" : "grass1" , "offset" : [85, 0], "size" : [16, 16] },
         { "id" : "grass2" , "offset" : [85, 17], "size" : [16, 16] },
+        { "id" : "water_c1" , "offset" : [0, 0], "size" : [16, 16] },
+        { "id" : "water_c2" , "offset" : [17, 0], "size" : [16, 16] },
         { "id" : "fireplace1" , "offset" : [238, 136], "size" : [16, 16] },
         { "id" : "fireplace2" , "offset" : [255, 136], "size" : [16, 16] },
         { "id" : "fireplace2" , "offset" : [255, 136], "size" : [16, 16] },
