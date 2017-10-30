@@ -2,6 +2,7 @@
 #define CHARACTER_H
 
 #include "Controlable.h"
+#include "Item.h"
 
 #include <GameObject.h>
 
@@ -24,7 +25,11 @@ public:
   virtual void render(sf::RenderTarget& target) override;
   virtual void update(float dtime) override;
 
+  void equipItem(const Item& i);
+
 private:
+
+  std::vector<Item> equipped_;
 
   void setWalking(bool v);
   static constexpr float walkSpeed = 45;

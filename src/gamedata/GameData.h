@@ -51,6 +51,14 @@ public:
     return nullptr;
   }
 
+  ItemData* item(const std::string& id) {
+    auto I = Items.find(id);
+    if (I != Items.end())
+      return I->second;
+    std::cerr << "couldn't find " << id << std::endl;
+    return nullptr;
+  }
+
   Logger mainLogger;
 
   void parseMetaFile(const std::string& path);

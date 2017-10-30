@@ -41,6 +41,8 @@ set(SOURCE_FILES main.cpp
     src/Controlable.cpp
     src/stb_perlin.h
     src/stb_perlin.cpp
+    src/Item.h
+    src/Item.cpp
 )
 add_executable(argos ${SOURCE_FILES})
 target_link_libraries(argos sfml-graphics sfml-system sfml-window Box2D)

@@ -9,24 +9,39 @@ void GameData::parseItemData(const std::string &path) {
 
   for (auto item : data["items"]) {
       std::string id = item["id"];
-      Items[id] = new ItemData();
+
+      ItemData::Kind kind;
+      std::string kindStr = item["kind"];
+      if (kindStr == "helmet")
+        kind = ItemData::Helmet;
+      else if (kindStr == "pants")
+        kind = ItemData::Pants;
+      else if (kindStr == "armor")
+        kind = ItemData::Armor;
+      else if (kindStr == "shield")
+        kind = ItemData::Shield;
+      else {
+        std::cerr << "Unknown kind " << kindStr << "\n";
+        assert(false);
+      }
+
+      Items[id] = new ItemData(kind);
 
       int attack = 0;
       if (item.find("attack") != item.end()) {
-          attack = item["attack"];
-        }
+        attack = item["attack"];
+      }
       Items[id]->setAttack(attack);
       int value = 0;
       if (item.find("value") != item.end()) {
-          value = item["value"];
-        }
+        value = item["value"];
+      }
       Items[id]->setValue(value);
       int armor = 0;
       if (item.find("armor") != item.end()) {
-          armor = item["armor"];
-        }
+        armor = item["armor"];
+      }
       Items[id]->setArmor(armor);
-
 
       auto sprite = item["sprite"];
       Items[id]->setSprite(getSprite(sprite));

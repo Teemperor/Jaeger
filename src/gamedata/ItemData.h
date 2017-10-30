@@ -4,14 +4,29 @@
 #include <SFML/Graphics.hpp>
 
 class ItemData {
+public:
 
+  enum Kind {
+    Pants = 0,
+    Helmet = 1,
+    Armor = 2,
+    Shield = 3,
+    Weapon = 4,
+    KindLimit = 5
+  };
+private:
   int armor_ = 0;
   int attack_ = 0;
   int value_ = 0;
   sf::Sprite sprite_;
+  Kind kind_;
 
 public:
-  ItemData() {
+  ItemData(Kind kind) : kind_(kind) {
+  }
+
+  Kind kind() {
+    return kind_;
   }
 
   sf::Sprite& sprite() {

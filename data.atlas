@@ -11,6 +11,18 @@
         { "id" : "tree_green_lower" , "offset" : [221, 187], "size" : [16, 16] },
         { "id" : "tree_green_upper" , "offset" : [221, 170], "size" : [16, 16] },
 
+        { "id" : "black_pants" , "offset" : [51, 526], "size" : [16, 16] },
+        { "id" : "brown_pants" , "offset" : [51, 543], "size" : [16, 16] },
+        { "id" : "white_pants" , "offset" : [51, 560], "size" : [16, 16] },
+        { "id" : "sand_pants" , "offset" :  [51, 577], "size" : [16, 16] },
+
+        { "id" : "leather_armor" , "offset" :  [102, 594], "size" : [16, 16] },
+
+        { "id" : "red_steel_helmet" , "offset" :  [476, 525], "size" : [16, 16] },
+
+        { "id" : "wood_buckler" , "offset" :  [561, 528], "size" : [16, 16] },
+        { "id" : "steel_buckler" , "offset" :  [577, 543], "size" : [16, 16] },
+
         { "id" : "flower_blue" , "offset" : [477, 153], "size" : [16, 16] },
         { "id" : "flower_red" , "offset" : [494, 153], "size" : [16, 16] },
         { "id" : "flower_purple" , "offset" : [513, 153], "size" : [16, 16] },

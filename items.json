@@ -1,5 +1,12 @@
 {
   "items" : [
-    { "id" : "grass", "passable" : true, "sprite" : "grass1"}
+    { "id" : "ninja_pants", "kind" : "pants", "sprite" : "black_pants"},
+    { "id" : "leather_pants", "kind" : "pants", "sprite" : "brown_pants"},
+    { "id" : "fine_pants", "kind" : "pants", "sprite" : "white_pants"},
+    { "id" : "desert_pants", "kind" : "pants", "sprite" : "sand_pants"},
+    { "id" : "leather_armor", "kind" : "armor", "sprite" : "leather_armor"},
+    { "id" : "red_steel_helmet", "kind" : "helmet", "sprite" : "red_steel_helmet"},
+    { "id" : "steel_buckler", "kind" : "shield", "sprite" : "steel_buckler"},
+    { "id" : "wood_buckler", "kind" : "shield", "sprite" : "wood_buckler"}
   ]
 }

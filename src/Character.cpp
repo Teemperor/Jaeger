@@ -8,6 +8,12 @@ Character::Character(Level &level, Vec2 pos, BodyType type) : GameObject(level)
   bubbleSprite_ = getGameData().getSprite("speech_bubble");
   shadow_ = getGameData().getSprite("shadow");
   setPos(pos);
+  equipped_.resize(ItemData::KindLimit);
+
+  equipItem(Item(*level.getData().item("leather_pants")));
+  equipItem(Item(*level.getData().item("leather_armor")));
+  equipItem(Item(*level.getData().item("steel_buckler")));
+  equipItem(Item(*level.getData().item("red_steel_helmet")));
 }
 
 void Character::setBodyType(Character::BodyType t) {
@@ -54,6 +60,14 @@ void Character::render(sf::RenderTarget &target) {
     f.setPosition(this->getPos().getX() - 8, this->getPos().getY() - 16 - offset);
     target.draw(f);
   }
+  for (unsigned layer = 0; layer < equipped_.size(); layer++) {
+    Item& i = equipped_.at(layer);
+    if (!i.empty()) {
+      sf::Sprite& f = i.sprite();
+      f.setPosition(this->getPos().getX() - 8, this->getPos().getY() - 16 - offset);
+      target.draw(f);
+    }
+  }
   if (shouldHaveSpeechBubble) {
     bubbleSprite_.setPosition(this->getPos().getX() + 2, this->getPos().getY() - 22);
     target.draw(bubbleSprite_);
@@ -77,6 +91,10 @@ void Character::update(float dtime) {
     setWalking(std::abs(dx) + std::abs(dy) > 0.1f);
   }
   talking_ = !isControlled();
+}
+
+void Character::equipItem(const Item &i) {
+  equipped_[i.kind()] = i;
 }
 
 void Character::setWalking(bool v) {
