@@ -18,11 +18,11 @@ int main() {
   srand(2);
 
   /** Prepare the window */
-  sf::RenderWindow Window(sf::VideoMode(800, 600, 32), "Test");
+  sf::RenderWindow Window(sf::VideoMode(1024, 768, 32), "Test");
   Window.setFramerateLimit(60);
 
   sf::View view = Window.getView();
-  view.zoom(0.5f);
+  view.zoom(0.3f);
 
   GameData Data(".");
 
@@ -60,7 +60,7 @@ int main() {
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         Window.setView(sf::View(visibleArea));
         view = Window.getView();
-        view.zoom(0.5f);
+        view.zoom(0.3f);
       }
     }
     viewCenter.x = player->getPos().getX();
