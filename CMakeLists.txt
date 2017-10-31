@@ -3,6 +3,8 @@ project(mambo)
 
 #add_definitions(-fmodules -fimplicit-module-maps -fmodules-local-submodule-visibility)
 
+find_package(SFML COMPONENTS graphics window system)
+
 set(CMAKE_CXX_STANDARD 11)
 
 include_directories(extern)
@@ -45,4 +47,4 @@ set(SOURCE_FILES main.cpp
     src/Item.cpp
 )
 add_executable(argos ${SOURCE_FILES})
-target_link_libraries(argos sfml-graphics sfml-system sfml-window Box2D)
+target_link_libraries(argos ${SFML_LIBRARIES})
