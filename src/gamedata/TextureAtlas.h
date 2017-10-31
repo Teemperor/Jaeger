@@ -19,7 +19,7 @@ public:
 
     nlohmann::json data;
 
-    std::ifstream infile(basePath + ".atlas");
+    std::ifstream infile(basePath + ".json");
 
     infile >> data;
 
