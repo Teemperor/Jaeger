@@ -4,7 +4,6 @@
 #include "Vec2.h"
 
 #include <SFML/Graphics.hpp>
-#include <Box2D/Box2D.h>
 
 class GameData;
 class Level;
