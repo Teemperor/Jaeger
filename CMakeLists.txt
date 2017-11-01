@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 project(mambo)
 
-#add_definitions(-fmodules -fimplicit-module-maps -fmodules-local-submodule-visibility)
-
 find_package(SFML COMPONENTS graphics window system)
 
 set(CMAKE_CXX_STANDARD 11)
