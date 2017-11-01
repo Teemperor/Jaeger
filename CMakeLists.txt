@@ -3,6 +3,8 @@ project(mambo)
 
 enable_testing()
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
 find_package(SFML COMPONENTS graphics window system)
 
 set(CMAKE_CXX_STANDARD 11)
