@@ -22,6 +22,63 @@ void LevelGen::make_bush(int x, int y, float random) {
   level->getBuilding(x, y).setData(data->tile(tileName));
 }
 
+void LevelGen::make_house(int x, int y, int w, int h, int depth) {
+
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<float> dis(0, 1);
+
+  for(int ix = x; ix < x + w; ix++) {
+    for(int iy = y + 1; iy < y + h; iy++) {
+      if(ix == x) {
+        build(ix, iy, "sand_wall_left");
+      } else if(ix == x + w - 1) {
+        build(ix, iy, "sand_wall_right");
+      } else if(iy == y + h - 1) {
+        build(ix, iy, "sand_wall_lower_mid");
+      } else {
+        build(ix, iy, "sand_wall_mid");
+      }
+    }
+  }
+
+  for(int ix = x; ix < x + w; ix++) {
+    for(int iy = y; iy < y + h; iy++) {
+      if (iy == y) {
+        overlay(ix, iy, "brown_roof_up");
+      } else if(ix == x && iy < y + h - depth) {
+        overlay(ix, iy, "brown_roof_angular_left_mid");
+      } else if(ix == x + w - 1 && iy < y + h - depth) {
+        overlay(ix, iy, "brown_roof_angular_right_mid");
+      } else if(iy < y + h - depth - 1) {
+        overlay(ix, iy, "brown_roof_mid");
+      } else if(iy > y + h - depth - 1
+                && iy < y + h - 1
+                && ix > x
+                && ix < x + w - 1
+                && ix % 2 == 0
+                && iy % 2 == 0) {
+        if(dis(gen) > 0.0f) {
+          overlay(ix, iy, "brown_window");
+        }
+      }
+    }
+  }
+  overlay(x, y + h - 1 - depth, "brown_roof_angular_left_lower");
+  overlay(x + w - 1, y + h  - 1 - depth, "brown_roof_angular_right_lower");
+  overlay(x, y, "brown_roof_angular_left_upper");
+  overlay(x + w - 1, y, "brown_roof_angular_right_upper");
+  build(x, y + h - 1, "sand_wall_lower_left");
+  build(x + w - 1, y + h - 1, "sand_wall_lower_right");
+}
+
+void LevelGen::build(int x, int y, std::string tileName) {
+  level->getBuilding(x, y).setData(data->tile(tileName));
+}
+
+void LevelGen::overlay(int x, int y, std::string tileName) {
+  level->getOverlay(x, y).setData(data->tile(tileName));
+}
 
 Level *LevelGen::generate(GameData &data, int w, int h) {
   this->data = &data;
@@ -66,6 +123,8 @@ Level *LevelGen::generate(GameData &data, int w, int h) {
   }
   level->getBuilding(5, 5).setData(data.tile("fireplace"));
   //level->finalize();
+
+  make_house(8, 8, 6, 8, 3);
 
   return level;
 }

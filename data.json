@@ -16,6 +16,35 @@
         { "id" : "white_pants" , "offset" : [51, 560], "size" : [16, 16] },
         { "id" : "sand_pants" , "offset" :  [51, 577], "size" : [16, 16] },
 
+        { "id" : "brown_roof_up" , "offset" :  [425, 357], "size" : [16, 16] },
+        { "id" : "brown_roof_mid" , "offset" :  [425, 374], "size" : [16, 16] },
+        { "id" : "brown_roof_down" , "offset" :  [425, 391], "size" : [16, 16] },
+
+        { "id" : "sand_wall_left" , "offset" :  [289, 255], "size" : [16, 16] },
+        { "id" : "sand_wall_mid" , "offset" :  [306, 255], "size" : [16, 16] },
+        { "id" : "sand_wall_right" , "offset" :  [323, 255], "size" : [16, 16] },
+
+        { "id" : "sand_wall_lower_left" , "offset" :  [238, 255], "size" : [16, 16] },
+        { "id" : "sand_wall_lower_mid" , "offset" :  [221, 255], "size" : [16, 16] },
+        { "id" : "sand_wall_lower_right" , "offset" :  [272, 255], "size" : [16, 16] },
+
+        { "id" : "brown_roof_angular_left_lower" , "offset" :  [340, 391], "size" : [16, 16] },
+        { "id" : "brown_roof_angular_left_mid" , "offset" :  [340, 374], "size" : [16, 16] },
+        { "id" : "brown_roof_angular_left_upper" , "offset" :  [340, 357], "size" : [16, 16] },
+        { "id" : "brown_roof_angular_right_lower" , "offset" :  [357, 391], "size" : [16, 16] },
+        { "id" : "brown_roof_angular_right_mid" , "offset" :  [357, 374], "size" : [16, 16] },
+        { "id" : "brown_roof_angular_right_upper" , "offset" :  [357, 357], "size" : [16, 16] },
+
+        { "id" : "brown_window1" , "offset" :  [748, 0], "size" : [16, 16] },
+        { "id" : "brown_window2" , "offset" :  [765, 0], "size" : [16, 16] },
+        { "id" : "brown_window3" , "offset" :  [782, 0], "size" : [16, 16] },
+        { "id" : "brown_window4" , "offset" :  [799, 0], "size" : [16, 16] },
+        { "id" : "brown_window5" , "offset" :  [716, 0], "size" : [16, 16] },
+
+        { "id" : "door1_open" , "offset" :  [629, 0], "size" : [16, 16] },
+        { "id" : "door2_open" , "offset" :  [629, 0], "size" : [16, 16] },
+        { "id" : "door3_open" , "offset" :  [629, 0], "size" : [16, 16] },
+
         { "id" : "leather_armor" , "offset" :  [102, 594], "size" : [16, 16] },
 
         { "id" : "red_steel_helmet" , "offset" :  [476, 525], "size" : [16, 16] },

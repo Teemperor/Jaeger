@@ -12,6 +12,7 @@ class Level {
 
   TileMap<Tile> FloorTiles;
   TileMap<Tile> BuildingTiles;
+  TileMap<Tile> OverlayTiles;
 
   size_t w;
   size_t h;
@@ -21,6 +22,7 @@ public:
 
     FloorTiles = TileMap<Tile>(w, h);
     BuildingTiles = TileMap<Tile>(w, h);
+    OverlayTiles = TileMap<Tile>(w, h);
 
   }
 
@@ -48,6 +50,9 @@ public:
   }
   Tile& getBuilding(int x, int y) {
     return BuildingTiles.get(x, y);
+  }
+  Tile& getOverlay(int x, int y) {
+    return OverlayTiles.get(x, y);
   }
 
   unsigned timeMillis() {
@@ -104,6 +109,11 @@ public:
     for (GameObject* o : Objects)
       o->render(target);
 
+    for (int x = ulx; x <= brx + 1; x++) {
+      for (int y = uly; y <= bry + 1; y++) {
+        OverlayTiles.get(x, y).render(*this, target, x, y);
+      }
+    }
 
   }
 };

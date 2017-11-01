@@ -9,6 +9,27 @@
     { "id" : "lilypad", "group" : "bush", "passable" : true, "sprites" : ["lilypad1", "lilypad2", "lilypad3", "lilypad4"]},
 
     { "id" : "tree_green_lower", "group" : "tree", "passable" : false, "sprites" : ["tree_green_lower"]},
-    { "id" : "tree_green_upper", "group" : "tree", "passable" : true, "sprites" : ["tree_green_upper"]}
+    { "id" : "tree_green_upper", "group" : "tree", "passable" : true, "sprites" : ["tree_green_upper"]},
+
+    { "id" : "sand_wall_left", "group" : "building", "passable" : false, "sprites" : ["sand_wall_left"]},
+    { "id" : "sand_wall_mid", "group" : "building", "passable" : false, "sprites" : ["sand_wall_mid"]},
+    { "id" : "sand_wall_right", "group" : "building", "passable" : false, "sprites" : ["sand_wall_right"]},
+
+    { "id" : "sand_wall_lower_left", "group" : "building", "passable" : false, "sprites" : ["sand_wall_lower_left"]},
+    { "id" : "sand_wall_lower_mid", "group" : "building", "passable" : false, "sprites" : ["sand_wall_lower_mid"]},
+    { "id" : "sand_wall_lower_right", "group" : "building", "passable" : false, "sprites" : ["sand_wall_lower_right"]},
+
+    { "id" : "brown_roof_up" ,  "group" : "building", "passable" : false, "sprites" : ["brown_roof_up"]},
+    { "id" : "brown_roof_mid" ,  "group" : "building", "passable" : false, "sprites" : ["brown_roof_mid"]},
+    { "id" : "brown_roof_down" ,  "group" : "building", "passable" : false, "sprites" : ["brown_roof_down"]},
+
+    { "id" : "brown_window_round" ,  "group" : "building", "passable" : false, "sprites" : ["brown_window1", "brown_window2", "brown_window3", "brown_window4", "brown_window5"]},
+
+    { "id" : "brown_roof_angular_left_lower", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_left_lower"]},
+    { "id" : "brown_roof_angular_left_mid", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_left_mid"]},
+    { "id" : "brown_roof_angular_left_upper", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_left_upper"]},
+    { "id" : "brown_roof_angular_right_lower", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_right_lower"]},
+    { "id" : "brown_roof_angular_right_mid", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_right_mid"]},
+    { "id" : "brown_roof_angular_right_upper", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_right_upper"]}
   ]
 }
