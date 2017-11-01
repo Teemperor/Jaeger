@@ -21,7 +21,7 @@ include_directories(src)
 
 #add_definitions(-flto=thin)
 
-set(SOURCE_FILES main.cpp
+set(SOURCE_FILES
     src/GameObject.cpp
     src/GameObject.h
     src/gamedata/GameData.cpp
@@ -55,5 +55,8 @@ set(SOURCE_FILES main.cpp
     src/Item.h
     src/Item.cpp
 )
-add_executable(argos ${SOURCE_FILES})
-target_link_libraries(argos ${SFML_LIBRARIES})
+add_library(argos_core ${SOURCE_FILES})
+target_link_libraries(argos_core ${SFML_LIBRARIES})
+
+add_executable(argos main.cpp)
+target_link_libraries(argos argos_core)
