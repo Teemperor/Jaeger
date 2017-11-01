@@ -3,9 +3,15 @@ project(mambo)
 
 enable_testing()
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-
 find_package(SFML COMPONENTS graphics window system)
+
+if(NOT SFML_FOUND)
+  include_directories($ENV{SFML_INC})
+  link_directories($ENV{SFML_LIB})
+  set(SFML_LIBRARIES sfml-audio sfml-graphics sfml-window sfml-system)
+else()
+  include_directories(${SFML_INCLUDE_DIR})
+endif()
 
 set(CMAKE_CXX_STANDARD 11)
 

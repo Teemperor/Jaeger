@@ -18,6 +18,7 @@ arch:
     - cmake
     - valgrind
     - gcc
+    - clang
     - sfml
     - gtest
   script:
