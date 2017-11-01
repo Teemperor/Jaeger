@@ -10,7 +10,7 @@ void LevelGen::make_tree(int x, int y) {
   if (!level->getBuilding(x, y - 1).empty())
     return;
   level->getBuilding(x, y).setData(data->tile("tree_green_lower"));
-  level->getBuilding(x, y - 1).setData(data->tile("tree_green_upper"));
+  level->getOverlay(x, y - 1).setData(data->tile("tree_green_upper"));
 }
 
 void LevelGen::make_bush(int x, int y, float random) {

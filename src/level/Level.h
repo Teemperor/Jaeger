@@ -12,6 +12,7 @@ class Level {
 
   TileMap<Tile> FloorTiles;
   TileMap<Tile> BuildingTiles;
+  // Renders the objects
   TileMap<Tile> OverlayTiles;
 
   size_t w;
