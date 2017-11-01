@@ -1,5 +1,3 @@
 #include "GameObject.h"
 
-int main() {
-
-}
+int main() {}

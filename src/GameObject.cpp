@@ -2,9 +2,6 @@
 
 #include "level/Level.h"
 
-GameObject::~GameObject() {
-}
+GameObject::~GameObject() {}
 
-GameData &GameObject::getGameData() {
-  return level_->getData();
-}
+GameData &GameObject::getGameData() { return level_->getData(); }

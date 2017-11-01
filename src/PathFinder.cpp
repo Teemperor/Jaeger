@@ -1,54 +1,49 @@
 #include "PathFinder.h"
 
-#include <cmath>
 #include "stlastar.h"
+#include <cmath>
 #include <level/Level.h>
 
 // Definitions
 
-class MapSearchNode
-{
+class MapSearchNode {
 public:
-  int x;	 // the (x,y) positions of the node
+  int x; // the (x,y) positions of the node
   int y;
 
   MapSearchNode() { x = y = 0; }
-  MapSearchNode( int px, int py ) { x=px; y=py; }
+  MapSearchNode(int px, int py) {
+    x = px;
+    y = py;
+  }
 
-  float GoalDistanceEstimate( MapSearchNode &nodeGoal );
-  bool IsGoal( MapSearchNode &nodeGoal );
-  bool GetSuccessors( AStarSearch<MapSearchNode> *astarsearch, MapSearchNode *parent_node );
-  float GetCost( MapSearchNode &successor );
-  bool IsSameState( MapSearchNode &rhs );
+  float GoalDistanceEstimate(MapSearchNode &nodeGoal);
+  bool IsGoal(MapSearchNode &nodeGoal);
+  bool GetSuccessors(AStarSearch<MapSearchNode> *astarsearch,
+                     MapSearchNode *parent_node);
+  float GetCost(MapSearchNode &successor);
+  bool IsSameState(MapSearchNode &rhs);
 
   void PrintNodeInfo();
 
   bool isFree(int x, int y) {
     return PathFinder::level_->passable(TilePos(x, y));
   }
-
 };
 
-bool MapSearchNode::IsSameState( MapSearchNode &rhs )
-{
+bool MapSearchNode::IsSameState(MapSearchNode &rhs) {
 
   // same state in a maze search is simply when (x,y) are the same
-  if( (x == rhs.x) &&
-      (y == rhs.y) )
-  {
+  if ((x == rhs.x) && (y == rhs.y)) {
     return true;
-  }
-  else
-  {
+  } else {
     return false;
   }
-
 }
 
-void MapSearchNode::PrintNodeInfo()
-{
+void MapSearchNode::PrintNodeInfo() {
   char str[100];
-  sprintf( str, "Node position : (%d,%d)\n", x,y );
+  sprintf(str, "Node position : (%d,%d)\n", x, y);
 
   cout << str;
 }
@@ -56,75 +51,56 @@ void MapSearchNode::PrintNodeInfo()
 // Here's the heuristic function that estimates the distance from a Node
 // to the Goal.
 
-float MapSearchNode::GoalDistanceEstimate( MapSearchNode &nodeGoal )
-{
+float MapSearchNode::GoalDistanceEstimate(MapSearchNode &nodeGoal) {
   return std::abs(x - nodeGoal.x) + std::abs(y - nodeGoal.y);
 }
 
-bool MapSearchNode::IsGoal( MapSearchNode &nodeGoal )
-{
+bool MapSearchNode::IsGoal(MapSearchNode &nodeGoal) {
 
-  if( (x == nodeGoal.x) &&
-      (y == nodeGoal.y) )
-  {
+  if ((x == nodeGoal.x) && (y == nodeGoal.y)) {
     return true;
   }
 
   return false;
 }
 
-// This generates the successors to the given Node. It uses a helper function called
-// AddSuccessor to give the successors to the AStar class. The A* specific initialisation
-// is done for each node internally, so here you just set the state information that
-// is specific to the application
-bool MapSearchNode::GetSuccessors( AStarSearch<MapSearchNode> *astarsearch, MapSearchNode *parent_node )
-{
+// This generates the successors to the given Node. It uses a helper function
+// called AddSuccessor to give the successors to the AStar class. The A*
+// specific initialisation is done for each node internally, so here you just
+// set the state information that is specific to the application
+bool MapSearchNode::GetSuccessors(AStarSearch<MapSearchNode> *astarsearch,
+                                  MapSearchNode *parent_node) {
 
   int parent_x = -1;
   int parent_y = -1;
 
-  if( parent_node )
-  {
+  if (parent_node) {
     parent_x = parent_node->x;
     parent_y = parent_node->y;
   }
-
 
   MapSearchNode NewNode;
 
   // push each possible move except allowing the search to go backwards
 
-  if( (isFree(x-1, y ))
-      && !((parent_x == x-1) && (parent_y == y))
-      )
-  {
-    NewNode = MapSearchNode(x-1, y );
-    astarsearch->AddSuccessor( NewNode );
+  if ((isFree(x - 1, y)) && !((parent_x == x - 1) && (parent_y == y))) {
+    NewNode = MapSearchNode(x - 1, y);
+    astarsearch->AddSuccessor(NewNode);
   }
 
-  if( (isFree( x, y-1 ))
-      && !((parent_x == x) && (parent_y == y-1))
-      )
-  {
-    NewNode = MapSearchNode(x, y-1 );
-    astarsearch->AddSuccessor( NewNode );
+  if ((isFree(x, y - 1)) && !((parent_x == x) && (parent_y == y - 1))) {
+    NewNode = MapSearchNode(x, y - 1);
+    astarsearch->AddSuccessor(NewNode);
   }
 
-  if( (isFree( x+1, y ))
-      && !((parent_x == x+1) && (parent_y == y))
-      )
-  {
-    NewNode = MapSearchNode(x+1, y );
-    astarsearch->AddSuccessor( NewNode );
+  if ((isFree(x + 1, y)) && !((parent_x == x + 1) && (parent_y == y))) {
+    NewNode = MapSearchNode(x + 1, y);
+    astarsearch->AddSuccessor(NewNode);
   }
 
-
-  if( (isFree( x, y+1 ))
-      && !((parent_x == x) && (parent_y == y+1))
-      )
-  {
-    NewNode = MapSearchNode(x, y+1 );
-    astarsearch->AddSuccessor( NewNode );
+  if ((isFree(x, y + 1)) && !((parent_x == x) && (parent_y == y + 1))) {
+    NewNode = MapSearchNode(x, y + 1);
+    astarsearch->AddSuccessor(NewNode);
   }
 
   return true;
@@ -134,20 +110,14 @@ bool MapSearchNode::GetSuccessors( AStarSearch<MapSearchNode> *astarsearch, MapS
 // of our map the answer is the map terrain value at this node since that is
 // conceptually where we're moving
 
-float MapSearchNode::GetCost( MapSearchNode &successor )
-{
-  return 1;
+float MapSearchNode::GetCost(MapSearchNode &successor) { return 1; }
 
-}
+Level *PathFinder::level_ = nullptr;
 
-Level* PathFinder::level_ = nullptr;
+PathFinder::PathFinder(Level &level) { level_ = &level; }
 
-PathFinder::PathFinder(Level &level)
-{
-  level_ = &level;
-}
-
-void PathFinder::findPath(TilePos start, TilePos end, std::vector<TilePos>& result) {
+void PathFinder::findPath(TilePos start, TilePos end,
+                          std::vector<TilePos> &result) {
   cout << "STL A* Search implementation\n(C)2001 Justin Heyes-Jones\n";
 
   // Our sample problem defines the world as a 2d array representing a terrain
@@ -170,13 +140,12 @@ void PathFinder::findPath(TilePos start, TilePos end, std::vector<TilePos>& resu
 
   // Set Start and goal states
 
-  astarsearch.SetStartAndGoalStates( nodeStart, nodeEnd );
+  astarsearch.SetStartAndGoalStates(nodeStart, nodeEnd);
 
   unsigned int SearchState;
   unsigned int SearchSteps = 0;
 
-  do
-  {
+  do {
     SearchState = astarsearch.SearchStep();
 
     SearchSteps++;
@@ -189,14 +158,12 @@ void PathFinder::findPath(TilePos start, TilePos end, std::vector<TilePos>& resu
 
     cout << "Open:\n";
     MapSearchNode *p = astarsearch.GetOpenListStart();
-    while( p )
-    {
+    while (p) {
       len++;
 #if !DEBUG_LIST_LENGTHS_ONLY
       ((MapSearchNode *)p)->PrintNodeInfo();
 #endif
       p = astarsearch.GetOpenListNext();
-
     }
 
     cout << "Open list has " << len << " nodes\n";
@@ -205,8 +172,7 @@ void PathFinder::findPath(TilePos start, TilePos end, std::vector<TilePos>& resu
 
     cout << "Closed:\n";
     p = astarsearch.GetClosedListStart();
-    while( p )
-    {
+    while (p) {
       len++;
 #if !DEBUG_LIST_LENGTHS_ONLY
       p->PrintNodeInfo();
@@ -216,11 +182,9 @@ void PathFinder::findPath(TilePos start, TilePos end, std::vector<TilePos>& resu
 
     cout << "Closed list has " << len << " nodes\n";
 #endif
-  }
-  while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
+  } while (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING);
 
-  if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED )
-  {
+  if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED) {
     cout << "Search found goal state\n";
 
     MapSearchNode *node = astarsearch.GetSolutionStart();
@@ -230,17 +194,15 @@ void PathFinder::findPath(TilePos start, TilePos end, std::vector<TilePos>& resu
     int steps = 0;
 
     node->PrintNodeInfo();
-    for( ;; )
-    {
+    for (;;) {
       node = astarsearch.GetSolutionNext();
 
-      if( !node )
-      {
+      if (!node) {
         break;
       }
       result.push_back(TilePos(node->x, node->y));
-      //node->PrintNodeInfo();
-      steps ++;
+      // node->PrintNodeInfo();
+      steps++;
     }
 
     cout << "Solution steps " << steps << endl;
@@ -248,17 +210,12 @@ void PathFinder::findPath(TilePos start, TilePos end, std::vector<TilePos>& resu
     // Once you're done with the solution you can free the nodes up
     astarsearch.FreeSolutionNodes();
 
-
-  }
-  else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED )
-  {
+  } else if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED) {
     cout << "Search terminated. Did not find goal state\n";
-
   }
 
   // Display the number of loops the search went through
   cout << "SearchSteps : " << SearchSteps << "\n";
 
   astarsearch.EnsureMemoryFreed();
-
 }

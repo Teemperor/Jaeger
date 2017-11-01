@@ -12,7 +12,6 @@
 //     #define STB_PERLIN_IMPLEMENTATION
 // in *one* C/CPP file that includes this file.
 
-
 // Documentation:
 //
 // float  stb_perlin_noise3( float x,
@@ -36,4 +35,5 @@
 
 #pragma once
 
-extern float stb_perlin_noise3(float x, float y, float z, int x_wrap = 0, int y_wrap = 0, int z_wrap = 0);
+extern float stb_perlin_noise3(float x, float y, float z, int x_wrap = 0,
+                               int y_wrap = 0, int z_wrap = 0);

@@ -1,21 +1,20 @@
 #ifndef ARGOS_TILE_H
 #define ARGOS_TILE_H
 
-
 #include <GameObject.h>
-#include <gamedata/TileData.h>
 #include <chrono>
+#include <gamedata/TileData.h>
 
 class Level;
 
 class Tile {
 
-  TileData* Data = nullptr;
+  TileData *Data = nullptr;
 
 public:
   Tile() {}
 
-  const std::string& name() const {
+  const std::string &name() const {
     if (Data)
       return Data->name();
     else {
@@ -24,24 +23,17 @@ public:
     }
   }
 
-  void setData(TileData* Data) {
-    this->Data = Data;
-  }
+  void setData(TileData *Data) { this->Data = Data; }
 
   bool passable() const {
-    if(empty())
+    if (empty())
       return true;
     return Data->passable();
   }
 
-  bool empty() const {
-    return !Data;
-  }
+  bool empty() const { return !Data; }
 
-  void render(Level& level, sf::RenderTarget& target, int x, int y);
-
+  void render(Level &level, sf::RenderTarget &target, int x, int y);
 };
 
-
-
-#endif //ARGOS_TILE_H
+#endif // ARGOS_TILE_H

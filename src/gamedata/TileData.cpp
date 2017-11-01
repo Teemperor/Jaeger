@@ -1,10 +1,10 @@
 #include "TileData.h"
 
 const sf::Sprite &TileData::sprite(unsigned time, int x, int y) const {
-  srand((unsigned int) (x + y));
+  srand((unsigned int)(x + y));
 
   if (animationTime_ > 0) {
-    auto totalTime = animationTime_* sprites_.size();
+    auto totalTime = animationTime_ * sprites_.size();
     time %= totalTime;
     return sprites_.at(time / animationTime_);
   } else {

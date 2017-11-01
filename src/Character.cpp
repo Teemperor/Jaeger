@@ -2,8 +2,8 @@
 
 #include "level/Level.h"
 
-Character::Character(Level &level, Vec2 pos, BodyType type) : GameObject(level)
-{
+Character::Character(Level &level, Vec2 pos, BodyType type)
+    : GameObject(level) {
   setBodyType(type);
   bubbleSprite_ = getGameData().getSprite("speech_bubble");
   shadow_ = getGameData().getSprite("shadow");
@@ -19,19 +19,19 @@ Character::Character(Level &level, Vec2 pos, BodyType type) : GameObject(level)
 void Character::setBodyType(Character::BodyType t) {
   BodyType_ = t;
   std::string SpriteName = "";
-  switch(t) {
-    case Character::BodyType::Pale:
-      SpriteName  = "body_pale";
-      break;
-    case Character::BodyType::Tanned:
-      SpriteName  = "body_tanned";
-      break;
-    case Character::BodyType::Green:
-      SpriteName  = "body_green";
-      break;
-    case Character::BodyType::Normal:
-      SpriteName  = "body_normal";
-      break;
+  switch (t) {
+  case Character::BodyType::Pale:
+    SpriteName = "body_pale";
+    break;
+  case Character::BodyType::Tanned:
+    SpriteName = "body_tanned";
+    break;
+  case Character::BodyType::Green:
+    SpriteName = "body_green";
+    break;
+  case Character::BodyType::Normal:
+    SpriteName = "body_normal";
+    break;
   }
   sprite_ = getGameData().getSprite(SpriteName);
   talkingSprite_ = getGameData().getSprite(SpriteName + "_talking");
@@ -41,7 +41,8 @@ void Character::render(sf::RenderTarget &target) {
   bool shouldUseTalkingSprite = false;
   bool shouldHaveSpeechBubble = false;
   if (talking_) {
-    if (getLevel().getTimeModulo(0.4) > 0.2 || getLevel().getTimeModulo(2.5) > 2.1) {
+    if (getLevel().getTimeModulo(0.4) > 0.2 ||
+        getLevel().getTimeModulo(2.5) > 2.1) {
       shouldUseTalkingSprite = true;
     }
     if (getLevel().getTimeModulo(3) > 0.6) {
@@ -53,26 +54,30 @@ void Character::render(sf::RenderTarget &target) {
 
   int offset = 0;
   if (walking_) {
-    offset = (int)(std::abs(std::sin((getLevel().getTime() - walkingStartTime_) * 10)) * 4);
+    offset = (int)(std::abs(std::sin(
+                       (getLevel().getTime() - walkingStartTime_) * 10)) *
+                   4);
   }
   {
-    sf::Sprite& f = shouldUseTalkingSprite ? talkingSprite_ : sprite_;
-    f.setPosition(this->getPos().getX() - 8, this->getPos().getY() - 16 - offset);
+    sf::Sprite &f = shouldUseTalkingSprite ? talkingSprite_ : sprite_;
+    f.setPosition(this->getPos().getX() - 8,
+                  this->getPos().getY() - 16 - offset);
     target.draw(f);
   }
   for (unsigned layer = 0; layer < equipped_.size(); layer++) {
-    Item& i = equipped_.at(layer);
+    Item &i = equipped_.at(layer);
     if (!i.empty()) {
-      sf::Sprite& f = i.sprite();
-      f.setPosition(this->getPos().getX() - 8, this->getPos().getY() - 16 - offset);
+      sf::Sprite &f = i.sprite();
+      f.setPosition(this->getPos().getX() - 8,
+                    this->getPos().getY() - 16 - offset);
       target.draw(f);
     }
   }
   if (shouldHaveSpeechBubble) {
-    bubbleSprite_.setPosition(this->getPos().getX() + 2, this->getPos().getY() - 22);
+    bubbleSprite_.setPosition(this->getPos().getX() + 2,
+                              this->getPos().getY() - 22);
     target.draw(bubbleSprite_);
   }
-
 }
 
 void Character::update(float dtime) {
@@ -93,9 +98,7 @@ void Character::update(float dtime) {
   talking_ = !isControlled();
 }
 
-void Character::equipItem(const Item &i) {
-  equipped_[i.kind()] = i;
-}
+void Character::equipItem(const Item &i) { equipped_[i.kind()] = i; }
 
 void Character::setWalking(bool v) {
   if (v != walking_) {

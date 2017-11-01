@@ -5,7 +5,6 @@
 
 class ItemData {
 public:
-
   enum Kind {
     Pants = 0,
     Helmet = 1,
@@ -14,6 +13,7 @@ public:
     Weapon = 4,
     KindLimit = 5
   };
+
 private:
   int armor_ = 0;
   int attack_ = 0;
@@ -22,45 +22,24 @@ private:
   Kind kind_;
 
 public:
-  ItemData(Kind kind) : kind_(kind) {
-  }
+  ItemData(Kind kind) : kind_(kind) {}
 
-  Kind kind() {
-    return kind_;
-  }
+  Kind kind() { return kind_; }
 
-  sf::Sprite& sprite() {
-    return sprite_;
-  }
-  void setSprite(const sf::Sprite& sprite) {
-    sprite_ = sprite;
-  }
+  sf::Sprite &sprite() { return sprite_; }
+  void setSprite(const sf::Sprite &sprite) { sprite_ = sprite; }
 
-  int armor() const {
-    return armor_;
-  }
+  int armor() const { return armor_; }
 
-  void setArmor(int armor) {
-    armor_ = armor;
-  }
+  void setArmor(int armor) { armor_ = armor; }
 
-  int attack() const {
-    return attack_;
-  }
+  int attack() const { return attack_; }
 
-  void setAttack(int attack) {
-    attack_ = attack;
-  }
+  void setAttack(int attack) { attack_ = attack; }
 
-  int value() const {
-    return value_;
-  }
+  int value() const { return value_; }
 
-  void setValue(int value) {
-    value_ = value;
-  }
-
+  void setValue(int value) { value_ = value; }
 };
 
-
-#endif //MAMBO_ITEMDATA_H
+#endif // MAMBO_ITEMDATA_H

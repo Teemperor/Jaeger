@@ -1,40 +1,37 @@
 #ifndef ARGOS_GAMEDATA_H
 #define ARGOS_GAMEDATA_H
 
-#include <vector>
+#include "ItemData.h"
+#include "TextureAtlas.h"
+#include "TileData.h"
+#include <Logger.h>
 #include <SFML/Graphics/Sprite.hpp>
 #include <cassert>
 #include <iostream>
-#include <Logger.h>
-#include "TileData.h"
-#include "TextureAtlas.h"
-#include "ItemData.h"
+#include <vector>
 
 class GameData {
 
-  std::vector<TextureAtlas*> TextureAtlas_;
-  std::unordered_map<std::string, TileData*> Tiles;
-  std::unordered_map<std::string, ItemData*> Items;
+  std::vector<TextureAtlas *> TextureAtlas_;
+  std::unordered_map<std::string, TileData *> Tiles;
+  std::unordered_map<std::string, ItemData *> Items;
 
-  void parseItemData(const std::string& path);
+  void parseItemData(const std::string &path);
 
-  void parseTileData(const std::string& path);
+  void parseTileData(const std::string &path);
 
 public:
-  GameData(const std::string& path) {
-    parseMetaFile(path);
-
-  }
+  GameData(const std::string &path) { parseMetaFile(path); }
 
   virtual ~GameData() {
-    for (TextureAtlas* s : TextureAtlas_)
+    for (TextureAtlas *s : TextureAtlas_)
       delete s;
-    for (auto& s : Tiles)
+    for (auto &s : Tiles)
       delete s.second;
   }
 
-  const sf::Sprite& getSprite(const std::string& id) {
-    for (TextureAtlas* ts : TextureAtlas_) {
+  const sf::Sprite &getSprite(const std::string &id) {
+    for (TextureAtlas *ts : TextureAtlas_) {
       if (ts->contains(id)) {
         return (*ts)[id];
       }
@@ -43,7 +40,7 @@ public:
     assert(false);
   }
 
-  TileData* tile(const std::string& id) {
+  TileData *tile(const std::string &id) {
     auto I = Tiles.find(id);
     if (I != Tiles.end())
       return I->second;
@@ -51,7 +48,7 @@ public:
     return nullptr;
   }
 
-  ItemData* item(const std::string& id) {
+  ItemData *item(const std::string &id) {
     auto I = Items.find(id);
     if (I != Items.end())
       return I->second;
@@ -61,8 +58,7 @@ public:
 
   Logger mainLogger;
 
-  void parseMetaFile(const std::string& path);
+  void parseMetaFile(const std::string &path);
 };
 
-
-#endif //ARGOS_GAMEDATA_H
+#endif // ARGOS_GAMEDATA_H

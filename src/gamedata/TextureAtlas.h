@@ -1,18 +1,19 @@
 #ifndef ARGOS_TEXTUREATLAS_H
 #define ARGOS_TEXTUREATLAS_H
 
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-#include <unordered_map>
-#include <fstream>
 #include <Logger.h>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <fstream>
 #include <json.hpp>
+#include <unordered_map>
 
 class TextureAtlas {
   sf::Texture texture;
-  std::unordered_map<std::string, sf::Sprite > Sprites;
+  std::unordered_map<std::string, sf::Sprite> Sprites;
+
 public:
-  TextureAtlas(const std::string& basePath) {
+  TextureAtlas(const std::string &basePath) {
     texture.loadFromFile(basePath + ".png");
     texture.setSmooth(false);
     texture.setRepeated(true);
@@ -38,14 +39,11 @@ public:
     }
   }
 
-  bool contains(const std::string& id) const {
+  bool contains(const std::string &id) const {
     return Sprites.find(id) != Sprites.end();
   }
 
-  sf::Sprite& operator[](const std::string& id) {
-    return Sprites[id];
-  }
+  sf::Sprite &operator[](const std::string &id) { return Sprites[id]; }
 };
 
-
-#endif //ARGOS_TEXTUREATLAS_H
+#endif // ARGOS_TEXTUREATLAS_H

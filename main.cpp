@@ -1,16 +1,15 @@
-#include <SFML/Graphics.hpp>
-#include <unordered_map>
-#include <fstream>
-#include <iostream>
-#include <stdlib.h>
-#include <Logger.h>
 #include <Character.h>
+#include <Logger.h>
 #include <PathFinder.h>
+#include <SFML/Graphics.hpp>
+#include <controls/PlayerControls.h>
+#include <fstream>
 #include <gamedata/GameData.h>
+#include <iostream>
 #include <level/Level.h>
 #include <level/LevelGen.h>
-#include <controls/PlayerControls.h>
-
+#include <stdlib.h>
+#include <unordered_map>
 
 int main() {
   Logger mainLogger;
@@ -28,18 +27,17 @@ int main() {
 
   LevelGen gen;
 
-  Level& level = *gen.generate(Data, 100, 100);
+  Level &level = *gen.generate(Data, 100, 100);
 
   std::vector<TilePos> result;
   PathFinder finder(level);
-  finder.findPath({0,0}, {3,0}, result);
+  finder.findPath({0, 0}, {3, 0}, result);
 
-  Character* player1 = new Character(level, Vec2(22, 32));
+  Character *player1 = new Character(level, Vec2(22, 32));
   level.add(player1);
 
-  Character* player2 = new Character(level, Vec2(22, 32));
+  Character *player2 = new Character(level, Vec2(22, 32));
   level.add(player2);
-
 
   level.add(new Character(level, Vec2(55, 22)));
 
@@ -64,7 +62,8 @@ int main() {
       if (event.type == sf::Event::MouseWheelScrolled) {
         view.zoom(1 - event.mouseWheelScroll.delta / 30.0f);
       }
-      if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+      if (event.type == sf::Event::KeyPressed &&
+          event.key.code == sf::Keyboard::Escape)
         return 0;
 
       if (event.type == sf::Event::Resized) {
@@ -88,17 +87,17 @@ int main() {
       viewCenter.x = sf::Mouse::getPosition(Window).x;
       viewCenter.y = sf::Mouse::getPosition(Window).y;
     }
-    //level.World.Step(1 / 60.f, 8, 3);
+    // level.World.Step(1 / 60.f, 8, 3);
 
     Window.clear(sf::Color(43, 66, 93));
 
-    //sf::Vector2f playerPos(player->getBody()->GetPosition().x * SCALE, player->getBody()->GetPosition().y * SCALE);
+    // sf::Vector2f playerPos(player->getBody()->GetPosition().x * SCALE,
+    // player->getBody()->GetPosition().y * SCALE);
 
     view.setCenter(viewCenter);
     Window.setView(view);
 
-
-    //viewCenter += (playerPos - viewCenter) * 0.3f;
+    // viewCenter += (playerPos - viewCenter) * 0.3f;
 
     level.render(Window, viewCenter);
     Window.display();

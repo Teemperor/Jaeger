@@ -11,24 +11,18 @@
 class Character : public GameObject, public Controlable {
 
 public:
-  enum class BodyType {
-    Pale,
-    Normal,
-    Tanned,
-    Green
-  };
+  enum class BodyType { Pale, Normal, Tanned, Green };
 
-  Character(Level& level, Vec2 pos, BodyType type = BodyType::Normal);
+  Character(Level &level, Vec2 pos, BodyType type = BodyType::Normal);
 
   void setBodyType(BodyType t);
 
-  virtual void render(sf::RenderTarget& target) override;
+  virtual void render(sf::RenderTarget &target) override;
   virtual void update(float dtime) override;
 
-  void equipItem(const Item& i);
+  void equipItem(const Item &i);
 
 private:
-
   std::vector<Item> equipped_;
 
   void setWalking(bool v);
@@ -38,7 +32,6 @@ private:
   bool talking_ = false;
   bool walking_ = false;
   double walkingStartTime_ = 0;
-
 };
 
 #endif // CHARACTER_H

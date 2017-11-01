@@ -1,6 +1,3 @@
 #include "TilePos.h"
 
-TilePos::TilePos()
-{
-
-}
+TilePos::TilePos() {}

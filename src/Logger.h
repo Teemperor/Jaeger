@@ -1,16 +1,15 @@
 #ifndef ARGOS_LOGGER_H
 #define ARGOS_LOGGER_H
 
-
 #include <iostream>
 
 class Logger {
   bool newLog = true;
-public:
-  Logger() {
-  }
 
-  Logger& operator<<(const std::string& s) {
+public:
+  Logger() {}
+
+  Logger &operator<<(const std::string &s) {
     if (newLog) {
       newLog = false;
       std::cout << "[LOG] ";
@@ -19,11 +18,10 @@ public:
     return *this;
   }
 
-  void operator<<(Logger&) {
+  void operator<<(Logger &) {
     newLog = true;
     std::cout << std::endl;
   }
 };
 
-
-#endif //ARGOS_LOGGER_H
+#endif // ARGOS_LOGGER_H
