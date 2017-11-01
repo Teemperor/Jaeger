@@ -2,7 +2,6 @@
 #define ARGOS_GAMEOBJECT_H
 
 #include "Vec2.h"
-
 #include <SFML/Graphics.hpp>
 
 class GameData;

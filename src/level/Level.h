@@ -2,8 +2,10 @@
 #define ARGOS_LEVEL_H
 
 #include <gamedata/GameData.h>
+#include <TilePos.h>
 #include "Tile.h"
 #include "TileMap.h"
+#include "GameObject.h"
 
 class Level {
 
@@ -33,6 +35,16 @@ public:
   }
 
   double time = 0;
+
+  bool passable(TilePos pos) {
+    int x = pos.getX();
+    int y = pos.getY();
+    if (!get(x, y).passable())
+      return false;
+    if (!getBuilding(x, y).passable())
+      return false;
+    return true;
+  }
 
   bool passable(Vec2 pos) {
     int x = (int)pos.getX();

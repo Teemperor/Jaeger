@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <Logger.h>
 #include <Character.h>
+#include <PathFinder.h>
 #include <gamedata/GameData.h>
 #include <level/Level.h>
 #include <level/LevelGen.h>
@@ -28,6 +29,10 @@ int main() {
   LevelGen gen;
 
   Level& level = *gen.generate(Data, 100, 100);
+
+  std::vector<TilePos> result;
+  PathFinder finder(level);
+  finder.findPath({0,0}, {3,0}, result);
 
   Character* player1 = new Character(level, Vec2(22, 32));
   level.add(player1);

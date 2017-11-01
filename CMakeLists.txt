@@ -58,6 +58,10 @@ set(SOURCE_FILES
     src/stb_perlin.cpp
     src/Item.h
     src/Item.cpp
+    src/stlastar.h
+    src/fsa.h
+    src/PathFinder.h
+    src/PathFinder.cpp
 )
 add_library(argos_core ${SOURCE_FILES})
 target_link_libraries(argos_core ${SFML_LIBRARIES})
