@@ -6,7 +6,7 @@
 Character::Character(Level &level, Vec2 pos, BodyType type)
     : GameObject(level) {
   setBodyType(type);
-  bubbleSprite_ = getGameData().getSprite("speech_bubble");
+  bubbleSprite_ = getGameData().getSprite("speech_bubble_exclamation");
   shadow_ = getGameData().getSprite("shadow");
   gravestone_ =
       getGameData().getSprite("gravestone" + std::to_string(rand() % 9 + 1));

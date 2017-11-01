@@ -80,7 +80,7 @@
 
         { "id" : "speech_bubble", "offset" : [0, 596], "size" : [12, 10] },
         { "id" : "speech_bubble_question", "offset" : [0, 596], "size" : [12, 10] },
-        { "id" : "speech_bubble_exclamation", "offset" : [0, 596], "size" : [12, 10] },
+        { "id" : "speech_bubble_exclamation", "offset" : [0, 608], "size" : [12, 10] },
         { "id" : "speech_bubble_coin", "offset" : [0, 596], "size" : [12, 10] },
 
         { "id" : "shadow", "offset" : [0, 621], "size" : [16, 5] },
