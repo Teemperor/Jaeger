@@ -14,3 +14,10 @@ cd travis-build
 cmake -Dsanitize=On ..
 make -j2
 ctest -j2
+
+echo "Running clang-format"
+cd "$DIR"
+./cf.sh
+git diff
+git diff-index --quiet HEAD -- || echo "Echo clang-format failed!"
+git diff-index --quiet HEAD -- || exit 1
