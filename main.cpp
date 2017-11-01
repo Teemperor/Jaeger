@@ -29,14 +29,22 @@ int main() {
 
   Level& level = *gen.generate(Data, 100, 100);
 
-  Character* player = new Character(level, Vec2(22, 32));
-  level.add(player);
+  Character* player1 = new Character(level, Vec2(22, 32));
+  level.add(player1);
+
+  Character* player2 = new Character(level, Vec2(22, 32));
+  level.add(player2);
+
+
   level.add(new Character(level, Vec2(55, 22)));
 
   sf::Vector2f viewCenter;
 
-  PlayerControls controls;
-  player->setPlayerControls(&controls);
+  PlayerControls controls1(1);
+  player1->setPlayerControls(&controls1);
+
+  PlayerControls controls2(2);
+  player2->setPlayerControls(&controls2);
 
   sf::Clock clock;
 
@@ -62,10 +70,11 @@ int main() {
         view.zoom(0.3f);
       }
     }
-    viewCenter.x = player->getPos().getX();
-    viewCenter.y = player->getPos().getY();
+    viewCenter.x = player1->getPos().getX();
+    viewCenter.y = player1->getPos().getY();
 
-    controls.update();
+    controls1.update();
+    controls2.update();
 
     sf::Time elapsed = clock.restart();
     level.update(elapsed.asSeconds());
