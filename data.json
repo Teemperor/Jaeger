@@ -11,13 +11,13 @@
 
         { "id" : "gravestone1" , "offset" : [867, 153], "size" : [16, 16] },
         { "id" : "gravestone2" , "offset" : [884, 153], "size" : [16, 16] },
-        { "id" : "gravestone3" , "offset" : [903, 153], "size" : [16, 16] },
+        { "id" : "gravestone3" , "offset" : [901, 153], "size" : [16, 16] },
         { "id" : "gravestone4" , "offset" : [867, 170], "size" : [16, 16] },
         { "id" : "gravestone5" , "offset" : [884, 170], "size" : [16, 16] },
-        { "id" : "gravestone6" , "offset" : [903, 170], "size" : [16, 16] },
+        { "id" : "gravestone6" , "offset" : [901, 170], "size" : [16, 16] },
         { "id" : "gravestone7" , "offset" : [867, 187], "size" : [16, 16] },
         { "id" : "gravestone8" , "offset" : [884, 187], "size" : [16, 16] },
-        { "id" : "gravestone9" , "offset" : [903, 187], "size" : [16, 16] },
+        { "id" : "gravestone9" , "offset" : [901, 187], "size" : [16, 16] },
 
 
         { "id" : "tree_green_lower" , "offset" : [221, 187], "size" : [16, 16] },

@@ -4,6 +4,7 @@
 #include "Controlable.h"
 #include "Creature.h"
 #include "Item.h"
+#include "TilePos.h"
 
 #include <GameObject.h>
 
@@ -25,6 +26,8 @@ public:
 
 private:
   std::vector<Item> equipped_;
+
+  std::vector<TilePos> walkPath_;
 
   void AIAttack(Creature &C, GameObject &o, float dtime);
 

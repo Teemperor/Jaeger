@@ -118,7 +118,6 @@ PathFinder::PathFinder(Level &level) { level_ = &level; }
 
 void PathFinder::findPath(TilePos start, TilePos end,
                           std::vector<TilePos> &result) {
-  cout << "STL A* Search implementation\n(C)2001 Justin Heyes-Jones\n";
 
   // Our sample problem defines the world as a 2d array representing a terrain
   // Each element contains an integer from 0 to 5 which indicates the cost
@@ -147,50 +146,12 @@ void PathFinder::findPath(TilePos start, TilePos end,
 
   do {
     SearchState = astarsearch.SearchStep();
-
     SearchSteps++;
-#define DEBUG_LISTS
-#ifdef DEBUG_LISTS
-
-    cout << "Steps:" << SearchSteps << "\n";
-
-    int len = 0;
-
-    cout << "Open:\n";
-    MapSearchNode *p = astarsearch.GetOpenListStart();
-    while (p) {
-      len++;
-#if !DEBUG_LIST_LENGTHS_ONLY
-      ((MapSearchNode *)p)->PrintNodeInfo();
-#endif
-      p = astarsearch.GetOpenListNext();
-    }
-
-    cout << "Open list has " << len << " nodes\n";
-
-    len = 0;
-
-    cout << "Closed:\n";
-    p = astarsearch.GetClosedListStart();
-    while (p) {
-      len++;
-#if !DEBUG_LIST_LENGTHS_ONLY
-      p->PrintNodeInfo();
-#endif
-      p = astarsearch.GetClosedListNext();
-    }
-
-    cout << "Closed list has " << len << " nodes\n";
-#endif
   } while (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING);
 
   if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED) {
-    cout << "Search found goal state\n";
 
     MapSearchNode *node = astarsearch.GetSolutionStart();
-
-    cout << "Displaying solution\n";
-
     int steps = 0;
 
     node->PrintNodeInfo();
@@ -204,6 +165,7 @@ void PathFinder::findPath(TilePos start, TilePos end,
       // node->PrintNodeInfo();
       steps++;
     }
+    std::reverse(result.begin(), result.end());
 
     cout << "Solution steps " << steps << endl;
 

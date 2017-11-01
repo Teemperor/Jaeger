@@ -5,12 +5,15 @@
 #include <cmath>
 #include <initializer_list>
 
+class TilePos;
+
 class Vec2 {
   float x = 0;
   float y = 0;
 
 public:
   Vec2();
+  Vec2(TilePos &p);
   Vec2(float x, float y) : x(x), y(y) {}
   Vec2(std::initializer_list<float> l) {
     std::size_t elements = 0;
@@ -35,8 +38,8 @@ public:
     return std::sqrt(dx * dx + dy * dy);
   }
 
-  float getX() { return x; }
-  float getY() { return y; }
+  float getX() const { return x; }
+  float getY() const { return y; }
   Vec2 modX(float d) {
     x += d;
     return *this;

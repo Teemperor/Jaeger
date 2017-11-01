@@ -66,6 +66,8 @@ set(SOURCE_FILES
     src/Faction.cpp
     src/Creature.h
     src/Creature.cpp
+    src/TilePos.h
+    src/TilePos.cpp
 )
 add_library(argos_core ${SOURCE_FILES})
 target_link_libraries(argos_core ${SFML_LIBRARIES})

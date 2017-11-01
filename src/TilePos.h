@@ -4,12 +4,15 @@
 #include <cassert>
 #include <initializer_list>
 
+class Vec2;
+
 class TilePos {
   int x = 0;
   int y = 0;
 
 public:
   TilePos();
+  TilePos(const Vec2 &v);
   TilePos(int x, int y) : x(x), y(y) {}
   TilePos(std::initializer_list<int> l) {
     std::size_t elements = 0;

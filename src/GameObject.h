@@ -1,6 +1,7 @@
 #ifndef ARGOS_GAMEOBJECT_H
 #define ARGOS_GAMEOBJECT_H
 
+#include "TilePos.h"
 #include "Vec2.h"
 #include <SFML/Graphics.hpp>
 
@@ -23,6 +24,9 @@ public:
   bool shouldBeRemoved() const { return ShouldBeRemoved_; }
 
   Vec2 getPos() const { return pos; }
+  TilePos getTilePos() const {
+    return TilePos(pos.getX() / 16, pos.getY() / 16);
+  }
 
   Level &getLevel() { return *level_; }
 

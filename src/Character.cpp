@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "PathFinder.h"
 
 #include "level/Level.h"
 
@@ -40,6 +41,23 @@ void Character::setBodyType(Character::BodyType t) {
 }
 
 void Character::render(sf::RenderTarget &target) {
+
+  ///////////////////////////////
+  // Debug mode for PATHS
+  if (!isDead()) {
+    std::vector<sf::Vertex> line;
+    for (int i = 0; i < (int)walkPath_.size() - 1; i++) {
+      Vec2 currentPos = walkPath_[i];
+      Vec2 nextPos = walkPath_[i + 1];
+      line.push_back(sf::Vertex(
+          sf::Vector2f(currentPos.getX(), currentPos.getY()), sf::Color::Red));
+      line.push_back(sf::Vertex(sf::Vector2f(nextPos.getX(), nextPos.getY()),
+                                sf::Color::Red));
+    }
+    target.draw(line.data(), line.size(), sf::Lines);
+  }
+  ///////////////////////////////
+
   bool shouldUseTalkingSprite = false;
   bool shouldHaveSpeechBubble = false;
   if (talking_) {
@@ -62,8 +80,7 @@ void Character::render(sf::RenderTarget &target) {
   }
   if (isDead()) {
     sf::Sprite &f = gravestone_;
-    f.setPosition(this->getPos().getX() - 8,
-                  this->getPos().getY() - 16 - offset);
+    f.setPosition(this->getPos().getX() - 8, this->getPos().getY() - 16);
     target.draw(f);
     return;
   } else {
@@ -89,6 +106,8 @@ void Character::render(sf::RenderTarget &target) {
 }
 
 void Character::update(float dtime) {
+  if (isDead())
+    return;
   setWalking(false);
   if (isControlled()) {
     bool walking = std::abs(getXInput()) > 0.1f || std::abs(getYInput()) > 0.1f;
@@ -98,13 +117,18 @@ void Character::update(float dtime) {
           dtime);
     setWalking(walking);
   } else {
+    std::multimap<float, GameObject *> ClosestEnemies;
     for (GameObject *o : getLevel().getObjects()) {
       if (auto C = dynamic_cast<Creature *>(o)) {
         if (!C->isDead() && isEnemy(*C)) {
-          AIAttack(*C, *o, dtime);
-          break;
+          ClosestEnemies.insert(
+              std::make_pair(getPos().distance(o->getPos()), o));
         }
       }
+    }
+    for (auto &e : ClosestEnemies) {
+      AIAttack(*dynamic_cast<Creature *>(e.second), *e.second, dtime);
+      break;
     }
   }
   talking_ = !isControlled();
@@ -118,9 +142,15 @@ void Character::equipItem(const Item &i) { equipped_[i.kind()] = i; }
 
 void Character::AIAttack(Creature &C, GameObject &o, float dtime) {
   if (getPos().distance(o.getPos()) < 16) {
-    C.damage(2);
+    C.damage(20);
   } else {
-    walkToward(o.getPos(), dtime);
+    if (walkPath_.empty()) {
+      PathFinder finder(getLevel());
+      finder.findPath(getTilePos(), o.getTilePos(), walkPath_);
+    }
+    if (Vec2(walkPath_.back()).distance(getPos()) < 5)
+      walkPath_.pop_back();
+    walkToward(walkPath_.back(), dtime);
   }
 }
 
