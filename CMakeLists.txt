@@ -7,6 +7,17 @@ find_package(SFML COMPONENTS graphics window system)
 
 set(CMAKE_CXX_STANDARD 11)
 
+add_definitions(-std=c++1z)
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  add_definitions(-Wall)
+endif()
+
+option(sanitize "compile with sanitizers" OFF)
+if(sanitize AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-sanitize-recover=undefined,integer")
+endif()
+
+
 include_directories(extern)
 include_directories(src)
 

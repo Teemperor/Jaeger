@@ -11,5 +11,5 @@ cd ..
 rm -rf travis-build
 mkdir travis-build
 cd travis-build
-cmake ..
+cmake -Dsanitize=On ..
 make -j2
