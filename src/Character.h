@@ -2,13 +2,14 @@
 #define CHARACTER_H
 
 #include "Controlable.h"
+#include "Creature.h"
 #include "Item.h"
 
 #include <GameObject.h>
 
 #include <gamedata/GameData.h>
 
-class Character : public GameObject, public Controlable {
+class Character : public GameObject, public Controlable, public Creature {
 
 public:
   enum class BodyType { Pale, Normal, Tanned, Green };
@@ -25,12 +26,17 @@ public:
 private:
   std::vector<Item> equipped_;
 
+  void AIAttack(Creature &C, GameObject &o, float dtime);
+
+  void walkToward(Vec2 pos, float dtime);
+
   void setWalking(bool v);
   static constexpr float walkSpeed = 45;
   BodyType BodyType_ = BodyType::Pale;
-  sf::Sprite sprite_, talkingSprite_, bubbleSprite_, shadow_;
+  sf::Sprite sprite_, talkingSprite_, bubbleSprite_, shadow_, gravestone_;
   bool talking_ = false;
   bool walking_ = false;
+  bool oldWalkingValue_ = false;
   double walkingStartTime_ = 0;
 };
 

@@ -37,9 +37,13 @@ int main() {
   level.add(player1);
 
   Character *player2 = new Character(level, Vec2(22, 32));
-  level.add(player2);
+  // level.add(player2);
 
-  level.add(new Character(level, Vec2(55, 22)));
+  for (int i = 0; i < 20; i++) {
+    Vec2 pos = Vec2(rand() % 700, rand() % 700);
+    if (level.passable(pos))
+      level.add(new Character(level, pos));
+  }
 
   sf::Vector2f viewCenter;
 

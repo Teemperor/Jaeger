@@ -62,6 +62,10 @@ set(SOURCE_FILES
     src/fsa.h
     src/PathFinder.h
     src/PathFinder.cpp
+    src/Faction.h
+    src/Faction.cpp
+    src/Creature.h
+    src/Creature.cpp
 )
 add_library(argos_core ${SOURCE_FILES})
 target_link_libraries(argos_core ${SFML_LIBRARIES})

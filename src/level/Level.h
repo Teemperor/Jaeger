@@ -73,6 +73,8 @@ public:
     }
   }
 
+  std::vector<GameObject *> &getObjects() { return Objects; }
+
   double getTime() const { return time; }
 
   double getTimeModulo(double modulo) {

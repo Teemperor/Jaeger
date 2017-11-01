@@ -2,6 +2,7 @@
 #define VEC2_H
 
 #include <cassert>
+#include <cmath>
 #include <initializer_list>
 
 class Vec2 {
@@ -26,6 +27,12 @@ public:
       }
       elements++;
     }
+  }
+
+  float distance(const Vec2 &other) {
+    float dx = other.x - x;
+    float dy = other.y - y;
+    return std::sqrt(dx * dx + dy * dy);
   }
 
   float getX() { return x; }
