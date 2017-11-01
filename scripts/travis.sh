@@ -13,3 +13,4 @@ mkdir travis-build
 cd travis-build
 cmake -Dsanitize=On ..
 make -j2
+ctest -j2

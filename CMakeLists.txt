@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.7)
 project(mambo)
 
+enable_testing()
+
 find_package(SFML COMPONENTS graphics window system)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -60,3 +62,5 @@ target_link_libraries(argos_core ${SFML_LIBRARIES})
 
 add_executable(argos main.cpp)
 target_link_libraries(argos argos_core)
+
+add_subdirectory(unittests)
