@@ -1,0 +1,25 @@
+branches:
+  only:
+    - master
+
+language: c++
+
+compiler:
+  - gcc
+  - clang
+
+notifications:
+  email: false
+
+arch:
+  packages:
+    - cmake
+    - valgrind
+    - gcc
+    - sfml
+    - gtest
+  script:
+    - ./scripts/run_tests.sh $CC $CXX -j4
+
+script:
+  - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
