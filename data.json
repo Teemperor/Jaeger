@@ -61,6 +61,8 @@
 
         { "id" : "red_steel_helmet" , "offset" :  [476, 525], "size" : [16, 16] },
 
+        { "id" : "wood_spear" , "offset" :  [833, 527], "size" : [16, 16] },
+
         { "id" : "wood_buckler" , "offset" :  [561, 528], "size" : [16, 16] },
         { "id" : "steel_buckler" , "offset" :  [577, 543], "size" : [16, 16] },
 

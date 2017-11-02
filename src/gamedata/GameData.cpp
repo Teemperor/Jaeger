@@ -18,6 +18,8 @@ void GameData::parseItemData(const std::string &path) {
       kind = ItemData::Pants;
     else if (kindStr == "armor")
       kind = ItemData::Armor;
+    else if (kindStr == "weapon")
+      kind = ItemData::Weapon;
     else if (kindStr == "shield")
       kind = ItemData::Shield;
     else {
