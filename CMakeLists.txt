@@ -54,6 +54,10 @@ set(SOURCE_FILES
     src/level/Tile.h
     src/level/TileMap.cpp
     src/level/TileMap.h
+    src/level/World.h
+    src/level/World.cpp
+    src/level/WorldGen.h
+    src/level/WorldGen.cpp
     src/controls/PlayerControls.cpp
     src/controls/PlayerControls.h
     src/gamedata/ItemData.cpp

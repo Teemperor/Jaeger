@@ -10,6 +10,15 @@
 
     { "id" : "tree_green_lower", "group" : "tree", "passable" : false, "sprites" : ["tree_green_lower"]},
     { "id" : "tree_green_upper", "group" : "tree", "passable" : true, "sprites" : ["tree_green_upper"]},
+    { "id" : "tree_green_small", "group" : "tree", "passable" : false, "sprites" : ["tree_green_small"]},
+    { "id" : "pine_green_lower", "group" : "tree", "passable" : false, "sprites" : ["pine_green_lower"]},
+    { "id" : "pine_green_upper", "group" : "tree", "passable" : true, "sprites" : ["pine_green_upper"]},
+
+    { "id" : "tree_darkgreen_lower", "group" : "tree", "passable" : false, "sprites" : ["tree_darkgreen_lower"]},
+    { "id" : "tree_darkgreen_upper", "group" : "tree", "passable" : true, "sprites" : ["tree_darkgreen_upper"]},
+    { "id" : "tree_darkgreen_small", "group" : "tree", "passable" : false, "sprites" : ["tree_darkgreen_small"]},
+    { "id" : "pine_darkgreen_lower", "group" : "tree", "passable" : false, "sprites" : ["pine_darkgreen_lower"]},
+    { "id" : "pine_darkgreen_upper", "group" : "tree", "passable" : true, "sprites" : ["pine_darkgreen_upper"]},
 
     { "id" : "sand_wall_left", "group" : "building", "passable" : false, "sprites" : ["sand_wall_left"]},
     { "id" : "sand_wall_mid", "group" : "building", "passable" : false, "sprites" : ["sand_wall_mid"]},

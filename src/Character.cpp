@@ -148,10 +148,11 @@ void Character::AIAttack(Creature &C, GameObject &o, float dtime) {
     if (walkPath_.empty()) {
       PathFinder finder(getLevel());
       finder.findPath(getTilePos(), o.getTilePos(), walkPath_);
+    } else {
+      if (Vec2(walkPath_.back()).distance(getPos()) < 5)
+        walkPath_.pop_back();
+      walkToward(walkPath_.back(), dtime);
     }
-    if (Vec2(walkPath_.back()).distance(getPos()) < 5)
-      walkPath_.pop_back();
-    walkToward(walkPath_.back(), dtime);
   }
 }
 

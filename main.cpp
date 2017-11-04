@@ -8,6 +8,7 @@
 #include <iostream>
 #include <level/Level.h>
 #include <level/LevelGen.h>
+#include <level/WorldGen.h>
 #include <stdlib.h>
 #include <unordered_map>
 
@@ -25,22 +26,23 @@ int main() {
 
   GameData Data(".");
 
-  LevelGen gen;
+  WorldGen gen;
+  World* world = gen.generate(Data);
 
-  Level &level = *gen.generate(Data, 100, 100);
+  Level& level = *world->getLevels().front();
 
   std::vector<TilePos> result;
   PathFinder finder(level);
   finder.findPath({0, 0}, {3, 0}, result);
 
-  Character *player1 = new Character(level, Vec2(22, 32));
+  Character *player1 = new Character(level, Vec2(220, 320));
   level.add(player1);
 
-  Character *player2 = new Character(level, Vec2(22, 32));
-  // level.add(player2);
+  Character *player2 = new Character(level, Vec2(230, 320));
+  level.add(player2);
 
   for (int i = 0; i < 20; i++) {
-    Vec2 pos = Vec2(rand() % 700, rand() % 700);
+    Vec2 pos = Vec2(200 + rand() % 700, 200 + rand() % 700);
     if (level.passable(pos))
       level.add(new Character(level, pos));
   }

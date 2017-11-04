@@ -7,6 +7,8 @@
 #include <TilePos.h>
 #include <gamedata/GameData.h>
 
+class World;
+
 class Level {
 
   GameData &Data_;
@@ -16,17 +18,19 @@ class Level {
   TileMap<Tile> BuildingTiles;
   // Renders the objects
   TileMap<Tile> OverlayTiles;
-
-  size_t w;
-  size_t h;
+  World &world_;
 
 public:
-  Level(size_t w, size_t h, GameData &data) : Data_(data), w(w), h(h) {
-
-    FloorTiles = TileMap<Tile>(w, h);
-    BuildingTiles = TileMap<Tile>(w, h);
-    OverlayTiles = TileMap<Tile>(w, h);
-  }
+  enum class Type {
+    Overworld,
+    Cave,
+    House
+  };
+private:
+  Type type;
+  
+public:
+  Level(World& world, Type t, int w, int h, GameData &data);
 
   GameData &getData() { return Data_; }
 
@@ -54,9 +58,21 @@ public:
     return true;
   }
 
+  int getWidth() const {
+    return FloorTiles.width();
+  }
+
+  int getHeight() const {
+    return FloorTiles.height();
+  }
+
   Tile &get(int x, int y) { return FloorTiles.get(x, y); }
   Tile &getBuilding(int x, int y) { return BuildingTiles.get(x, y); }
   Tile &getOverlay(int x, int y) { return OverlayTiles.get(x, y); }
+
+  Type getType() const {
+    return type;
+  }
 
   unsigned timeMillis() { return static_cast<unsigned>(time * 1000); }
 

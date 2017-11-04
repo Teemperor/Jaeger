@@ -1,16 +1,29 @@
 #include "LevelGen.h"
 
-#include <random>
+#include "World.h"
 
 #include "stb_perlin.h"
 
-void LevelGen::make_tree(int x, int y) {
-  if (!level->getBuilding(x, y).empty())
-    return;
-  if (!level->getBuilding(x, y - 1).empty())
-    return;
-  level->getBuilding(x, y).setData(data->tile("tree_green_lower"));
-  level->getOverlay(x, y - 1).setData(data->tile("tree_green_upper"));
+void LevelGen::make_tree(int x, int y, bool force) {
+  if (!force) {
+    if (!level->getBuilding(x, y).empty())
+      return;
+  }
+  std::string isDark = "";
+  if (dis(gen) > 0.5f)
+    isDark = "dark";
+
+  if (dis(gen) > 0.1f) {
+    if (dis(gen) > 0.5f) {
+      level->getBuilding(x, y).setData(data->tile("tree_" + isDark + "green_lower"));
+      level->getOverlay(x, y - 1).setData(data->tile("tree_" + isDark + "green_upper"));
+    } else {
+      level->getBuilding(x, y).setData(data->tile("pine_" + isDark + "green_lower"));
+      level->getOverlay(x, y - 1).setData(data->tile("pine_" + isDark + "green_upper"));
+    }
+  } else {
+    level->getBuilding(x, y).setData(data->tile("tree_" + isDark + "green_small"));
+  }
 }
 
 void LevelGen::make_bush(int x, int y, float random) {
@@ -76,18 +89,23 @@ void LevelGen::overlay(int x, int y, std::string tileName) {
   level->getOverlay(x, y).setData(data->tile(tileName));
 }
 
-Level *LevelGen::generate(GameData &data, int w, int h) {
-  this->data = &data;
-  level = new Level(w, h, data);
+float LevelGen::getHeight(int x, int y) {
+  float w = level->getWidth();
+  float h = level->getHeight();
+  float result = 0.2f + stb_perlin_noise3(3 * x / w, 3 * y / h, 7);
+  if (result > 1)
+    return 1;
+  return result;
+}
 
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_real_distribution<float> dis(0, 1);
+void LevelGen::generate_overworld() {
+  const int w = level->getWidth();
+  const int h = level->getHeight();
+  GameData& data = level->getData();
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
-      float height = stb_perlin_noise3(3 * x / (float)w, 3 * y / (float)h, 7);
-      height += 0.2f;
+      float height = getHeight(x, y);
       if (height > 0) {
         level->get(x, y).setData(data.tile("grass"));
       } else {
@@ -100,8 +118,7 @@ Level *LevelGen::generate(GameData &data, int w, int h) {
     for (int y = 0; y < h; ++y) {
       float vegetation =
           stb_perlin_noise3(3 * x / (float)w, 42, 3 * y / (float)h);
-      float height = stb_perlin_noise3(3 * x / (float)w, 3 * y / (float)h, 7);
-      height += 0.2f;
+      float height = getHeight(x, y);
       if (height > 0) {
         if (vegetation > 0.3f && dis(gen) > 0.7f) {
           make_tree(x, y);
@@ -117,10 +134,50 @@ Level *LevelGen::generate(GameData &data, int w, int h) {
       }
     }
   }
+
+  int tree_border = 8;
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      float height = getHeight(x, y);
+
+      int coordX = x;
+      int coordY = y;
+      if (w - x < tree_border)
+        coordX = w - x;
+      if (h - y < tree_border)
+        coordY = h - y;
+      for (float coord : {coordX, coordY}) {
+        if (coordX > tree_border && coordY > tree_border)
+          continue;
+        float tree_chance = (tree_border - coord) / static_cast<float>(tree_border);
+        if (height >= 0) {
+          if (dis(gen) < tree_chance) {
+            make_tree(x, y, true);
+          }
+        }
+
+      }
+    }
+  }
+
   level->getBuilding(5, 5).setData(data.tile("fireplace"));
-  // level->finalize();
 
   make_house(8, 8, 6, 8, 3);
+}
+
+Level *LevelGen::generate(World& world, GameData &data, Level::Type type, int w, int h) {
+  this->data = &data;
+  level = new Level(world, type, w, h, data);
+  world.addLevel(level);
+
+  switch(type) {
+  case Level::Type::Overworld:
+    generate_overworld();
+    break;
+  default:
+    assert(false && "Not implemented level type for generation!");
+  }
 
   return level;
 }

@@ -22,6 +22,15 @@
 
         { "id" : "tree_green_lower" , "offset" : [221, 187], "size" : [16, 16] },
         { "id" : "tree_green_upper" , "offset" : [221, 170], "size" : [16, 16] },
+        { "id" : "tree_green_small" , "offset" : [221, 153], "size" : [16, 16] },
+        { "id" : "pine_green_upper" , "offset" : [272, 170], "size" : [16, 16] },
+        { "id" : "pine_green_lower" , "offset" : [272, 187], "size" : [16, 16] },
+
+        { "id" : "tree_darkgreen_lower" , "offset" : [255, 187], "size" : [16, 16] },
+        { "id" : "tree_darkgreen_upper" , "offset" : [255, 170], "size" : [16, 16] },
+        { "id" : "tree_darkgreen_small" , "offset" : [255, 153], "size" : [16, 16] },
+        { "id" : "pine_darkgreen_upper" , "offset" : [306, 170], "size" : [16, 16] },
+        { "id" : "pine_darkgreen_lower" , "offset" : [306, 187], "size" : [16, 16] },
 
         { "id" : "black_pants" , "offset" : [51, 526], "size" : [16, 16] },
         { "id" : "brown_pants" , "offset" : [51, 543], "size" : [16, 16] },
