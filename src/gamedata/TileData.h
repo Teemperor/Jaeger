@@ -9,11 +9,13 @@
 
 class TileData {
 
-  bool passable_ = false;
   std::vector<sf::Sprite> sprites_;
-  int animationTime_ = -1;
   std::string name_;
   std::string group_;
+  bool passable_ = false;
+  int animationTime_ = -1;
+
+  sf::Sprite noSprite;
 
 public:
   TileData(const std::string &name, std::string group, bool passable,

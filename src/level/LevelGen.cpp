@@ -92,7 +92,7 @@ void LevelGen::overlay(int x, int y, std::string tileName) {
 float LevelGen::getHeight(int x, int y) {
   float w = level->getWidth();
   float h = level->getHeight();
-  float result = 0.2f + stb_perlin_noise3(3 * x / w, 3 * y / h, 7);
+  float result = 0.1f + stb_perlin_noise3(15 * x / w, 15 * y / h, 7);
   if (result > 1)
     return 1;
   return result;
@@ -117,7 +117,7 @@ void LevelGen::generate_overworld() {
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
       float vegetation =
-          stb_perlin_noise3(3 * x / (float)w, 42, 3 * y / (float)h);
+          stb_perlin_noise3(12 * x / (float)w, 42, 12 * y / (float)h);
       float height = getHeight(x, y);
       if (height > 0) {
         if (vegetation > 0.3f && dis(gen) > 0.7f) {
@@ -163,7 +163,31 @@ void LevelGen::generate_overworld() {
 
   level->getBuilding(5, 5).setData(data.tile("fireplace"));
 
-  make_house(8, 8, 6, 8, 3);
+  make_house(28, 28, 6, 8, 3);
+}
+
+void LevelGen::generate_house() {
+  const int w = level->getWidth();
+  const int h = level->getHeight();
+  GameData& data = level->getData();
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      if (y == 0) {
+        level->get(x, y).setData(data.tile("sand_wall_mid"));
+        if (dis(gen) > 0.9f) {
+          level->getOverlay(x, y).setData(data.tile("brown_window_round"));
+        }
+      } else if (y == 1) {
+        level->get(x, y).setData(data.tile("sand_wall_lower_mid"));
+        if (dis(gen) > 0.7f) {
+          level->getOverlay(x, y).setData(data.tile("shelf"));
+        }
+      } else {
+        level->get(x, y).setData(data.tile("planks"));
+      }
+    }
+  }
 }
 
 Level *LevelGen::generate(World& world, GameData &data, Level::Type type, int w, int h) {
@@ -174,6 +198,9 @@ Level *LevelGen::generate(World& world, GameData &data, Level::Type type, int w,
   switch(type) {
   case Level::Type::Overworld:
     generate_overworld();
+    break;
+  case Level::Type::House:
+    generate_house();
     break;
   default:
     assert(false && "Not implemented level type for generation!");

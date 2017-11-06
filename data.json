@@ -32,6 +32,13 @@
         { "id" : "pine_darkgreen_upper" , "offset" : [306, 170], "size" : [16, 16] },
         { "id" : "pine_darkgreen_lower" , "offset" : [306, 187], "size" : [16, 16] },
 
+        { "id" : "planks1" , "offset" : [153, 34], "size" : [16, 16] },
+        { "id" : "planks2" , "offset" : [153, 51], "size" : [16, 16] },
+
+        { "id" : "shelf_small" , "offset" : [697, 204], "size" : [16, 16] },
+        { "id" : "shelf_medium" , "offset" : [714, 204], "size" : [16, 16] },
+        { "id" : "shelf_big" , "offset" : [731, 204], "size" : [16, 16] },
+
         { "id" : "black_pants" , "offset" : [51, 526], "size" : [16, 16] },
         { "id" : "brown_pants" , "offset" : [51, 543], "size" : [16, 16] },
         { "id" : "white_pants" , "offset" : [51, 560], "size" : [16, 16] },

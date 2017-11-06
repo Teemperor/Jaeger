@@ -19,7 +19,7 @@ protected:
 
 public:
   virtual ~GameObject();
-  virtual void update(float dtime) {}
+  virtual void update(float dtime);
   virtual void render(sf::RenderTarget &target) {}
   bool shouldBeRemoved() const { return ShouldBeRemoved_; }
 

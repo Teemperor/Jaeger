@@ -25,6 +25,8 @@ class LevelGen {
   std::uniform_real_distribution<float> dis;
 
   void generate_overworld();
+
+  void generate_house();
 public:
   struct Connection {
     TilePos pos;

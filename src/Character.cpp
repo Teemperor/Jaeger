@@ -132,6 +132,9 @@ void Character::update(float dtime) {
       break;
     }
   }
+
+  GameObject::update(dtime);
+
   talking_ = !isControlled();
   if (oldWalkingValue_ != walking_) {
     walkingStartTime_ = getLevel().getTime();

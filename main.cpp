@@ -29,19 +29,21 @@ int main() {
   WorldGen gen;
   World* world = gen.generate(Data);
 
-  Level& level = *world->getLevels().front();
+  Level& level = *world->getLevels().at(0);
 
   std::vector<TilePos> result;
   PathFinder finder(level);
   finder.findPath({0, 0}, {3, 0}, result);
 
-  Character *player1 = new Character(level, Vec2(220, 320));
+  Character *player1 = new Character(level, Vec2(42 * 16, 36 * 16));
   level.add(player1);
 
-  Character *player2 = new Character(level, Vec2(230, 320));
+  level.get(42, 38).setTeleportTarget(TilePos(44,44));
+
+  Character *player2 = new Character(level, Vec2(680, 580));
   level.add(player2);
 
-  for (int i = 0; i < 20; i++) {
+  for (int i = 0; i < 0; i++) {
     Vec2 pos = Vec2(200 + rand() % 700, 200 + rand() % 700);
     if (level.passable(pos))
       level.add(new Character(level, pos));
@@ -87,7 +89,7 @@ int main() {
     controls2.update();
 
     sf::Time elapsed = clock.restart();
-    level.update(elapsed.asSeconds());
+    world->update(elapsed.asSeconds());
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
       viewCenter.x = sf::Mouse::getPosition(Window).x;
@@ -105,7 +107,8 @@ int main() {
 
     // viewCenter += (playerPos - viewCenter) * 0.3f;
 
-    level.render(Window, viewCenter);
+    Level& currentLevel = player1->getLevel();
+    currentLevel.render(Window, viewCenter);
     Window.display();
   }
 

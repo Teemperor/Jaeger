@@ -1,6 +1,9 @@
 #include "TileData.h"
 
 const sf::Sprite &TileData::sprite(unsigned time, int x, int y) const {
+  if (sprites_.empty())
+    return noSprite;
+
   srand((unsigned int)(x + y));
 
   if (animationTime_ > 0) {

@@ -4,15 +4,20 @@
 #include <GameObject.h>
 #include <chrono>
 #include <gamedata/TileData.h>
+#include <level/TileExtraInfo.h>
 
 class Level;
 
 class Tile {
 
   TileData *Data = nullptr;
+  TileExtraInfo *Extra = nullptr;
+
+  TileExtraInfo &createExtraInfo();
 
 public:
   Tile() {}
+  Tile(TileData *Data) : Data(Data) {}
 
   const std::string &name() const {
     if (Data)
@@ -23,6 +28,9 @@ public:
     }
   }
 
+  void setTeleportTarget(const TilePos &target);
+  bool getTeleportTarget(TilePos &out) const;
+
   void setData(TileData *Data) { this->Data = Data; }
 
   bool passable() const {
@@ -31,7 +39,7 @@ public:
     return Data->passable();
   }
 
-  bool empty() const { return !Data; }
+  bool empty() const { return Data == nullptr; }
 
   void render(Level &level, sf::RenderTarget &target, int x, int y);
 };

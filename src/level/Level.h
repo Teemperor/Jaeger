@@ -58,6 +58,8 @@ public:
     return true;
   }
 
+  bool getTeleportTarget(TilePos p, TilePos& out);
+
   int getWidth() const {
     return FloorTiles.width();
   }
@@ -100,6 +102,12 @@ public:
   }
 
   void add(GameObject *o) { Objects.push_back(o); }
+
+  void remove(GameObject* o) {
+    auto it = std::find(Objects.begin(), Objects.end(), o);
+    assert(it != Objects.end());
+    Objects.erase(it);
+  }
 
   void render(sf::RenderTarget &target, sf::Vector2f center) {
     int ulx = (int)(target.getView().getCenter().x -

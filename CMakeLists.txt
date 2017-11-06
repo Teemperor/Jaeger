@@ -52,6 +52,8 @@ set(SOURCE_FILES
     src/level/Level.h
     src/level/Tile.cpp
     src/level/Tile.h
+    src/level/TileExtraInfo.cpp
+    src/level/TileExtraInfo.h
     src/level/TileMap.cpp
     src/level/TileMap.h
     src/level/World.h
