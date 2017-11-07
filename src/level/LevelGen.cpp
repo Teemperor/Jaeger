@@ -15,14 +15,19 @@ void LevelGen::make_tree(int x, int y, bool force) {
 
   if (dis(gen) > 0.1f) {
     if (dis(gen) > 0.5f) {
-      level->getBuilding(x, y).setData(data->tile("tree_" + isDark + "green_lower"));
-      level->getOverlay(x, y - 1).setData(data->tile("tree_" + isDark + "green_upper"));
+      level->getBuilding(x, y).setData(
+          data->tile("tree_" + isDark + "green_lower"));
+      level->getOverlay(x, y - 1).setData(
+          data->tile("tree_" + isDark + "green_upper"));
     } else {
-      level->getBuilding(x, y).setData(data->tile("pine_" + isDark + "green_lower"));
-      level->getOverlay(x, y - 1).setData(data->tile("pine_" + isDark + "green_upper"));
+      level->getBuilding(x, y).setData(
+          data->tile("pine_" + isDark + "green_lower"));
+      level->getOverlay(x, y - 1).setData(
+          data->tile("pine_" + isDark + "green_upper"));
     }
   } else {
-    level->getBuilding(x, y).setData(data->tile("tree_" + isDark + "green_small"));
+    level->getBuilding(x, y).setData(
+        data->tile("tree_" + isDark + "green_small"));
   }
 }
 
@@ -76,7 +81,8 @@ void LevelGen::make_house(int x, int y, int w, int h, int depth) {
   int doorX = x + (w - 1) / 2;
   int doorY = y + h - 1;
   build(doorX, doorY, "door_open");
-  openConnections.push_back({Level::Type::House, TilePos(*level, doorX, doorY)});
+  openConnections.push_back(
+      {Level::Type::House, TilePos(*level, doorX, doorY)});
   overlay(x, y + h - 1 - depth, "brown_roof_angular_left_lower");
   overlay(x + w - 1, y + h - 1 - depth, "brown_roof_angular_right_lower");
   overlay(x, y, "brown_roof_angular_left_upper");
@@ -105,7 +111,7 @@ float LevelGen::getHeight(int x, int y) {
 void LevelGen::generate_overworld() {
   const int w = level->getWidth();
   const int h = level->getHeight();
-  GameData& data = level->getData();
+  GameData &data = level->getData();
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -154,13 +160,13 @@ void LevelGen::generate_overworld() {
       for (float coord : {coordX, coordY}) {
         if (coordX > tree_border && coordY > tree_border)
           continue;
-        float tree_chance = (tree_border - coord) / static_cast<float>(tree_border);
+        float tree_chance =
+            (tree_border - coord) / static_cast<float>(tree_border);
         if (height >= 0) {
           if (dis(gen) < tree_chance) {
             make_tree(x, y, true);
           }
         }
-
       }
     }
   }
@@ -173,7 +179,7 @@ void LevelGen::generate_overworld() {
 void LevelGen::generate_house() {
   const int w = level->getWidth();
   const int h = level->getHeight();
-  GameData& data = level->getData();
+  GameData &data = level->getData();
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h - 1; ++y) {
@@ -194,15 +200,16 @@ void LevelGen::generate_house() {
   }
   int doorX = (w - 1) / 2;
   int doorY = h - 1;
-  openConnections.push_back({Level::Type::Overworld, TilePos(*level, doorX, doorY)});
+  openConnections.push_back(
+      {Level::Type::Overworld, TilePos(*level, doorX, doorY)});
   level->get(doorX, doorY).setData(data.tile("planks"));
   overlay(doorX, doorY, "door_light");
 }
 
-Level *LevelGen::generate(World& world, GameData &data, Level::Type type) {
+Level *LevelGen::generate(World &world, GameData &data, Level::Type type) {
   this->data = &data;
 
-  switch(type) {
+  switch (type) {
   case Level::Type::Overworld:
     level = new Level(world, type, 200, 200, data);
     generate_overworld();

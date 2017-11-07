@@ -30,9 +30,7 @@ public:
 
   Level &getLevel() { return *level_; }
 
-  void setLevel(Level *l) {
-    level_ = l;
-  }
+  void setLevel(Level *l) { level_ = l; }
 
   GameData &getGameData();
 

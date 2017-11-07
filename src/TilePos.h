@@ -9,7 +9,7 @@ class Level;
 
 class TilePos {
 
-  Level* level_ = nullptr;
+  Level *level_ = nullptr;
   int x = 0;
   int y = 0;
 
@@ -17,7 +17,7 @@ public:
   TilePos();
   TilePos(const Vec2 &v);
   TilePos(int x, int y) : x(x), y(y) {}
-  TilePos(Level& level, int x, int y) : level_(&level), x(x), y(y) {}
+  TilePos(Level &level, int x, int y) : level_(&level), x(x), y(y) {}
   TilePos(std::initializer_list<int> l) {
     std::size_t elements = 0;
     for (auto e : l) {
@@ -53,11 +53,9 @@ public:
     return *this;
   }
 
-  bool hasLevel() const {
-    return level_ != nullptr;
-  }
+  bool hasLevel() const { return level_ != nullptr; }
 
-  Level& getLevel() const {
+  Level &getLevel() const {
     assert(level_);
     return *level_;
   }

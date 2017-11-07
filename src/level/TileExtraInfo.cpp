@@ -1,6 +1,3 @@
 #include "TileExtraInfo.h"
 
-TileExtraInfo::TileExtraInfo()
-{
-
-}
+TileExtraInfo::TileExtraInfo() {}

@@ -14,7 +14,8 @@ template <typename T> class TileMap {
 
 public:
   TileMap() {}
-  TileMap(int w, int h, T defaultTile) : width_(w), height_(h), defaultTile(defaultTile) {
+  TileMap(int w, int h, T defaultTile)
+      : width_(w), height_(h), defaultTile(defaultTile) {
     tiles.resize(w * h);
   }
 

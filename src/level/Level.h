@@ -21,16 +21,13 @@ class Level {
   World &world_;
 
 public:
-  enum class Type {
-    Overworld,
-    Cave,
-    House
-  };
+  enum class Type { Overworld, Cave, House };
+
 private:
   Type type;
-  
+
 public:
-  Level(World& world, Type t, int w, int h, GameData &data);
+  Level(World &world, Type t, int w, int h, GameData &data);
 
   GameData &getData() { return Data_; }
 
@@ -58,27 +55,19 @@ public:
     return true;
   }
 
-  bool getTeleportTarget(TilePos p, TilePos& out);
+  bool getTeleportTarget(TilePos p, TilePos &out);
 
-  int getWidth() const {
-    return FloorTiles.width();
-  }
+  int getWidth() const { return FloorTiles.width(); }
 
-  int getHeight() const {
-    return FloorTiles.height();
-  }
+  int getHeight() const { return FloorTiles.height(); }
 
   Tile &get(int x, int y) { return FloorTiles.get(x, y); }
   Tile &getBuilding(int x, int y) { return BuildingTiles.get(x, y); }
   Tile &getOverlay(int x, int y) { return OverlayTiles.get(x, y); }
 
-  Type getType() const {
-    return type;
-  }
+  Type getType() const { return type; }
 
-  World& getWorld() {
-    return world_;
-  }
+  World &getWorld() { return world_; }
 
   unsigned timeMillis() { return static_cast<unsigned>(time * 1000); }
 
@@ -107,7 +96,7 @@ public:
 
   void add(GameObject *o) { Objects.push_back(o); }
 
-  void remove(GameObject* o) {
+  void remove(GameObject *o) {
     auto it = std::find(Objects.begin(), Objects.end(), o);
     assert(it != Objects.end());
     Objects.erase(it);

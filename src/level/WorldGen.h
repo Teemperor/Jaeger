@@ -7,7 +7,7 @@ class WorldGen {
 public:
   WorldGen();
 
-  World* generate(GameData &d);
+  World *generate(GameData &d);
 };
 
 #endif // WORLDGEN_H

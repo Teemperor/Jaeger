@@ -10,7 +10,7 @@ class World;
 class LevelGen {
   GameData *data;
   Level *level;
-  
+
   void make_tree(int x, int y, bool force = false);
   void make_bush(int x, int y, float random);
 
@@ -27,11 +27,13 @@ class LevelGen {
   void generate_overworld();
 
   void generate_house();
+
 public:
   struct Connection {
     Level::Type targetType;
     TilePos pos;
   };
+
 private:
   std::vector<Connection> openConnections;
 
@@ -40,7 +42,7 @@ public:
 
   Level *generate(World &world, GameData &data, Level::Type type);
 
-  const std::vector<Connection>& getOpenConnections() const {
+  const std::vector<Connection> &getOpenConnections() const {
     return openConnections;
   }
 };

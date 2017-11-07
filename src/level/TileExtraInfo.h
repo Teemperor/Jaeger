@@ -6,14 +6,13 @@
 class TileExtraInfo {
   bool teleports = false;
   TilePos teleportTarget;
+
 public:
   TileExtraInfo();
 
-  bool isTeleporting() const {
-    return teleports;
-  }
+  bool isTeleporting() const { return teleports; }
 
-  void setTeleportTarget(const TilePos& pos) {
+  void setTeleportTarget(const TilePos &pos) {
     teleportTarget = pos;
     teleports = true;
   }

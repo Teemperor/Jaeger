@@ -9,23 +9,20 @@ class GameObject;
 
 class World {
   std::vector<Level *> levels_;
-  GameData& data_;
-  std::vector<std::pair<GameObject*, TilePos> > ToTeleport;
+  GameData &data_;
+  std::vector<std::pair<GameObject *, TilePos>> ToTeleport;
+
 public:
-  World(GameData& d);
+  World(GameData &d);
   void update(float dtime);
 
-  void queryTeleport(GameObject* o, TilePos target) {
+  void queryTeleport(GameObject *o, TilePos target) {
     ToTeleport.push_back(std::make_pair(o, target));
   }
 
-  void addLevel(Level *level) {
-    levels_.push_back(level);
-  }
+  void addLevel(Level *level) { levels_.push_back(level); }
 
-  std::vector<Level*>& getLevels() {
-    return levels_;
-  }
+  std::vector<Level *> &getLevels() { return levels_; }
 };
 
 #endif // WORLD_H

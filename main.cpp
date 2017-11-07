@@ -27,14 +27,14 @@ int main() {
   GameData Data(".");
 
   WorldGen gen;
-  World* world = gen.generate(Data);
+  World *world = gen.generate(Data);
 
-  Level& level = *world->getLevels().at(0);
+  Level &level = *world->getLevels().at(0);
 
   Character *player1 = new Character(level, Vec2(45 * 16, 42 * 16));
   level.add(player1);
 
-  level.get(42, 38).setTeleportTarget(TilePos(44,44));
+  level.get(42, 38).setTeleportTarget(TilePos(44, 44));
 
   Character *player2 = new Character(level, Vec2(680, 580));
   level.add(player2);
@@ -103,7 +103,7 @@ int main() {
 
     // viewCenter += (playerPos - viewCenter) * 0.3f;
 
-    Level& currentLevel = player1->getLevel();
+    Level &currentLevel = player1->getLevel();
     currentLevel.render(Window, viewCenter);
     Window.display();
   }

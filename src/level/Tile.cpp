@@ -12,7 +12,7 @@ void Tile::setTeleportTarget(const TilePos &target) {
   createExtraInfo().setTeleportTarget(target);
 }
 
-bool Tile::getTeleportTarget(TilePos& out) const {
+bool Tile::getTeleportTarget(TilePos &out) const {
   if (Extra) {
     out = Extra->getTeleportTarget();
     return Extra->isTeleporting();

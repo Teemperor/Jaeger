@@ -1,7 +1,7 @@
 #include "Level.h"
 
-Level::Level(World &world, Level::Type t, int w, int h, GameData &data)\
-  : Data_(data), world_(world), type(t) {
+Level::Level(World &world, Level::Type t, int w, int h, GameData &data)
+    : Data_(data), world_(world), type(t) {
 
   Tile defaultTile(data.tile("void"));
   FloorTiles = TileMap<Tile>(w, h, defaultTile);
