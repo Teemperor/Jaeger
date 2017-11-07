@@ -152,6 +152,9 @@
         { "id" : "speech_bubble_coin", "offset" : [0, 597], "size" : [12, 10] },
 
         { "id" : "shadow", "offset" : [0, 622], "size" : [16, 5] },
+        { "id" : "shadow_medium", "tile" : [27, 42]},
+
+        { "id" : "big_eye", "tile" : [27, 41]},
 
         { "id" : "body_pale", "offset" : [0, 527] },
         { "id" : "body_pale_talking", "offset" : [17, 527] },
