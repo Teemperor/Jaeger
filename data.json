@@ -56,6 +56,7 @@
         { "id" : "sand_wall_lower_mid" , "offset" :  [221, 255], "size" : [16, 16] },
         { "id" : "sand_wall_lower_right" , "offset" :  [272, 255], "size" : [16, 16] },
 
+
         { "id" : "brown_roof_angular_left_lower" , "offset" :  [340, 391], "size" : [16, 16] },
         { "id" : "brown_roof_angular_left_mid" , "offset" :  [340, 374], "size" : [16, 16] },
         { "id" : "brown_roof_angular_left_upper" , "offset" :  [340, 357], "size" : [16, 16] },
@@ -72,6 +73,8 @@
         { "id" : "door1_open" , "offset" :  [629, 0], "size" : [16, 16] },
         { "id" : "door2_open" , "offset" :  [629, 0], "size" : [16, 16] },
         { "id" : "door3_open" , "offset" :  [629, 0], "size" : [16, 16] },
+
+        { "id" : "door_light" , "offset" :  [0, 627], "size" : [16, 16] },
 
         { "id" : "leather_armor" , "offset" :  [102, 594], "size" : [16, 16] },
 

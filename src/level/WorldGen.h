@@ -3,8 +3,7 @@
 
 #include "World.h"
 
-class WorldGen
-{
+class WorldGen {
 public:
   WorldGen();
 

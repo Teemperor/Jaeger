@@ -38,6 +38,9 @@
     { "id" : "brown_roof_mid" ,  "group" : "building", "passable" : false, "sprites" : ["brown_roof_mid"]},
     { "id" : "brown_roof_down" ,  "group" : "building", "passable" : false, "sprites" : ["brown_roof_down"]},
 
+    { "id" : "door_open" , "group" : "building", "passable" : true, "sprites" : ["door1_open", "door2_open", "door3_open"]},
+    { "id" : "door_light" , "group" : "building", "passable" : true, "sprites" : ["door_light"]},
+
     { "id" : "brown_window_round" ,  "group" : "building", "passable" : false, "sprites" : ["brown_window1", "brown_window2", "brown_window3", "brown_window4", "brown_window5"]},
 
     { "id" : "brown_roof_angular_left_lower", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_left_lower"]},

@@ -29,8 +29,8 @@ class LevelGen {
   void generate_house();
 public:
   struct Connection {
-    TilePos pos;
     Level::Type targetType;
+    TilePos pos;
   };
 private:
   std::vector<Connection> openConnections;
@@ -38,7 +38,11 @@ private:
 public:
   LevelGen() : gen(rd()), dis(0, 1) {}
 
-  Level *generate(World &world, GameData &data, Level::Type type, int w, int h);
+  Level *generate(World &world, GameData &data, Level::Type type);
+
+  const std::vector<Connection>& getOpenConnections() const {
+    return openConnections;
+  }
 };
 
 #endif // ARGOS_LEVELGEN_H

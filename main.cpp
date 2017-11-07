@@ -31,11 +31,7 @@ int main() {
 
   Level& level = *world->getLevels().at(0);
 
-  std::vector<TilePos> result;
-  PathFinder finder(level);
-  finder.findPath({0, 0}, {3, 0}, result);
-
-  Character *player1 = new Character(level, Vec2(42 * 16, 36 * 16));
+  Character *player1 = new Character(level, Vec2(45 * 16, 42 * 16));
   level.add(player1);
 
   level.get(42, 38).setTeleportTarget(TilePos(44,44));

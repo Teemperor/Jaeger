@@ -5,15 +5,18 @@
 
 #include <vector>
 
+class GameObject;
+
 class World {
   std::vector<Level *> levels_;
   GameData& data_;
+  std::vector<std::pair<GameObject*, TilePos> > ToTeleport;
 public:
   World(GameData& d);
-  void update(float dtime) {
-    for(auto level : levels_) {
-      level->update(dtime);
-    }
+  void update(float dtime);
+
+  void queryTeleport(GameObject* o, TilePos target) {
+    ToTeleport.push_back(std::make_pair(o, target));
   }
 
   void addLevel(Level *level) {

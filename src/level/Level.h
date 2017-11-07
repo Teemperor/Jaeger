@@ -39,9 +39,9 @@ public:
   bool passable(TilePos pos) {
     int x = pos.getX();
     int y = pos.getY();
-    if (!get(x, y).passable())
-      return false;
     if (!getBuilding(x, y).passable())
+      return false;
+    if (!get(x, y).passable())
       return false;
     return true;
   }
@@ -74,6 +74,10 @@ public:
 
   Type getType() const {
     return type;
+  }
+
+  World& getWorld() {
+    return world_;
   }
 
   unsigned timeMillis() { return static_cast<unsigned>(time * 1000); }

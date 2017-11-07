@@ -8,15 +8,16 @@ class Vec2;
 class Level;
 
 class TilePos {
+
+  Level* level_ = nullptr;
   int x = 0;
   int y = 0;
-  Level* level_ = nullptr;
 
 public:
   TilePos();
   TilePos(const Vec2 &v);
   TilePos(int x, int y) : x(x), y(y) {}
-  TilePos(Level& level, int x, int y) : x(x), y(y), level_(&level) {}
+  TilePos(Level& level, int x, int y) : level_(&level), x(x), y(y) {}
   TilePos(std::initializer_list<int> l) {
     std::size_t elements = 0;
     for (auto e : l) {
@@ -34,8 +35,8 @@ public:
     }
   }
 
-  int getX() { return x; }
-  int getY() { return y; }
+  int getX() const { return x; }
+  int getY() const { return y; }
   TilePos modX(int d) {
     x += d;
     return *this;

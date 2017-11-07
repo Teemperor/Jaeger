@@ -1,6 +1,7 @@
 #include "GameObject.h"
 
 #include "level/Level.h"
+#include "level/World.h"
 
 GameObject::~GameObject() {}
 
@@ -9,10 +10,10 @@ void GameObject::update(float dtime) {
   TilePos teleportTarget;
   if (getLevel().getTeleportTarget(currentPos, teleportTarget)) {
     if (teleportTarget.hasLevel()) {
-      getLevel().remove(this);
-      teleportTarget.getLevel().add(this);
+      level_->getWorld().queryTeleport(this, teleportTarget);
+    } else {
+      setPos(Vec2(teleportTarget));
     }
-    setPos(Vec2(teleportTarget));
   }
 }
 

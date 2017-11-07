@@ -73,6 +73,10 @@ void LevelGen::make_house(int x, int y, int w, int h, int depth) {
       }
     }
   }
+  int doorX = x + (w - 1) / 2;
+  int doorY = y + h - 1;
+  build(doorX, doorY, "door_open");
+  openConnections.push_back({Level::Type::House, TilePos(*level, doorX, doorY)});
   overlay(x, y + h - 1 - depth, "brown_roof_angular_left_lower");
   overlay(x + w - 1, y + h - 1 - depth, "brown_roof_angular_right_lower");
   overlay(x, y, "brown_roof_angular_left_upper");
@@ -163,7 +167,7 @@ void LevelGen::generate_overworld() {
 
   level->getBuilding(5, 5).setData(data.tile("fireplace"));
 
-  make_house(28, 28, 6, 8, 3);
+  make_house(48, 38, 6, 8, 3);
 }
 
 void LevelGen::generate_house() {
@@ -172,7 +176,7 @@ void LevelGen::generate_house() {
   GameData& data = level->getData();
 
   for (int x = 0; x < w; ++x) {
-    for (int y = 0; y < h; ++y) {
+    for (int y = 0; y < h - 1; ++y) {
       if (y == 0) {
         level->get(x, y).setData(data.tile("sand_wall_mid"));
         if (dis(gen) > 0.9f) {
@@ -188,23 +192,29 @@ void LevelGen::generate_house() {
       }
     }
   }
+  int doorX = (w - 1) / 2;
+  int doorY = h - 1;
+  openConnections.push_back({Level::Type::Overworld, TilePos(*level, doorX, doorY)});
+  level->get(doorX, doorY).setData(data.tile("planks"));
+  overlay(doorX, doorY, "door_light");
 }
 
-Level *LevelGen::generate(World& world, GameData &data, Level::Type type, int w, int h) {
+Level *LevelGen::generate(World& world, GameData &data, Level::Type type) {
   this->data = &data;
-  level = new Level(world, type, w, h, data);
-  world.addLevel(level);
 
   switch(type) {
   case Level::Type::Overworld:
+    level = new Level(world, type, 200, 200, data);
     generate_overworld();
     break;
   case Level::Type::House:
+    level = new Level(world, type, 10, 10, data);
     generate_house();
     break;
   default:
     assert(false && "Not implemented level type for generation!");
   }
+  world.addLevel(level);
 
   return level;
 }
