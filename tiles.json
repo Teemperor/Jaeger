@@ -5,6 +5,8 @@
     { "id" : "grass", "group" : "grass", "passable" : true, "sprites" : ["grass1", "grass2"]},
     { "id" : "fireplace", "animation" : 250, "passable" : false, "sprites" : ["fireplace1", "fireplace2"]},
 
+    { "id" : "fireplace_inside", "animation" : 250, "passable" : false, "sprites" : ["fireplace_inside1", "fireplace_inside2"]},
+
     { "id" : "clock", "animation" : 450, "passable" : false, "sprites" : ["clock_mid", "clock_left", "clock_mid", "clock_right"]},
 
     { "id" : "water_c", "group" : "water", "passable" : false, "animation" : 700, "sprites" : ["water_c1", "water_c2"]},
@@ -20,6 +22,8 @@
     { "id" : "water_inner_up_right" , "group" : "water", "passable" : false  },
     { "id" : "water_inner_down_left" , "group" : "water", "passable" : false  },
     { "id" : "water_inner_down_right" , "group" : "water", "passable" : false  },
+
+    { "id" : "water_rock", "group" : "water", "passable" : false, "sprites" : ["water_rock_brown1", "water_rock_brown2", "water_rock_brown3", "water_rock_grey1", "water_rock_grey2", "water_rock_grey3"]},
 
     { "id" : "shelf", "passable" : false, "sprites" : ["shelf_small", "shelf_medium", "shelf_big"]},
 

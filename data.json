@@ -8,6 +8,8 @@
         { "id" : "fireplace1" , "offset" : [238, 136] },
         { "id" : "fireplace2" , "offset" : [255, 136] },
 
+        { "id" : "fireplace_inside1" , "tile" : [13, 0] },
+        { "id" : "fireplace_inside2" , "tile" : [14, 0] },
 
         { "id" : "gravestone1" , "offset" : [867, 153] },
         { "id" : "gravestone2" , "offset" : [884, 153] },
@@ -45,6 +47,26 @@
         { "id" : "water_inner_up_right" , "tile" : [1, 1] },
         { "id" : "water_inner_down_left" , "tile" : [0, 2] },
         { "id" : "water_inner_down_right" , "tile" : [1, 2] },
+
+        { "id" : "water_rock_brown1" , "tile" : [54, 23] },
+        { "id" : "water_rock_brown2" , "tile" : [55, 23] },
+        { "id" : "water_rock_brown3" , "tile" : [56, 23] },
+        { "id" : "water_rock_grey1" , "tile" : [54, 24] },
+        { "id" : "water_rock_grey2" , "tile" : [55, 24] },
+        { "id" : "water_rock_grey3" , "tile" : [56, 24] },
+
+        { "id" : "rock_brown1" , "tile" : [54, 19] },
+        { "id" : "rock_brown2" , "tile" : [55, 19] },
+        { "id" : "rock_brown3" , "tile" : [56, 19] },
+        { "id" : "rock_brown_moss1" , "tile" : [54, 20] },
+        { "id" : "rock_brown_moss2" , "tile" : [55, 20] },
+        { "id" : "rock_brown_moss3" , "tile" : [56, 20] },
+        { "id" : "rock_grey1" , "tile" : [54, 21] },
+        { "id" : "rock_grey2" , "tile" : [55, 21] },
+        { "id" : "rock_grey3" , "tile" : [56, 21] },
+        { "id" : "rock_grey_moss1" , "tile" : [54, 22] },
+        { "id" : "rock_grey_moss2" , "tile" : [55, 22] },
+        { "id" : "rock_grey_moss3" , "tile" : [56, 22] },
 
         { "id" : "bridge_up" , "tile" : [56, 6] },
         { "id" : "bridge_mid" , "tile" : [56, 7] },

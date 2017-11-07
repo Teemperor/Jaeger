@@ -125,7 +125,10 @@ void LevelGen::generate_overworld() {
       if (height > 0) {
         level->get(x, y).setData(data.tile("grass"));
       } else {
-        level->get(x, y).setData(data.tile("water_c"));
+        if (dis(gen) > 0.01f)
+          level->get(x, y).setData(data.tile("water_c"));
+        else
+          floor(x, y, "water_rock");
       }
     }
   }
@@ -240,6 +243,7 @@ void LevelGen::generate_house() {
   }
 
   build((w-1)/2, 0, "clock");
+  build((w-1)/2, 1, "fireplace_inside");
   int doorX = (w - 1) / 2;
   int doorY = h - 1;
   openConnections.push_back(
