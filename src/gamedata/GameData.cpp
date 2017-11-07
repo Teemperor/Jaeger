@@ -76,9 +76,13 @@ void GameData::parseTileData(const std::string &path) {
 
     Tiles[id] = new TileData(id, group, passable, animationTime);
 
-    auto sprites = tile["sprites"];
-    for (auto sprite : sprites)
-      Tiles[id]->addSprite(getSprite(sprite));
+    if (tile.find("sprites") != tile.end()) {
+        auto sprites = tile["sprites"];
+        for (auto sprite : sprites)
+          Tiles[id]->addSprite(getSprite(sprite));
+    } else {
+        Tiles[id]->addSprite(getSprite(id));
+    }
   }
 }
 

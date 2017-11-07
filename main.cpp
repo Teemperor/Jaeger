@@ -34,8 +34,6 @@ int main() {
   Character *player1 = new Character(level, Vec2(45 * 16, 42 * 16));
   level.add(player1);
 
-  level.get(42, 38).setTeleportTarget(TilePos(44, 44));
-
   Character *player2 = new Character(level, Vec2(680, 580));
   level.add(player2);
 

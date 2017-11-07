@@ -53,7 +53,7 @@ void LevelGen::make_house(int x, int y, int w, int h, int depth) {
       } else if (ix == x + w - 1) {
         build(ix, iy, "sand_wall_right");
       } else if (iy == y + h - 1) {
-        build(ix, iy, "sand_wall_lower_mid");
+        floor(ix, iy, "sand_wall_lower_mid");
       } else {
         build(ix, iy, "sand_wall_mid");
       }
@@ -73,22 +73,28 @@ void LevelGen::make_house(int x, int y, int w, int h, int depth) {
       } else if (iy > y + h - depth - 1 && iy < y + h - 1 && ix > x &&
                  ix < x + w - 1 && ix % 2 == 0 && iy % 2 == 0) {
         if (dis(gen) > 0.0f) {
-          overlay(ix, iy, "brown_window");
+          overlay(ix, iy, "brown_window_round");
         }
       }
     }
   }
   int doorX = x + (w - 1) / 2;
   int doorY = y + h - 1;
+  floor(doorX, doorY, "sand_wall_lower_mid_free");
   build(doorX, doorY, "door_open");
   openConnections.push_back(
       {Level::Type::House, TilePos(*level, doorX, doorY)});
+
   overlay(x, y + h - 1 - depth, "brown_roof_angular_left_lower");
   overlay(x + w - 1, y + h - 1 - depth, "brown_roof_angular_right_lower");
   overlay(x, y, "brown_roof_angular_left_upper");
   overlay(x + w - 1, y, "brown_roof_angular_right_upper");
   build(x, y + h - 1, "sand_wall_lower_left");
   build(x + w - 1, y + h - 1, "sand_wall_lower_right");
+}
+
+void LevelGen::floor(int x, int y, std::string tileName) {
+  level->get(x, y).setData(data->tile(tileName));
 }
 
 void LevelGen::build(int x, int y, std::string tileName) {
@@ -123,6 +129,40 @@ void LevelGen::generate_overworld() {
       }
     }
   }
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      if (level->get(x, y).group() == "water") {
+        if(hasSurrounding(x, y, "water", {CMP_A,CMP_D,CMP_A,CMP_S,CMP_S,CMP_A,CMP_S,CMP_A}))
+          floor(x, y, "water_outer_up");
+        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_S,CMP_S,CMP_A,CMP_D,CMP_A}))
+          floor(x, y, "water_outer_down");
+        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_D,CMP_S,CMP_A,CMP_S,CMP_A}))
+          floor(x, y, "water_outer_left");
+        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_S,CMP_D,CMP_A,CMP_S,CMP_A}))
+          floor(x, y, "water_outer_right");
+
+        if(hasSurrounding(x, y, "water", {CMP_A,CMP_D,CMP_A,CMP_D,CMP_S,CMP_A,CMP_S,CMP_A}))
+          floor(x, y, "water_outer_up_left");
+        if(hasSurrounding(x, y, "water", {CMP_A,CMP_D,CMP_A,CMP_S,CMP_D,CMP_A,CMP_S,CMP_A}))
+          floor(x, y, "water_outer_up_right");
+        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_D,CMP_S,CMP_A,CMP_D,CMP_A}))
+          floor(x, y, "water_outer_down_left");
+        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_S,CMP_D,CMP_A,CMP_D,CMP_A}))
+          floor(x, y, "water_outer_down_right");
+
+        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_S,CMP_S,CMP_A,CMP_S,CMP_D}))
+          floor(x, y, "water_inner_up_left");
+        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_S,CMP_S,CMP_D,CMP_S,CMP_S}))
+          floor(x, y, "water_inner_up_right");
+        if(hasSurrounding(x, y, "water", {CMP_D,CMP_S,CMP_A,CMP_S,CMP_S,CMP_A,CMP_S,CMP_S}))
+          floor(x, y, "water_inner_down_right");
+        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_D,CMP_S,CMP_S,CMP_A,CMP_S,CMP_S}))
+          floor(x, y, "water_inner_down_left");
+      }
+    }
+  }
+
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -186,24 +226,56 @@ void LevelGen::generate_house() {
       if (y == 0) {
         level->get(x, y).setData(data.tile("sand_wall_mid"));
         if (dis(gen) > 0.9f) {
-          level->getOverlay(x, y).setData(data.tile("brown_window_round"));
+          build(x, y, "brown_window_round");
         }
       } else if (y == 1) {
         level->get(x, y).setData(data.tile("sand_wall_lower_mid"));
         if (dis(gen) > 0.7f) {
-          level->getOverlay(x, y).setData(data.tile("shelf"));
+          build(x, y, "shelf");
         }
       } else {
         level->get(x, y).setData(data.tile("planks"));
       }
     }
   }
+
+  build((w-1)/2, 0, "clock");
   int doorX = (w - 1) / 2;
   int doorY = h - 1;
   openConnections.push_back(
       {Level::Type::Overworld, TilePos(*level, doorX, doorY)});
   level->get(doorX, doorY).setData(data.tile("planks"));
   overlay(doorX, doorY, "door_light");
+}
+
+bool LevelGen::hasSurrounding(int x, int y, const std::string &group, std::array<LevelGen::TileCompare, 8> surrounding) {
+  std::vector<std::pair<int, int> > offsets = {
+    {-1, -1},
+    { 0, -1},
+    { 1, -1},
+    {-1,  0},
+    { 1,  0},
+    {-1,  1},
+    { 0,  1},
+    { 1,  1}
+  };
+  for (unsigned int i = 0; i < offsets.size(); i++) {
+    auto off = offsets[i];
+    bool same = level->get(x + off.first, y + off.second).group() == group;
+    switch(surrounding.at(i)) {
+    case TileCompare::CMP_S:
+      if (!same)
+        return false;
+      break;
+    case TileCompare::CMP_D:
+      if (same)
+        return false;
+      break;
+    case TileCompare::CMP_A:
+      break;
+    }
+  }
+  return true;
 }
 
 Level *LevelGen::generate(World &world, GameData &data, Level::Type type) {

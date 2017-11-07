@@ -28,6 +28,15 @@ public:
     }
   }
 
+  const std::string &group() const {
+    if (Data)
+      return Data->group();
+    else {
+      static std::string noGroup;
+      return noGroup;
+    }
+  }
+
   void setTeleportTarget(const TilePos &target);
   bool getTeleportTarget(TilePos &out) const;
 

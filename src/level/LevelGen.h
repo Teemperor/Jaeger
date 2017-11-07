@@ -16,6 +16,7 @@ class LevelGen {
 
   void make_house(int x, int y, int w, int h, int depth);
 
+  void floor(int x, int y, std::string tileName);
   void build(int x, int y, std::string tileName);
   void overlay(int x, int y, std::string tileName);
 
@@ -28,6 +29,12 @@ class LevelGen {
 
   void generate_house();
 
+  enum TileCompare {
+    CMP_S, // Same group
+    CMP_D, // DIfferent group
+    CMP_A // all groups
+  };
+  bool hasSurrounding(int x, int y, const std::string &group, std::array<TileCompare, 8> surrounding);
 public:
   struct Connection {
     Level::Type targetType;

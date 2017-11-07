@@ -27,10 +27,21 @@ public:
     for (auto tex : data["textures"]) {
 
       sf::Sprite sprite(texture);
-      int x = tex["offset"][0];
-      int y = tex["offset"][1];
-      int wx = tex["size"][0];
-      int wy = tex["size"][1];
+      int x,y;
+      if (tex.find("offset") != tex.end()) {
+        x = tex["offset"][0];
+        y = tex["offset"][1];
+      } else {
+        x = tex["tile"][0];
+        y = tex["tile"][1];
+        x *= 17;
+        y *= 17;
+      }
+      int wx = 16, wy = 16;
+      if (tex.find("size") != tex.end()) {
+        wx = tex["size"][0];
+        wy = tex["size"][1];
+      }
       sprite.setTextureRect({x, y, wx, wy});
       sprite.setScale({1.01f, 1.01f});
 
