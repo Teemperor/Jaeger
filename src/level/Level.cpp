@@ -20,3 +20,45 @@ bool Level::getTeleportTarget(TilePos p, TilePos &out) {
     return true;
   return false;
 }
+
+void Level::render(sf::RenderTarget &target, sf::Vector2f center) {
+  int ulx = (int)(target.getView().getCenter().x -
+                  target.getView().getSize().x / 2) /
+      16;
+  int uly = (int)(target.getView().getCenter().y -
+                  target.getView().getSize().y / 2) /
+      16;
+
+  int brx = (int)(target.getView().getCenter().x +
+                  target.getView().getSize().x / 2) /
+      16;
+  int bry = (int)(target.getView().getCenter().y +
+                  target.getView().getSize().y / 2) /
+      16;
+
+  brx = clampWidth(brx);
+  ulx = clampWidth(ulx);
+  bry = clampHeight(bry);
+  uly = clampHeight(uly);
+
+  for (int x = ulx; x <= brx + 1; x++) {
+    for (int y = uly; y <= bry + 1; y++) {
+      FloorTiles.get(x, y).render(*this, target, x, y);
+    }
+  }
+
+  for (int x = ulx; x <= brx + 1; x++) {
+    for (int y = uly; y <= bry + 1; y++) {
+      BuildingTiles.get(x, y).render(*this, target, x, y);
+    }
+  }
+
+  for (GameObject *o : Objects)
+    o->render(target);
+
+  for (int x = ulx; x <= brx + 1; x++) {
+    for (int y = uly; y <= bry + 1; y++) {
+      OverlayTiles.get(x, y).render(*this, target, x, y);
+    }
+  }
+}

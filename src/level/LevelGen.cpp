@@ -119,6 +119,8 @@ void LevelGen::generate_overworld() {
   const int h = level->getHeight();
   GameData &data = level->getData();
 
+  const int tree_border = 8;
+
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
       float height = getHeight(x, y);
@@ -131,6 +133,10 @@ void LevelGen::generate_overworld() {
           floor(x, y, "water_rock");
       }
     }
+  }
+  for(int i = 0; i < tree_border; i++) {
+    build(49, i, "placeholder");
+    build(50, i, "placeholder");
   }
 
   for (int x = 0; x < w; ++x) {
@@ -188,7 +194,6 @@ void LevelGen::generate_overworld() {
     }
   }
 
-  int tree_border = 8;
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -207,7 +212,7 @@ void LevelGen::generate_overworld() {
             (tree_border - coord) / static_cast<float>(tree_border);
         if (height >= 0) {
           if (dis(gen) < tree_chance) {
-            make_tree(x, y, true);
+            make_tree(x, y);
           }
         }
       }

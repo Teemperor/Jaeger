@@ -26,6 +26,22 @@ public:
 private:
   Type type;
 
+  int clampWidth(int x) {
+    if (x < 0)
+      return 0;
+    if (x >= getWidth())
+      return getWidth() - 1;
+    return x;
+  }
+
+  int clampHeight(int x) {
+    if (x < 0)
+      return 0;
+    if (x >= getHeight())
+      return getHeight() - 1;
+    return x;
+  }
+
 public:
   Level(World &world, Type t, int w, int h, GameData &data);
 
@@ -102,42 +118,7 @@ public:
     Objects.erase(it);
   }
 
-  void render(sf::RenderTarget &target, sf::Vector2f center) {
-    int ulx = (int)(target.getView().getCenter().x -
-                    target.getView().getSize().x / 2) /
-              16;
-    int uly = (int)(target.getView().getCenter().y -
-                    target.getView().getSize().y / 2) /
-              16;
-
-    int brx = (int)(target.getView().getCenter().x +
-                    target.getView().getSize().x / 2) /
-              16;
-    int bry = (int)(target.getView().getCenter().y +
-                    target.getView().getSize().y / 2) /
-              16;
-
-    for (int x = ulx; x <= brx + 1; x++) {
-      for (int y = uly; y <= bry + 1; y++) {
-        FloorTiles.get(x, y).render(*this, target, x, y);
-      }
-    }
-
-    for (int x = ulx; x <= brx + 1; x++) {
-      for (int y = uly; y <= bry + 1; y++) {
-        BuildingTiles.get(x, y).render(*this, target, x, y);
-      }
-    }
-
-    for (GameObject *o : Objects)
-      o->render(target);
-
-    for (int x = ulx; x <= brx + 1; x++) {
-      for (int y = uly; y <= bry + 1; y++) {
-        OverlayTiles.get(x, y).render(*this, target, x, y);
-      }
-    }
-  }
+  void render(sf::RenderTarget &target, sf::Vector2f center);
 };
 
 #endif // ARGOS_LEVEL_H
