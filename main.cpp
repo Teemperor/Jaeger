@@ -104,6 +104,9 @@ int main() {
     Level &currentLevel = player1->getLevel();
     currentLevel.render(Window, viewCenter);
     Window.display();
+
+    //FPS:
+    // std::cout << elapsed.asMilliseconds() << std::endl;
   }
 
   return 0;
