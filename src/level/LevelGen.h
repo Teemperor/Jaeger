@@ -3,6 +3,7 @@
 
 #include "Level.h"
 
+#include <Perlin2D.h>
 #include <random>
 
 class World;
@@ -20,8 +21,11 @@ class LevelGen {
   void build(int x, int y, std::string tileName);
   void overlay(int x, int y, std::string tileName);
 
+  Perlin2D heightPerlin;
+  Perlin2D woodPerlin;
+
   float getHeight(int x, int y);
-  std::random_device rd;
+  float getVegetation(int x, int y);
   std::mt19937 gen;
   std::uniform_real_distribution<float> dis;
 
@@ -45,7 +49,7 @@ private:
   std::vector<Connection> openConnections;
 
 public:
-  LevelGen() : gen(rd()), dis(0, 1) {}
+  LevelGen(unsigned seed = 44);
 
   Level *generate(World &world, GameData &data, Level::Type type);
 

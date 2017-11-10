@@ -76,6 +76,7 @@ set(SOURCE_FILES
     src/Item.cpp
     src/stlastar.h
     src/fsa.h
+    src/Perlin2D.h
     src/PathFinder.h
     src/PathFinder.cpp
     src/Faction.h

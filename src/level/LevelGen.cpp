@@ -43,11 +43,6 @@ void LevelGen::make_bush(int x, int y, float random) {
 }
 
 void LevelGen::make_house(int x, int y, int w, int h, int depth) {
-
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_real_distribution<float> dis(0, 1);
-
   for (int ix = x; ix < x + w; ix++) {
     for (int iy = y + 1; iy < y + h; iy++) {
       if (ix == x) {
@@ -108,17 +103,33 @@ void LevelGen::overlay(int x, int y, std::string tileName) {
 }
 
 float LevelGen::getHeight(int x, int y) {
-  float w = level->getWidth();
-  float h = level->getHeight();
-  float result = 0.1f + stb_perlin_noise3(15 * x / w, 15 * y / h, 7);
+  float result = heightPerlin.get(x, y);
+
+  // Coast:
+  //result += 0.5f;
+  //result += - 1.5f * (x / (float) level->getWidth() * 0.8f);
+
+  /* Archipelago:
+  Vec2 mid(level->getWidth()/2, level->getHeight()/2);
+  float dist = mid.distance(Vec2(x, y));
+  dist /= level->getWidth() / 2;
+  result *= (1 - dist);
+
+  result -= 0.1f; */
+
+  result += 0.3f;
   if (result > 1)
     return 1;
   return result;
 }
 
+float LevelGen::getVegetation(int x, int y) {
+  return woodPerlin.get(x, y);
+}
+
 namespace {
-  struct WaterSpace {
-    std::set<TilePos> contents;
+struct WaterSpace {
+  std::set<TilePos> contents;
     bool contains(TilePos& p) {
       return contents.find(p) != contents.end();
     }
@@ -196,8 +207,7 @@ void LevelGen::generate_overworld() {
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
-      float vegetation =
-          stb_perlin_noise3(12 * x / (float)w, 42, 12 * y / (float)h);
+      float vegetation = getVegetation(x, y);
       float height = getHeight(x, y);
       if (height > 0) {
         if (vegetation > 0.3f && dis(gen) > 0.7f) {
@@ -307,6 +317,9 @@ bool LevelGen::hasSurrounding(int x, int y, const std::string &group, std::array
   }
   return true;
 }
+
+LevelGen::LevelGen(unsigned seed) : heightPerlin(seed, 0.07),
+  woodPerlin(seed * 55, 0.03), gen(seed), dis(0, 1) {}
 
 Level *LevelGen::generate(World &world, GameData &data, Level::Type type) {
   this->data = &data;

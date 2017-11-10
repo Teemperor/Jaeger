@@ -35,7 +35,7 @@ int main() {
 
   Character *player1 = new Character(level, Vec2(45 * 16, 42 * 16));
 
-  Character *player2 = new Character(level, Vec2(680, 580));
+  Character *player2 = new Character(level, Vec2(680, 680));
 
   for (int i = 0; i < 2; i++) {
     Vec2 pos = Vec2(200 + rand() % 700, 200 + rand() % 700);

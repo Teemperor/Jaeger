@@ -11,6 +11,7 @@ const sf::Sprite &TileData::sprite(unsigned time, int x, int y) const {
     time %= totalTime;
     return sprites_.at(time / animationTime_);
   } else {
-    return sprites_.at((rand()) % sprites_.size());
+
+    return sprites_.at((x + y) % sprites_.size());
   }
 }
