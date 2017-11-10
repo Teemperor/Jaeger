@@ -15,7 +15,7 @@ class GameObject {
 
 protected:
   bool ShouldBeRemoved_ = false;
-  GameObject(Level &l) : level_(&l) {}
+  GameObject(Level &l);
 
 public:
   virtual ~GameObject();
@@ -26,6 +26,9 @@ public:
   Vec2 getPos() const { return pos; }
   TilePos getTilePos() const {
     return TilePos(pos.getX() / 16, pos.getY() / 16);
+  }
+
+  virtual void damage(int dmg) {
   }
 
   Level &getLevel() { return *level_; }

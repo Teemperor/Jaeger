@@ -34,10 +34,14 @@ include_directories(src)
 set(SOURCE_FILES
     src/GameObject.cpp
     src/GameObject.h
+    src/combat/Projectile.h
+    src/combat/Projectile.cpp
     src/gamedata/GameData.cpp
     src/gamedata/GameData.h
     src/gamedata/TileData.cpp
     src/gamedata/TileData.h
+    src/gamedata/ProjectileData.cpp
+    src/gamedata/ProjectileData.h
     src/Logger.cpp
     src/Logger.h
     src/Character.cpp

@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <initializer_list>
+#include <tuple>
 
 class Vec2;
 class Level;
@@ -51,6 +52,10 @@ public:
     x += xd;
     y += yd;
     return *this;
+  }
+
+  bool operator<(const TilePos& o) const {
+    return std::tie(x, y, level_) < std::tie(o.x, o.y, o.level_);
   }
 
   bool hasLevel() const { return level_ != nullptr; }

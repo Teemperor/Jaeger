@@ -6,7 +6,8 @@
     { "id" : "desert_pants", "kind" : "pants", "sprite" : "sand_pants"},
     { "id" : "leather_armor", "kind" : "armor", "sprite" : "leather_armor"},
     { "id" : "red_steel_helmet", "kind" : "helmet", "sprite" : "red_steel_helmet"},
-    { "id" : "wood_spear", "kind" : "weapon", "sprite" : "wood_spear"},
+    { "id" : "wood_bow", "kind" : "weapon", "sprite" : "wood_bow", "cooldown" : 0.8, "projectile" : "wood_arrow"},
+    { "id" : "wood_spear", "kind" : "weapon", "sprite" : "wood_spear", "cooldown" : 0.8},
     { "id" : "steel_buckler", "kind" : "shield", "sprite" : "steel_buckler"},
     { "id" : "wood_buckler", "kind" : "shield", "sprite" : "wood_buckler"}
   ]

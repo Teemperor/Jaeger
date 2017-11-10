@@ -34,7 +34,14 @@ void GameData::parseItemData(const std::string &path) {
       attack = item["attack"];
     }
     Items[id]->setAttack(attack);
-    int value = 0;
+
+    float cooldown = 0;
+    if (item.find("cooldown") != item.end()) {
+      cooldown = item["cooldown"];
+    }
+    Items[id]->setCooldown(cooldown);
+
+    int value = 1;
     if (item.find("value") != item.end()) {
       value = item["value"];
     }
@@ -45,8 +52,30 @@ void GameData::parseItemData(const std::string &path) {
     }
     Items[id]->setArmor(armor);
 
+
+    std::string projectile;
+    if (item.find("projectile") != item.end()) {
+      projectile = item["projectile"];
+    }
+    Items[id]->setProjectileName(projectile);
+
     auto sprite = item["sprite"];
     Items[id]->setSprite(getSprite(sprite));
+  }
+}
+
+void GameData::parseProjectileData(const std::string &path) {
+  nlohmann::json data;
+
+  std::ifstream infile(path);
+
+  infile >> data;
+
+  for (auto proj : data["projectiles"]) {
+    std::string id = proj["id"];
+
+    sf::Sprite sprite = getSprite(proj["sprite"]);
+    Projectiles[id] = new ProjectileData(sprite);
   }
 }
 
@@ -104,9 +133,15 @@ void GameData::parseMetaFile(const std::string &path) {
     } else if (fileType == "items") {
       mainLogger << "Loading item set " << filePath << mainLogger;
       parseItemData(filePath);
+    } else if (fileType == "projectiles") {
+      mainLogger << "Loading projectile set " << filePath << mainLogger;
+      parseProjectileData(filePath);
     } else {
       mainLogger << "Unknown file type in meta file " << path
                  << "/meta.dat: " << mainLogger;
     }
+  }
+  for(auto& i : Items) {
+    i.second->init(*this);
   }
 }

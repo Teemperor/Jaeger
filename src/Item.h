@@ -3,8 +3,12 @@
 
 #include "gamedata/ItemData.h"
 
+class Level;
+
 class Item {
   ItemData *Data_ = nullptr;
+
+  double nextAvailable = 0;
 
 public:
   Item(ItemData &Data);
@@ -12,9 +16,23 @@ public:
 
   bool empty() const { return Data_ == nullptr; }
 
-  sf::Sprite &sprite() { return Data_->sprite(); }
+  bool available(Level& level);
+
+  bool tryUse(Level& level);
+
+  const sf::Sprite &sprite() { return Data_->sprite(); }
 
   ItemData::Kind kind() const { return Data_->kind(); }
+
+  double getCooldown() const { return Data_->getCooldown(); }
+
+  bool hasProjectiles() const {
+    if (empty())
+        return false;
+    return getProjectileData();
+  }
+
+  const ProjectileData* getProjectileData() const { return Data_->getProjectileData(); }
 
   int armor() const { return Data_->armor(); }
 

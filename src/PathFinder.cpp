@@ -167,17 +167,17 @@ void PathFinder::findPath(TilePos start, TilePos end,
     }
     std::reverse(result.begin(), result.end());
 
-    cout << "Solution steps " << steps << endl;
+    //cout << "Solution steps " << steps << endl;
 
     // Once you're done with the solution you can free the nodes up
     astarsearch.FreeSolutionNodes();
 
   } else if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED) {
-    cout << "Search terminated. Did not find goal state\n";
+    //cout << "Search terminated. Did not find goal state\n";
   }
 
   // Display the number of loops the search went through
-  cout << "SearchSteps : " << SearchSteps << "\n";
-
+  //cout << "SearchSteps : " << SearchSteps << "\n";
+//
   astarsearch.EnsureMemoryFreed();
 }

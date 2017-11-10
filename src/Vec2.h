@@ -55,6 +55,21 @@ public:
     y += yd;
     return *this;
   }
+  Vec2 mod(const Vec2 &o) {
+    x += o.x;
+    y += o.y;
+    return *this;
+  }
+
+  Vec2 operator-(const Vec2& other) const {
+    return Vec2(x - other.x, y - other.y);
+  }
+  Vec2 operator+(const Vec2& other) const {
+    return Vec2(x + other.x, y + other.y);
+  }
+  Vec2 operator*(float f) const {
+    return Vec2(x * f, y * f);
+  }
 };
 
 #endif // VEC2_H

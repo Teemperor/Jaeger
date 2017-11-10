@@ -19,8 +19,8 @@ public:
 
   void setBodyType(BodyType t);
 
-  virtual void render(sf::RenderTarget &target) override;
-  virtual void update(float dtime) override;
+  void render(sf::RenderTarget &target) override;
+  void update(float dtime) override;
 
   void equipItem(const Item &i);
 
@@ -33,10 +33,14 @@ private:
 
   void walkToward(Vec2 pos, float dtime);
 
+  void damage(int dmg) override {
+    reduceHealth(dmg);
+  }
+
   void setWalking(bool v);
   static constexpr float walkSpeed = 45;
   BodyType BodyType_ = BodyType::Pale;
-  sf::Sprite sprite_, talkingSprite_, bubbleSprite_, shadow_, gravestone_;
+  sf::Sprite sprite_, talkingSprite_, bubbleSprite_, shadow_, gravestone_, selection_;
   bool talking_ = false;
   bool walking_ = false;
   bool oldWalkingValue_ = false;

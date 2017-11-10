@@ -17,8 +17,10 @@ int main() {
 
   srand(2);
 
+
   /** Prepare the window */
-  sf::RenderWindow Window(sf::VideoMode(1024, 768, 32), "Test");
+  sf::RenderWindow Window(sf::VideoMode::getDesktopMode(), "Test");
+
   Window.setFramerateLimit(60);
 
   sf::View view = Window.getView();
@@ -32,15 +34,13 @@ int main() {
   Level &level = *world->getLevels().at(0);
 
   Character *player1 = new Character(level, Vec2(45 * 16, 42 * 16));
-  level.add(player1);
 
   Character *player2 = new Character(level, Vec2(680, 580));
-  level.add(player2);
 
-  for (int i = 0; i < 0; i++) {
+  for (int i = 0; i < 2; i++) {
     Vec2 pos = Vec2(200 + rand() % 700, 200 + rand() % 700);
     if (level.passable(pos))
-      level.add(new Character(level, pos));
+      new Character(level, pos);
   }
 
   sf::Vector2f viewCenter;

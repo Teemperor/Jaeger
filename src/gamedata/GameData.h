@@ -2,6 +2,7 @@
 #define ARGOS_GAMEDATA_H
 
 #include "ItemData.h"
+#include "ProjectileData.h"
 #include "TextureAtlas.h"
 #include "TileData.h"
 #include <Logger.h>
@@ -15,8 +16,10 @@ class GameData {
   std::vector<TextureAtlas *> TextureAtlas_;
   std::unordered_map<std::string, TileData *> Tiles;
   std::unordered_map<std::string, ItemData *> Items;
+  std::unordered_map<std::string, ProjectileData *> Projectiles;
 
   void parseItemData(const std::string &path);
+  void parseProjectileData(const std::string &path);
 
   void parseTileData(const std::string &path);
 
@@ -51,6 +54,14 @@ public:
   ItemData *item(const std::string &id) {
     auto I = Items.find(id);
     if (I != Items.end())
+      return I->second;
+    std::cerr << "couldn't find " << id << std::endl;
+    return nullptr;
+  }
+
+  ProjectileData *projectile(const std::string &id) {
+    auto I = Projectiles.find(id);
+    if (I != Projectiles.end())
       return I->second;
     std::cerr << "couldn't find " << id << std::endl;
     return nullptr;

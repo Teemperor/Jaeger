@@ -3,11 +3,15 @@
 
 #include "level/Level.h"
 
+#include <combat/Projectile.h>
+
 Character::Character(Level &level, Vec2 pos, BodyType type)
     : GameObject(level) {
   setBodyType(type);
   bubbleSprite_ = getGameData().getSprite("speech_bubble_exclamation");
   shadow_ = getGameData().getSprite("shadow");
+  selection_ = getGameData().getSprite("selection");
+  selection_.setScale(1.5f, 1.5f);
   gravestone_ =
       getGameData().getSprite("gravestone" + std::to_string(rand() % 9 + 1));
   setPos(pos);
@@ -17,7 +21,7 @@ Character::Character(Level &level, Vec2 pos, BodyType type)
   equipItem(Item(*level.getData().item("leather_armor")));
   equipItem(Item(*level.getData().item("steel_buckler")));
   equipItem(Item(*level.getData().item("red_steel_helmet")));
-  equipItem(Item(*level.getData().item("wood_spear")));
+  equipItem(Item(*level.getData().item("wood_bow")));
 }
 
 void Character::setBodyType(Character::BodyType t) {
@@ -45,6 +49,7 @@ void Character::render(sf::RenderTarget &target) {
 
   ///////////////////////////////
   // Debug mode for PATHS
+#if false
   if (!isDead()) {
     std::vector<sf::Vertex> line;
     for (int i = 0; i < (int)walkPath_.size() - 1; i++) {
@@ -57,6 +62,7 @@ void Character::render(sf::RenderTarget &target) {
     }
     target.draw(line.data(), line.size(), sf::Lines);
   }
+#endif
   ///////////////////////////////
 
   bool shouldUseTalkingSprite = false;
@@ -70,8 +76,20 @@ void Character::render(sf::RenderTarget &target) {
       shouldHaveSpeechBubble = true;
     }
   }
+
   shadow_.setPosition(this->getPos().getX() - 8, this->getPos().getY() - 2);
   target.draw(shadow_);
+
+  if (isControlled()) {
+    int alpha = (int)(std::abs(std::sin(getLevel().getTime() * 2)) *
+                       100) + 50;
+
+    sf::Color c(255, 0, 0, alpha);
+    selection_.setColor(c);
+    selection_.setPosition(this->getPos().getX() - 12, this->getPos().getY() - 12);
+    target.draw(selection_);
+  }
+
 
   int offset = 0;
   if (walking_) {
@@ -93,7 +111,7 @@ void Character::render(sf::RenderTarget &target) {
   for (unsigned layer = 0; layer < equipped_.size(); layer++) {
     Item &i = equipped_.at(layer);
     if (!i.empty()) {
-      sf::Sprite &f = i.sprite();
+      sf::Sprite f = i.sprite();
       f.setPosition(this->getPos().getX() - 8,
                     this->getPos().getY() - 16 - offset);
       target.draw(f);
@@ -145,8 +163,12 @@ void Character::update(float dtime) {
 void Character::equipItem(const Item &i) { equipped_[i.kind()] = i; }
 
 void Character::AIAttack(Creature &C, GameObject &o, float dtime) {
-  if (getPos().distance(o.getPos()) < 16) {
-    C.damage(20);
+  if (getPos().distance(o.getPos()) < 80) {
+    //C.damage(20);
+    walkPath_.clear();
+    Item& weapon = equipped_[ItemData::Weapon];
+    if (weapon.tryUse(getLevel()) && weapon.hasProjectiles())
+      new Projectile(*weapon.getProjectileData(), getLevel(), getPos(), o);
   } else {
     if (walkPath_.empty()) {
       PathFinder finder(getLevel());

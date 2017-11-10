@@ -1,3 +1,4 @@
 texatlas data
 tiles tiles.json
 items items.json
+projectiles projectiles.json

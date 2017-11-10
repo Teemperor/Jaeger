@@ -3,6 +3,10 @@
 #include "level/Level.h"
 #include "level/World.h"
 
+GameObject::GameObject(Level &l) : level_(&l) {
+  l.add(this);
+}
+
 GameObject::~GameObject() {}
 
 void GameObject::update(float dtime) {

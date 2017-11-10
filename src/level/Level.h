@@ -13,12 +13,25 @@ class Level {
 
   GameData &Data_;
   std::vector<GameObject *> Objects;
+  std::vector<GameObject *> NewObjects;
 
   TileMap<Tile> FloorTiles;
   TileMap<Tile> BuildingTiles;
   // Renders the objects
   TileMap<Tile> OverlayTiles;
   World &world_;
+
+  bool updating = false;
+
+  struct UpdateGuard {
+    bool& flag;
+    UpdateGuard(bool& flag) : flag(flag) {
+      flag = true;
+    }
+    ~UpdateGuard() {
+      flag = false;
+    }
+  };
 
 public:
   enum class Type { Overworld, Cave, House };
@@ -88,6 +101,7 @@ public:
   unsigned timeMillis() { return static_cast<unsigned>(time * 1000); }
 
   void update(float dtime) {
+    UpdateGuard guard(updating);
     time += dtime;
     for (auto I = Objects.begin(); I != Objects.end();) {
       (*I)->update(dtime);
@@ -98,6 +112,9 @@ public:
         ++I;
       }
     }
+    for(auto& o : NewObjects)
+      Objects.push_back(o);
+    NewObjects.clear();
   }
 
   std::vector<GameObject *> &getObjects() { return Objects; }
@@ -110,7 +127,12 @@ public:
     return (timeInt % i) / 1000.0;
   }
 
-  void add(GameObject *o) { Objects.push_back(o); }
+  void add(GameObject *o) {
+    if (!updating)
+      Objects.push_back(o);
+    else
+      NewObjects.push_back(o);
+  }
 
   void remove(GameObject *o) {
     auto it = std::find(Objects.begin(), Objects.end(), o);

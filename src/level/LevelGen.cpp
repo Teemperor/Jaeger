@@ -2,6 +2,8 @@
 
 #include "World.h"
 
+#include <set>
+
 #include "stb_perlin.h"
 
 void LevelGen::make_tree(int x, int y, bool force) {
@@ -114,6 +116,15 @@ float LevelGen::getHeight(int x, int y) {
   return result;
 }
 
+namespace {
+  struct WaterSpace {
+    std::set<TilePos> contents;
+    bool contains(TilePos& p) {
+      return contents.find(p) != contents.end();
+    }
+  };
+}
+
 void LevelGen::generate_overworld() {
   const int w = level->getWidth();
   const int h = level->getHeight();
@@ -121,12 +132,22 @@ void LevelGen::generate_overworld() {
 
   const int tree_border = 8;
 
+  TileMap<int> water(w, h, 0);
+
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
       float height = getHeight(x, y);
       if (height > 0) {
         level->get(x, y).setData(data.tile("grass"));
       } else {
+        water.get(x, y) = 1;
+      }
+    }
+  }
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      if (water.get(x, y)) {
         if (dis(gen) > 0.01f)
           level->get(x, y).setData(data.tile("water_c"));
         else
