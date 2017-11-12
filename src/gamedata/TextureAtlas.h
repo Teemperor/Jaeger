@@ -27,7 +27,7 @@ public:
     for (auto tex : data["textures"]) {
 
       sf::Sprite sprite(texture);
-      int x,y;
+      int x, y;
       if (tex.find("offset") != tex.end()) {
         x = tex["offset"][0];
         y = tex["offset"][1];

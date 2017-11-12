@@ -43,16 +43,15 @@ public:
   float getXInput() { return moveX; }
   float getYInput() { return moveY; }
 
-  GameObject* getTarget() {
-    return target;
-  }
+  GameObject *getTarget() { return target; }
 
   bool isShooting() const;
 
-  void setPossibleTargets(const std::vector<GameObject *>& targets) {
+  void setPossibleTargets(const std::vector<GameObject *> &targets) {
     this->possibleTargets = targets;
     if (target) {
-      if (std::find(possibleTargets.begin(), possibleTargets.end(), target) == possibleTargets.end()) {
+      if (std::find(possibleTargets.begin(), possibleTargets.end(), target) ==
+          possibleTargets.end()) {
         target = nullptr;
       }
     } else {

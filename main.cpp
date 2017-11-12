@@ -18,7 +18,6 @@ int main() {
 
   srand(2);
 
-
   /** Prepare the window */
   sf::RenderWindow Window(sf::VideoMode::getDesktopMode(), "Test");
 
@@ -109,7 +108,7 @@ int main() {
     gui2.draw(Window);
 
     Window.display();
-    //FPS:
+    // FPS:
     // std::cout << elapsed.asMilliseconds() << std::endl;
   }
 

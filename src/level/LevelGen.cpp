@@ -106,8 +106,8 @@ float LevelGen::getHeight(int x, int y) {
   float result = heightPerlin.get(x, y);
 
   // Coast:
-  //result += 0.5f;
-  //result += - 1.5f * (x / (float) level->getWidth() * 0.8f);
+  // result += 0.5f;
+  // result += - 1.5f * (x / (float) level->getWidth() * 0.8f);
 
   /* Archipelago:
   Vec2 mid(level->getWidth()/2, level->getHeight()/2);
@@ -123,18 +123,14 @@ float LevelGen::getHeight(int x, int y) {
   return result;
 }
 
-float LevelGen::getVegetation(int x, int y) {
-  return woodPerlin.get(x, y);
-}
+float LevelGen::getVegetation(int x, int y) { return woodPerlin.get(x, y); }
 
 namespace {
 struct WaterSpace {
   std::set<TilePos> contents;
-    bool contains(TilePos& p) {
-      return contents.find(p) != contents.end();
-    }
-  };
-}
+  bool contains(TilePos &p) { return contents.find(p) != contents.end(); }
+};
+} // namespace
 
 void LevelGen::generate_overworld() {
   const int w = level->getWidth();
@@ -166,7 +162,7 @@ void LevelGen::generate_overworld() {
       }
     }
   }
-  for(int i = 0; i < tree_border; i++) {
+  for (int i = 0; i < tree_border; i++) {
     build(49, i, "placeholder");
     build(50, i, "placeholder");
   }
@@ -174,36 +170,59 @@ void LevelGen::generate_overworld() {
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
       if (level->get(x, y).group() == "water") {
-        if(hasSurrounding(x, y, "water", {CMP_A,CMP_D,CMP_A,CMP_S,CMP_S,CMP_A,CMP_S,CMP_A}))
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_D, CMP_A, CMP_S, CMP_S, CMP_A, CMP_S, CMP_A}))
           floor(x, y, "water_outer_up");
-        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_S,CMP_S,CMP_A,CMP_D,CMP_A}))
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_S, CMP_A, CMP_S, CMP_S, CMP_A, CMP_D, CMP_A}))
           floor(x, y, "water_outer_down");
-        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_D,CMP_S,CMP_A,CMP_S,CMP_A}))
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_S, CMP_A, CMP_D, CMP_S, CMP_A, CMP_S, CMP_A}))
           floor(x, y, "water_outer_left");
-        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_S,CMP_D,CMP_A,CMP_S,CMP_A}))
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_S, CMP_A, CMP_S, CMP_D, CMP_A, CMP_S, CMP_A}))
           floor(x, y, "water_outer_right");
 
-        if(hasSurrounding(x, y, "water", {CMP_A,CMP_D,CMP_A,CMP_D,CMP_S,CMP_A,CMP_S,CMP_A}))
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_D, CMP_A, CMP_D, CMP_S, CMP_A, CMP_S, CMP_A}))
           floor(x, y, "water_outer_up_left");
-        if(hasSurrounding(x, y, "water", {CMP_A,CMP_D,CMP_A,CMP_S,CMP_D,CMP_A,CMP_S,CMP_A}))
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_D, CMP_A, CMP_S, CMP_D, CMP_A, CMP_S, CMP_A}))
           floor(x, y, "water_outer_up_right");
-        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_D,CMP_S,CMP_A,CMP_D,CMP_A}))
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_S, CMP_A, CMP_D, CMP_S, CMP_A, CMP_D, CMP_A}))
           floor(x, y, "water_outer_down_left");
-        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_S,CMP_D,CMP_A,CMP_D,CMP_A}))
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_S, CMP_A, CMP_S, CMP_D, CMP_A, CMP_D, CMP_A}))
           floor(x, y, "water_outer_down_right");
 
-        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_S,CMP_S,CMP_A,CMP_S,CMP_D}))
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_S, CMP_A, CMP_S, CMP_S, CMP_A, CMP_S, CMP_D}))
           floor(x, y, "water_inner_up_left");
-        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_A,CMP_S,CMP_S,CMP_D,CMP_S,CMP_S}))
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_S, CMP_A, CMP_S, CMP_S, CMP_D, CMP_S, CMP_S}))
           floor(x, y, "water_inner_up_right");
-        if(hasSurrounding(x, y, "water", {CMP_D,CMP_S,CMP_A,CMP_S,CMP_S,CMP_A,CMP_S,CMP_S}))
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_D, CMP_S, CMP_A, CMP_S, CMP_S, CMP_A, CMP_S, CMP_S}))
           floor(x, y, "water_inner_down_right");
-        if(hasSurrounding(x, y, "water", {CMP_A,CMP_S,CMP_D,CMP_S,CMP_S,CMP_A,CMP_S,CMP_S}))
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_S, CMP_D, CMP_S, CMP_S, CMP_A, CMP_S, CMP_S}))
           floor(x, y, "water_inner_down_left");
       }
     }
   }
-
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -224,7 +243,6 @@ void LevelGen::generate_overworld() {
       }
     }
   }
-
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -278,8 +296,8 @@ void LevelGen::generate_house() {
     }
   }
 
-  build((w-1)/2, 0, "clock");
-  build((w-1)/2, 1, "fireplace_inside");
+  build((w - 1) / 2, 0, "clock");
+  build((w - 1) / 2, 1, "fireplace_inside");
   int doorX = (w - 1) / 2;
   int doorY = h - 1;
   openConnections.push_back(
@@ -288,21 +306,15 @@ void LevelGen::generate_house() {
   overlay(doorX, doorY, "door_light");
 }
 
-bool LevelGen::hasSurrounding(int x, int y, const std::string &group, std::array<LevelGen::TileCompare, 8> surrounding) {
-  std::vector<std::pair<int, int> > offsets = {
-    {-1, -1},
-    { 0, -1},
-    { 1, -1},
-    {-1,  0},
-    { 1,  0},
-    {-1,  1},
-    { 0,  1},
-    { 1,  1}
-  };
+bool LevelGen::hasSurrounding(
+    int x, int y, const std::string &group,
+    std::array<LevelGen::TileCompare, 8> surrounding) {
+  std::vector<std::pair<int, int>> offsets = {
+      {-1, -1}, {0, -1}, {1, -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1}, {1, 1}};
   for (unsigned int i = 0; i < offsets.size(); i++) {
     auto off = offsets[i];
     bool same = level->get(x + off.first, y + off.second).group() == group;
-    switch(surrounding.at(i)) {
+    switch (surrounding.at(i)) {
     case TileCompare::CMP_S:
       if (!same)
         return false;
@@ -318,8 +330,9 @@ bool LevelGen::hasSurrounding(int x, int y, const std::string &group, std::array
   return true;
 }
 
-LevelGen::LevelGen(unsigned seed) : heightPerlin(seed, 0.07),
-  woodPerlin(seed * 55, 0.03), gen(seed), dis(0, 1) {}
+LevelGen::LevelGen(unsigned seed)
+    : heightPerlin(seed, 0.07), woodPerlin(seed * 55, 0.03), gen(seed),
+      dis(0, 1) {}
 
 Level *LevelGen::generate(World &world, GameData &data, Level::Type type) {
   this->data = &data;

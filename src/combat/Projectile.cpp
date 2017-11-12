@@ -2,9 +2,9 @@
 
 #include "gamedata/ProjectileData.h"
 
-Projectile::Projectile(const ProjectileData &data, Level &level, Vec2 startPos, GameObject &target)
-  : GameObject(level), target(&target), data(&data)
-{
+Projectile::Projectile(const ProjectileData &data, Level &level, Vec2 startPos,
+                       GameObject &target)
+    : GameObject(level), target(&target), data(&data) {
   assert(&data && "No data supplied?");
   assert(&target && "No target supplied?");
   setPos(startPos);

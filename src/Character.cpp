@@ -21,7 +21,7 @@ Character::Character(Level &level, Vec2 pos, BodyType type)
   equipItem(Item(*level.getData().item("leather_armor")));
   equipItem(Item(*level.getData().item("steel_buckler")));
   equipItem(Item(*level.getData().item("red_steel_helmet")));
-  if(rand() % 2)
+  if (rand() % 2)
     equipItem(Item(*level.getData().item("wood_bow")));
   else
     equipItem(Item(*level.getData().item("magic_staff")));
@@ -50,8 +50,8 @@ void Character::setBodyType(Character::BodyType t) {
 
 void Character::render(sf::RenderTarget &target) {
 
-  ///////////////////////////////
-  // Debug mode for PATHS
+///////////////////////////////
+// Debug mode for PATHS
 #if false
   if (!isDead()) {
     std::vector<sf::Vertex> line;
@@ -84,15 +84,14 @@ void Character::render(sf::RenderTarget &target) {
   target.draw(shadow_);
 
   if (isControlled()) {
-    int alpha = (int)(std::abs(std::sin(getLevel().getTime() * 2)) *
-                       100) + 50;
+    int alpha = (int)(std::abs(std::sin(getLevel().getTime() * 2)) * 100) + 50;
 
     sf::Color c(255, 0, 0, alpha);
     selection_.setColor(c);
-    selection_.setPosition(this->getPos().getX() - 12, this->getPos().getY() - 12);
+    selection_.setPosition(this->getPos().getX() - 12,
+                           this->getPos().getY() - 12);
     target.draw(selection_);
   }
-
 
   int offset = 0;
   if (walking_) {
@@ -128,19 +127,16 @@ void Character::render(sf::RenderTarget &target) {
 }
 
 namespace {
-struct closest_object
-{
+struct closest_object {
   GameObject *target;
-  closest_object(GameObject *target) : target(target) {
-  }
+  closest_object(GameObject *target) : target(target) {}
 
-  inline bool operator() (const GameObject* a, const GameObject* b)
-  {
-      return a->getPos().distance(target->getPos()) < b->getPos().distance(target->getPos());
+  inline bool operator()(const GameObject *a, const GameObject *b) {
+    return a->getPos().distance(target->getPos()) <
+           b->getPos().distance(target->getPos());
   }
 };
-}
-
+} // namespace
 
 void Character::update(float dtime) {
   if (isDead()) {
@@ -168,10 +164,10 @@ void Character::update(float dtime) {
           dtime);
     setWalking(walking);
 
-
     std::vector<GameObject *> PossibleTargets;
-    for (auto& e : ClosestEnemies) {
-      if (e->getPos().distance(getPos()) < equipped_[ItemData::Weapon].getRange()) {
+    for (auto &e : ClosestEnemies) {
+      if (e->getPos().distance(getPos()) <
+          equipped_[ItemData::Weapon].getRange()) {
         PossibleTargets.push_back(e);
       }
     }
@@ -201,7 +197,7 @@ void Character::equipItem(const Item &i) { equipped_[i.kind()] = i; }
 
 void Character::AIAttack(Creature &C, GameObject &o, float dtime) {
   if (getPos().distance(o.getPos()) < 80) {
-    //C.damage(20);
+    // C.damage(20);
     walkPath_.clear();
     tryShootAt(o);
   } else {
@@ -234,8 +230,8 @@ void Character::walkToward(Vec2 pos, float dtime) {
   setPos(getPos().mod(dx, dy));
 }
 
-void Character::tryShootAt(GameObject& o) {
-  Item& weapon = equipped_[ItemData::Weapon];
+void Character::tryShootAt(GameObject &o) {
+  Item &weapon = equipped_[ItemData::Weapon];
   if (weapon.empty())
     return;
   if (getPos().distance(o.getPos()) < weapon.getRange()) {

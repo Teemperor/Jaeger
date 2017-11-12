@@ -13,11 +13,11 @@ class Projectile : public GameObject {
   float rotation = 0;
 
 public:
-  Projectile(const ProjectileData& data, Level& level, Vec2 startPos, GameObject &target);
+  Projectile(const ProjectileData &data, Level &level, Vec2 startPos,
+             GameObject &target);
 
   void update(float dtime) override;
   void render(sf::RenderTarget &target) override;
-
 };
 
 #endif // PROJECTILE_H

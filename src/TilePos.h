@@ -54,7 +54,7 @@ public:
     return *this;
   }
 
-  bool operator<(const TilePos& o) const {
+  bool operator<(const TilePos &o) const {
     return std::tie(x, y, level_) < std::tie(o.x, o.y, o.level_);
   }
 

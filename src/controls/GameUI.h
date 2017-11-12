@@ -11,13 +11,11 @@ class GameUI {
   PlayerControls controls;
 
 public:
-  GameUI(GameData& Data, unsigned PlayerNumber);
+  GameUI(GameData &Data, unsigned PlayerNumber);
 
-  PlayerControls& getControls() {
-    return controls;
-  }
+  PlayerControls &getControls() { return controls; }
 
-  void draw(sf::RenderTarget& target);
+  void draw(sf::RenderTarget &target);
 };
 
 #endif // GAMEUI_H

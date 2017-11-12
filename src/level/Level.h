@@ -24,13 +24,9 @@ class Level {
   bool updating = false;
 
   struct UpdateGuard {
-    bool& flag;
-    UpdateGuard(bool& flag) : flag(flag) {
-      flag = true;
-    }
-    ~UpdateGuard() {
-      flag = false;
-    }
+    bool &flag;
+    UpdateGuard(bool &flag) : flag(flag) { flag = true; }
+    ~UpdateGuard() { flag = false; }
   };
 
 public:
@@ -112,7 +108,7 @@ public:
         ++I;
       }
     }
-    for(auto& o : NewObjects)
+    for (auto &o : NewObjects)
       Objects.push_back(o);
     NewObjects.clear();
   }

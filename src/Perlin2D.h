@@ -17,8 +17,8 @@ public:
     height = dis(gen) * 256;
   }
   float get(float x, float y) {
-    float result = stb_perlin_noise3(Scale * x, Scale * y, height)
-        + stb_perlin_noise3(Scale * x, Scale * y, -height);
+    float result = stb_perlin_noise3(Scale * x, Scale * y, height) +
+                   stb_perlin_noise3(Scale * x, Scale * y, -height);
     if (result > 1)
       return 1;
     if (result < -1)

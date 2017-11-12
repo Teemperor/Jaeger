@@ -25,13 +25,13 @@ private:
   double cooldown_ = 1;
   sf::Sprite sprite_;
   std::string projectileName_;
-  const ProjectileData* projectileData_ = nullptr;
+  const ProjectileData *projectileData_ = nullptr;
   Kind kind_;
 
 public:
   ItemData(Kind kind) : kind_(kind) {}
 
-  void init(GameData& data);
+  void init(GameData &data);
 
   Kind kind() { return kind_; }
 
@@ -42,13 +42,9 @@ public:
 
   void setCooldown(double d) { cooldown_ = d; }
 
-  void setProjectileName(const std::string &name) {
-    projectileName_ = name;
-  }
+  void setProjectileName(const std::string &name) { projectileName_ = name; }
 
-  const ProjectileData* getProjectileData() const {
-    return projectileData_;
-  }
+  const ProjectileData *getProjectileData() const { return projectileData_; }
 
   int armor() const { return armor_; }
 

@@ -22,18 +22,18 @@ bool Level::getTeleportTarget(TilePos p, TilePos &out) {
 }
 
 void Level::render(sf::RenderTarget &target, sf::Vector2f center) {
-  int ulx = (int)(target.getView().getCenter().x -
-                  target.getView().getSize().x / 2) /
+  int ulx =
+      (int)(target.getView().getCenter().x - target.getView().getSize().x / 2) /
       16;
-  int uly = (int)(target.getView().getCenter().y -
-                  target.getView().getSize().y / 2) /
+  int uly =
+      (int)(target.getView().getCenter().y - target.getView().getSize().y / 2) /
       16;
 
-  int brx = (int)(target.getView().getCenter().x +
-                  target.getView().getSize().x / 2) /
+  int brx =
+      (int)(target.getView().getCenter().x + target.getView().getSize().x / 2) /
       16;
-  int bry = (int)(target.getView().getCenter().y +
-                  target.getView().getSize().y / 2) /
+  int bry =
+      (int)(target.getView().getCenter().y + target.getView().getSize().y / 2) /
       16;
 
   brx = clampWidth(brx);

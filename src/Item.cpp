@@ -4,9 +4,7 @@
 
 Item::Item(ItemData &Data) : Data_(&Data) {}
 
-bool Item::available(Level &level) {
-  return level.getTime() > nextAvailable;
-}
+bool Item::available(Level &level) { return level.getTime() > nextAvailable; }
 
 bool Item::tryUse(Level &level) {
   if (available(level)) {

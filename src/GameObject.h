@@ -28,8 +28,7 @@ public:
     return TilePos(pos.getX() / 16, pos.getY() / 16);
   }
 
-  virtual void damage(int dmg) {
-  }
+  virtual void damage(int dmg) {}
 
   Level &getLevel() { return *level_; }
 

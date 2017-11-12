@@ -16,9 +16,9 @@ public:
 
   bool empty() const { return Data_ == nullptr; }
 
-  bool available(Level& level);
+  bool available(Level &level);
 
-  bool tryUse(Level& level);
+  bool tryUse(Level &level);
 
   const sf::Sprite &sprite() { return Data_->sprite(); }
 
@@ -28,15 +28,15 @@ public:
 
   bool hasProjectiles() const {
     if (empty())
-        return false;
+      return false;
     return getProjectileData();
   }
 
-  float getRange() {
-    return 16 * 5;
-  }
+  float getRange() { return 16 * 5; }
 
-  const ProjectileData* getProjectileData() const { return Data_->getProjectileData(); }
+  const ProjectileData *getProjectileData() const {
+    return Data_->getProjectileData();
+  }
 
   int armor() const { return Data_->armor(); }
 

@@ -36,9 +36,11 @@ class LevelGen {
   enum TileCompare {
     CMP_S, // Same group
     CMP_D, // DIfferent group
-    CMP_A // all groups
+    CMP_A  // all groups
   };
-  bool hasSurrounding(int x, int y, const std::string &group, std::array<TileCompare, 8> surrounding);
+  bool hasSurrounding(int x, int y, const std::string &group,
+                      std::array<TileCompare, 8> surrounding);
+
 public:
   struct Connection {
     Level::Type targetType;

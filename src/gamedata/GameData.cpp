@@ -52,7 +52,6 @@ void GameData::parseItemData(const std::string &path) {
     }
     Items[id]->setArmor(armor);
 
-
     std::string projectile;
     if (item.find("projectile") != item.end()) {
       projectile = item["projectile"];
@@ -106,11 +105,11 @@ void GameData::parseTileData(const std::string &path) {
     Tiles[id] = new TileData(id, group, passable, animationTime);
 
     if (tile.find("sprites") != tile.end()) {
-        auto sprites = tile["sprites"];
-        for (auto sprite : sprites)
-          Tiles[id]->addSprite(getSprite(sprite));
+      auto sprites = tile["sprites"];
+      for (auto sprite : sprites)
+        Tiles[id]->addSprite(getSprite(sprite));
     } else {
-        Tiles[id]->addSprite(getSprite(id));
+      Tiles[id]->addSprite(getSprite(id));
     }
   }
 }
@@ -141,7 +140,7 @@ void GameData::parseMetaFile(const std::string &path) {
                  << "/meta.dat: " << mainLogger;
     }
   }
-  for(auto& i : Items) {
+  for (auto &i : Items) {
     i.second->init(*this);
   }
 }
