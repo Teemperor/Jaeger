@@ -51,6 +51,10 @@ public:
         oy = tex["center"][1];
         sprite.setOrigin(ox, oy);
       }
+      if (tex.find("scale") != tex.end()) {
+        float scale = tex["scale"];
+        sprite.setScale(scale, scale);
+      }
 
       std::string id = tex["id"];
       Sprites[id] = sprite;
