@@ -66,6 +66,8 @@ set(SOURCE_FILES
     src/level/WorldGen.cpp
     src/controls/PlayerControls.cpp
     src/controls/PlayerControls.h
+    src/controls/GameUI.cpp
+    src/controls/GameUI.h
     src/gamedata/ItemData.cpp
     src/gamedata/ItemData.h
     src/Controlable.h

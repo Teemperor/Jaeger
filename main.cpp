@@ -2,6 +2,7 @@
 #include <Logger.h>
 #include <PathFinder.h>
 #include <SFML/Graphics.hpp>
+#include <controls/GameUI.h>
 #include <controls/PlayerControls.h>
 #include <fstream>
 #include <gamedata/GameData.h>
@@ -45,13 +46,16 @@ int main() {
 
   sf::Vector2f viewCenter;
 
-  PlayerControls controls1(1);
-  player1->setPlayerControls(&controls1);
+  GameUI gui(Data, 1);
+  player1->setPlayerControls(&gui.getControls());
 
-  PlayerControls controls2(2);
-  player2->setPlayerControls(&controls2);
+  GameUI gui2(Data, 2);
+  player2->setPlayerControls(&gui2.getControls());
 
   sf::Clock clock;
+
+  sf::Sprite combatSelection = Data.getSprite("combat_selection");
+  combatSelection.setColor(sf::Color::Red);
 
   while (Window.isOpen()) {
     std::vector<sf::Event> events;
@@ -79,9 +83,6 @@ int main() {
     viewCenter.x = player1->getPos().getX();
     viewCenter.y = player1->getPos().getY();
 
-    controls1.update();
-    controls2.update();
-
     sf::Time elapsed = clock.restart();
     world->update(elapsed.asSeconds());
 
@@ -103,8 +104,11 @@ int main() {
 
     Level &currentLevel = player1->getLevel();
     currentLevel.render(Window, viewCenter);
-    Window.display();
 
+    gui.draw(Window);
+    gui2.draw(Window);
+
+    Window.display();
     //FPS:
     // std::cout << elapsed.asMilliseconds() << std::endl;
   }

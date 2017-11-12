@@ -32,6 +32,10 @@ public:
     return getProjectileData();
   }
 
+  float getRange() {
+    return 16 * 5;
+  }
+
   const ProjectileData* getProjectileData() const { return Data_->getProjectileData(); }
 
   int armor() const { return Data_->armor(); }

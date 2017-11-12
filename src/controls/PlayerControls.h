@@ -43,8 +43,22 @@ public:
   float getXInput() { return moveX; }
   float getYInput() { return moveY; }
 
-  void setPossibleTarget(const std::vector<GameObject *>& targets) {
+  GameObject* getTarget() {
+    return target;
+  }
+
+  bool isShooting() const;
+
+  void setPossibleTargets(const std::vector<GameObject *>& targets) {
     this->possibleTargets = targets;
+    if (target) {
+      if (std::find(possibleTargets.begin(), possibleTargets.end(), target) == possibleTargets.end()) {
+        target = nullptr;
+      }
+    } else {
+      if (!possibleTargets.empty())
+        target = possibleTargets.front();
+    }
   }
 };
 

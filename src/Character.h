@@ -37,6 +37,8 @@ private:
     reduceHealth(dmg);
   }
 
+  void tryShootAt(GameObject &o);
+
   void setWalking(bool v);
   static constexpr float walkSpeed = 45;
   BodyType BodyType_ = BodyType::Pale;
