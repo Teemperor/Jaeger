@@ -4,11 +4,15 @@
 #include <SFML/Window.hpp>
 #include <vector>
 
+class GameObject;
+
 class PlayerControls {
 
   float moveX = 0;
   float moveY = 0;
   int player_;
+  GameObject *target = nullptr;
+  std::vector<GameObject *> possibleTargets;
 
 public:
   PlayerControls(int player) : player_(player) {}
@@ -38,6 +42,10 @@ public:
 
   float getXInput() { return moveX; }
   float getYInput() { return moveY; }
+
+  void setPossibleTarget(const std::vector<GameObject *>& targets) {
+    this->possibleTargets = targets;
+  }
 };
 
 #endif // PLAYERCONTROLS_H

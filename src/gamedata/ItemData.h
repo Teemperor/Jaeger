@@ -40,7 +40,7 @@ public:
 
   double getCooldown() const { return cooldown_; }
 
-  double setCooldown(double d) { cooldown_ = d; }
+  void setCooldown(double d) { cooldown_ = d; }
 
   void setProjectileName(const std::string &name) {
     projectileName_ = name;

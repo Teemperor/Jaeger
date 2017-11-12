@@ -4,7 +4,7 @@
 
 Vec2::Vec2() {}
 
-Vec2::Vec2(TilePos &p) {
+Vec2::Vec2(const TilePos &p) {
   x = p.getX() * 16 + 8;
   y = p.getY() * 16 + 8;
 }

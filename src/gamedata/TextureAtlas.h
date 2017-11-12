@@ -45,6 +45,13 @@ public:
       sprite.setTextureRect({x, y, wx, wy});
       sprite.setScale({1.01f, 1.01f});
 
+      int ox = 0, oy = 0;
+      if (tex.find("center") != tex.end()) {
+        ox = tex["center"][0];
+        oy = tex["center"][1];
+        sprite.setOrigin(ox, oy);
+      }
+
       std::string id = tex["id"];
       Sprites[id] = sprite;
     }

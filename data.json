@@ -131,9 +131,12 @@
 
         { "id" : "wood_bow" , "tile" :  [52, 31] },
 
+        { "id" : "magic_staff_purple" , "tile" :  [42, 33] },
+        { "id" : "magic_ball_purple" , "offset" :  [670, 674], "center" : [7, 8] },
+
         { "id" : "wood_spear" , "offset" :  [833, 528] },
 
-        { "id" : "wood_arrow" , "offset" :  [671, 669], "size" : [14, 3] },
+        { "id" : "wood_arrow" , "offset" :  [671, 669], "size" : [14, 3] , "center" : [14, 1]},
 
         { "id" : "wood_buckler" , "offset" :  [561, 529] },
         { "id" : "steel_buckler" , "offset" :  [577, 544] },

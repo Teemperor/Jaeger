@@ -13,7 +13,7 @@ class Vec2 {
 
 public:
   Vec2();
-  Vec2(TilePos &p);
+  Vec2(const TilePos &p);
   Vec2(float x, float y) : x(x), y(y) {}
   Vec2(std::initializer_list<float> l) {
     std::size_t elements = 0;

@@ -21,7 +21,10 @@ Character::Character(Level &level, Vec2 pos, BodyType type)
   equipItem(Item(*level.getData().item("leather_armor")));
   equipItem(Item(*level.getData().item("steel_buckler")));
   equipItem(Item(*level.getData().item("red_steel_helmet")));
-  equipItem(Item(*level.getData().item("wood_bow")));
+  if(rand() % 2)
+    equipItem(Item(*level.getData().item("magic_staff")));
+  else
+    equipItem(Item(*level.getData().item("wood_bow")));
 }
 
 void Character::setBodyType(Character::BodyType t) {

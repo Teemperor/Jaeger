@@ -154,7 +154,7 @@ void PathFinder::findPath(TilePos start, TilePos end,
     MapSearchNode *node = astarsearch.GetSolutionStart();
     int steps = 0;
 
-    node->PrintNodeInfo();
+    //node->PrintNodeInfo();
     for (;;) {
       node = astarsearch.GetSolutionNext();
 

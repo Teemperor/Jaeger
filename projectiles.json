@@ -1,5 +1,6 @@
 {
   "projectiles" : [
-    { "id" : "wood_arrow", "sprite" : "wood_arrow"}
+    { "id" : "wood_arrow", "sprite" : "wood_arrow"},
+    { "id" : "magic_ball_purple", "sprite" : "magic_ball_purple"}
   ]
 }

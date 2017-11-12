@@ -37,10 +37,10 @@ int main() {
 
   Character *player2 = new Character(level, Vec2(680, 680));
 
-  for (int i = 0; i < 2; i++) {
+  for (int i = 0; i < 3; i++) {
     Vec2 pos = Vec2(200 + rand() % 700, 200 + rand() % 700);
     if (level.passable(pos))
-      new Character(level, pos);
+      new Character(level, Vec2(TilePos(pos)));
   }
 
   sf::Vector2f viewCenter;
