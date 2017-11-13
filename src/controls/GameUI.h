@@ -15,7 +15,7 @@ public:
 
   PlayerControls &getControls() { return controls; }
 
-  void draw(sf::RenderTarget &target);
+  void draw(sf::RenderTarget &target, float time);
 };
 
 #endif // GAMEUI_H

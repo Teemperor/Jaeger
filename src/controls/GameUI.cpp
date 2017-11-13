@@ -14,10 +14,12 @@ GameUI::GameUI(GameData &Data, unsigned PlayerNumber) : controls(PlayerNumber) {
   }
 }
 
-void GameUI::draw(sf::RenderTarget &target) {
+void GameUI::draw(sf::RenderTarget &target, float time) {
   controls.update();
   if (GameObject *t = controls.getTarget()) {
-    combatSelection.setPosition(t->getPos().getX(), t->getPos().getY() - 16);
+
+    float offset = (std::abs(std::sin(time * 10.0f)) * 4.0f);
+    combatSelection.setPosition(t->getPos().getX(), t->getPos().getY() - 16 - offset);
     target.draw(combatSelection);
   }
 }

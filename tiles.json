@@ -46,6 +46,15 @@
     { "id" : "pine_darkgreen_lower", "group" : "tree", "passable" : false, "sprites" : ["pine_darkgreen_lower"]},
     { "id" : "pine_darkgreen_upper", "group" : "tree", "passable" : true, "sprites" : ["pine_darkgreen_upper"]},
 
+    { "id" : "sand_walltop_leftup", "group" : "building", "passable" : false, "sprites" : ["sand_walltop_leftup"]},
+    { "id" : "sand_walltop_leftbottom", "group" : "building", "passable" : false, "sprites" : ["sand_walltop_leftbottom"]},
+    { "id" : "sand_walltop_rightup", "group" : "building", "passable" : false, "sprites" : ["sand_walltop_rightup"]},
+    { "id" : "sand_walltop_rightbottom", "group" : "building", "passable" : false, "sprites" : ["sand_walltop_rightbottom"]},
+    { "id" : "sand_walltop_vertical", "group" : "building", "passable" : false, "sprites" : ["sand_walltop_vertical"]},
+    { "id" : "sand_walltop_rightend", "group" : "building", "passable" : false, "sprites" : ["sand_walltop_rightend"]},
+    { "id" : "sand_walltop_horizontal", "group" : "building", "passable" : false, "sprites" : ["sand_walltop_horizontal"]},
+    { "id" : "sand_walltop_leftend", "group" : "building", "passable" : false, "sprites" : ["sand_walltop_leftend"]},
+
     { "id" : "sand_wall_left", "group" : "building", "passable" : false, "sprites" : ["sand_wall_left"]},
     { "id" : "sand_wall_mid", "group" : "building", "passable" : false, "sprites" : ["sand_wall_mid"]},
     { "id" : "sand_wall_right", "group" : "building", "passable" : false, "sprites" : ["sand_wall_right"]},
@@ -58,6 +67,12 @@
     { "id" : "brown_roof_up" ,  "group" : "building", "passable" : false, "sprites" : ["brown_roof_up"]},
     { "id" : "brown_roof_mid" ,  "group" : "building", "passable" : false, "sprites" : ["brown_roof_mid"]},
     { "id" : "brown_roof_down" ,  "group" : "building", "passable" : false, "sprites" : ["brown_roof_down"]},
+
+    { "id" : "pot_plant", "passable" : false, "sprites" : ["pot_plant1", "pot_plant2"]},
+    { "id" : "wood_table", "passable" : false, "sprites" : ["wood_table1", "wood_table2", "wood_table3", "wood_table4", "wood_table5"]},
+
+    { "id" : "torch_wall_right", "animation" : 250, "passable" : true, "sprites" : ["torch_wall_right1", "torch_wall_right2"]},
+    { "id" : "torch_wall_left", "animation" : 250, "passable" : true, "sprites" : ["torch_wall_left1", "torch_wall_left2"]},
 
     { "id" : "door_open" , "group" : "building", "passable" : true, "sprites" : ["door1_open", "door2_open", "door3_open"]},
     { "id" : "door_light" , "group" : "building", "passable" : true, "sprites" : ["door_light"]},

@@ -91,6 +91,17 @@
         { "id" : "brown_roof_mid" , "offset" :  [425, 374] },
         { "id" : "brown_roof_down" , "offset" :  [425, 391] },
 
+        { "id" : "sand_walltop_leftup" , "tile" :  [16, 12] },
+        { "id" : "sand_walltop_leftbottom" , "tile" :  [16, 13] },
+        { "id" : "sand_walltop_rightup" , "tile" :  [17, 12] },
+        { "id" : "sand_walltop_rightbottom" , "tile" :  [17, 13] },
+
+        { "id" : "sand_walltop_vertical" , "tile" :  [15, 13] },
+
+        { "id" : "sand_walltop_rightend" , "tile" :  [13, 12] },
+        { "id" : "sand_walltop_horizontal" , "tile" :  [14, 12] },
+        { "id" : "sand_walltop_leftend" , "tile" :  [15, 12] },
+
         { "id" : "sand_wall_left" , "offset" :  [289, 255] },
         { "id" : "sand_wall_mid" , "offset" :  [306, 255] },
         { "id" : "sand_wall_right" , "offset" :  [323, 255] },
@@ -99,6 +110,10 @@
         { "id" : "sand_wall_lower_mid" , "offset" :  [221, 255] },
         { "id" : "sand_wall_lower_right" , "offset" :  [272, 255] },
 
+        { "id" : "torch_wall_right1" , "tile" :  [20, 47] },
+        { "id" : "torch_wall_right2" , "tile" :  [21, 47] },
+        { "id" : "torch_wall_left1" , "tile" :  [20, 48] },
+        { "id" : "torch_wall_left2" , "tile" :  [21, 48] },
 
         { "id" : "brown_roof_angular_left_lower" , "offset" :  [340, 391] },
         { "id" : "brown_roof_angular_left_mid" , "offset" :  [340, 374] },
@@ -116,6 +131,16 @@
         { "id" : "door1_open" , "offset" :  [629, 0] },
         { "id" : "door2_open" , "offset" :  [629, 0] },
         { "id" : "door3_open" , "offset" :  [629, 0] },
+
+        { "id" : "pot_plant1" , "tile" : [16, 41] },
+        { "id" : "pot_plant2" , "tile" : [17, 41] },
+
+        { "id" : "wood_table1" , "tile" : [4, 44] },
+        { "id" : "wood_table2" , "tile" : [5, 44] },
+        { "id" : "wood_table3" , "tile" : [6, 44] },
+        { "id" : "wood_table4" , "tile" : [7, 45] },
+        { "id" : "wood_table5" , "tile" : [7, 41] },
+
 
         { "id" : "clock_mid" , "tile" : [26, 8] },
         { "id" : "clock_left" , "tile" : [27, 8] },

@@ -33,14 +33,21 @@ int main() {
 
   Level &level = *world->getLevels().at(0);
 
-  Character *player1 = new Character(level, Vec2(45 * 16, 42 * 16));
+  Faction playerFaction;
 
+  Character *player1 = new Character(level, Vec2(49 * 16, 46 * 16));
+  player1->setFaction(&playerFaction);
   Character *player2 = new Character(level, Vec2(680, 680));
+  player2->setFaction(&playerFaction);
 
   for (int i = 0; i < 3; i++) {
     Vec2 pos = Vec2(200 + rand() % 700, 200 + rand() % 700);
     if (level.passable(pos))
       new Character(level, Vec2(TilePos(pos)));
+    else {
+      --i;
+      continue;
+    }
   }
 
   sf::Vector2f viewCenter;
@@ -104,8 +111,8 @@ int main() {
     Level &currentLevel = player1->getLevel();
     currentLevel.render(Window, viewCenter);
 
-    gui.draw(Window);
-    gui2.draw(Window);
+    gui.draw(Window, level.getTime());
+    gui2.draw(Window, level.getTime());
 
     Window.display();
     // FPS:

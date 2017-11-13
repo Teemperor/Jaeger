@@ -278,27 +278,73 @@ void LevelGen::generate_house() {
   const int h = level->getHeight();
   GameData &data = level->getData();
 
+  int doorX = (w - 1) / 2;
+
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h - 1; ++y) {
-      if (y == 0) {
-        level->get(x, y).setData(data.tile("sand_wall_mid"));
-        if (dis(gen) > 0.9f) {
-          build(x, y, "brown_window_round");
-        }
-      } else if (y == 1) {
-        level->get(x, y).setData(data.tile("sand_wall_lower_mid"));
-        if (dis(gen) > 0.7f) {
-          build(x, y, "shelf");
-        }
-      } else {
-        level->get(x, y).setData(data.tile("planks"));
-      }
+      level->get(x, y).setData(data.tile("planks"));
     }
   }
 
-  build((w - 1) / 2, 0, "clock");
-  build((w - 1) / 2, 1, "fireplace_inside");
-  int doorX = (w - 1) / 2;
+  for (int x = 0; x < w; ++x) {
+    floor(x, 0, "sand_walltop_horizontal");
+    floor(x, 1, "sand_wall_mid");
+    floor(x, 2, "sand_wall_lower_mid");
+
+    if (x != doorX) {
+      if (x == doorX - 1) {
+        floor(x, h - 3, "sand_walltop_leftend");
+        floor(x, h - 2, "sand_wall_right");
+      } else if (x == doorX + 1) {
+        floor(x, h - 3, "sand_walltop_rightend");
+        floor(x, h - 2, "sand_wall_left");
+      } else {
+        floor(x, h - 3, "sand_walltop_horizontal");
+        floor(x, h - 2, "sand_wall_mid");
+      }
+    }
+
+    if (dis(gen) > 0.8f)
+      build(doorX - 1, h - 4, "pot_plant");
+    if (dis(gen) > 0.8f)
+      build(doorX + 1, h - 4, "pot_plant");
+
+    if (x && x != w - 1) {
+      if (dis(gen) > 0.9f)
+        build(x, 1, "brown_window_round");
+      if (dis(gen) > 0.7f)
+        build(x, 2, "shelf");
+    }
+  }
+
+  for (int y = 1; y < h - 3; ++y) {
+    floor(0, y, "sand_walltop_vertical");
+    floor(w - 1, y, "sand_walltop_vertical");
+
+    if (dis(gen) > 0.8f)
+      build(w - 2, y, "torch_wall_right");
+    if (dis(gen) > 0.7f)
+      build(1, y, "torch_wall_left");
+  }
+  floor(    0,     0, "sand_walltop_leftup");
+  floor(w - 1,     0, "sand_walltop_rightup");
+  floor(    0, h - 3, "sand_walltop_leftbottom");
+  floor(w - 1, h - 3, "sand_walltop_rightbottom");
+
+  build((w - 1) / 2, 1, "clock");
+  build((w - 1) / 2, 2, "fireplace_inside");
+
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h - 1; ++y) {
+      if (!level->passable(TilePos(x, y)))
+        continue;
+      if (dis(gen) > 0.999f)
+        build(x, y, "wood_table");
+    }
+  }
+
+
   int doorY = h - 1;
   openConnections.push_back(
       {Level::Type::Overworld, TilePos(*level, doorX, doorY)});
@@ -343,7 +389,7 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type) {
     generate_overworld();
     break;
   case Level::Type::House:
-    level = new Level(world, type, 10, 10, data);
+    level = new Level(world, type, 12, 15, data);
     generate_house();
     break;
   default:
