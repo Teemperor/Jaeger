@@ -61,6 +61,8 @@ public:
   bool passable(TilePos pos) {
     int x = pos.getX();
     int y = pos.getY();
+    if (!getOverlay(x, y).passable())
+      return false;
     if (!getBuilding(x, y).passable())
       return false;
     if (!get(x, y).passable())
@@ -73,9 +75,11 @@ public:
     x /= 16;
     int y = (int)pos.getY();
     y /= 16;
-    if (!get(x, y).passable())
+    if (!getOverlay(x, y).passable())
       return false;
     if (!getBuilding(x, y).passable())
+      return false;
+    if (!get(x, y).passable())
       return false;
     return true;
   }

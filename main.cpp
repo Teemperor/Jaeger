@@ -40,7 +40,7 @@ int main() {
   Character *player2 = new Character(level, Vec2(680, 680));
   player2->setFaction(&playerFaction);
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 0; i++) {
     Vec2 pos = Vec2(200 + rand() % 700, 200 + rand() % 700);
     if (level.passable(pos))
       new Character(level, Vec2(TilePos(pos)));
@@ -98,7 +98,7 @@ int main() {
     }
     // level.World.Step(1 / 60.f, 8, 3);
 
-    Window.clear(sf::Color(43, 66, 93));
+    Window.clear(sf::Color(22, 33, 44));
 
     // sf::Vector2f playerPos(player->getBody()->GetPosition().x * SCALE,
     // player->getBody()->GetPosition().y * SCALE);

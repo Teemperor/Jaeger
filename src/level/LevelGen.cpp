@@ -126,11 +126,23 @@ float LevelGen::getHeight(int x, int y) {
 float LevelGen::getVegetation(int x, int y) { return woodPerlin.get(x, y); }
 
 namespace {
-struct WaterSpace {
-  std::set<TilePos> contents;
-  bool contains(TilePos &p) { return contents.find(p) != contents.end(); }
+class Area {
+public:
+  int x1, y1, x2, y2;
+  Area(int x1, int y1, int x2, int y2) : x1(x1), y1(y1), x2(x2), y2(y2) {
+  }
+
+  bool contains(int x, int y) {
+    return x >= x1 && x <= x2 && y >= y1 && y <= y2;
+  }
+
+  bool overlaps(Area& a) {
+    return (this->x1 < a.x2 && this->x2 > a.x1 &&
+        this->y1 > a.y2 && this->y2 < a.y1);
+  }
+
 };
-} // namespace
+}
 
 void LevelGen::generate_overworld() {
   const int w = level->getWidth();
@@ -138,6 +150,8 @@ void LevelGen::generate_overworld() {
   GameData &data = level->getData();
 
   const int tree_border = 8;
+
+  std::vector<Area> areas;
 
   TileMap<int> water(w, h, 0);
 
@@ -166,6 +180,8 @@ void LevelGen::generate_overworld() {
     build(49, i, "placeholder");
     build(50, i, "placeholder");
   }
+
+
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -229,7 +245,7 @@ void LevelGen::generate_overworld() {
       float vegetation = getVegetation(x, y);
       float height = getHeight(x, y);
       if (height > 0) {
-        if (vegetation > 0.3f && dis(gen) > 0.7f) {
+        if (vegetation > 0.2f && dis(gen) > 0.75f) {
           make_tree(x, y);
         } else if (vegetation > 0 && dis(gen) > 0.8f) {
           // make_bush(x, y);
@@ -242,6 +258,28 @@ void LevelGen::generate_overworld() {
         }
       }
     }
+  }
+
+  for(int i = 0; i < 300; i++) {
+    int x1 = static_cast<int>(dis(gen) * w);
+    int y1 = static_cast<int>(dis(gen) * h);
+    int x2 = static_cast<int>(x1 + dis(gen) * 20 + 7);
+    int y2 = static_cast<int>(y1 + dis(gen) * 30 + 7);
+
+    bool isFree = true;
+    for (int x = x1; x <= x2; ++x) {
+      for (int y = y1; y <= y2; ++y) {
+        if (!level->passable(TilePos(x, y))) {
+          isFree = false;
+          x = x2 + 1;
+          break;
+        }
+      }
+    }
+    if (!isFree)
+      continue;
+
+    make_house(x1, y1, 7, 7, 3);
   }
 
   for (int x = 0; x < w; ++x) {
@@ -267,10 +305,6 @@ void LevelGen::generate_overworld() {
       }
     }
   }
-
-  level->getBuilding(5, 5).setData(data.tile("fireplace"));
-
-  make_house(48, 38, 6, 8, 3);
 }
 
 void LevelGen::generate_house() {
@@ -287,27 +321,27 @@ void LevelGen::generate_house() {
   }
 
   for (int x = 0; x < w; ++x) {
-    floor(x, 0, "sand_walltop_horizontal");
+    overlay(x, 0, "sand_walltop_horizontal");
     floor(x, 1, "sand_wall_mid");
     floor(x, 2, "sand_wall_lower_mid");
 
     if (x != doorX) {
       if (x == doorX - 1) {
-        floor(x, h - 3, "sand_walltop_leftend");
-        floor(x, h - 2, "sand_wall_right");
+        overlay(x, h - 2, "sand_walltop_leftend");
+        overlay(x, h - 1, "sand_wall_right");
       } else if (x == doorX + 1) {
-        floor(x, h - 3, "sand_walltop_rightend");
-        floor(x, h - 2, "sand_wall_left");
+        overlay(x, h - 2, "sand_walltop_rightend");
+        overlay(x, h - 1, "sand_wall_left");
       } else {
-        floor(x, h - 3, "sand_walltop_horizontal");
-        floor(x, h - 2, "sand_wall_mid");
+        overlay(x, h - 2, "sand_walltop_horizontal");
+        overlay(x, h - 1, "sand_wall_mid");
       }
     }
 
     if (dis(gen) > 0.8f)
-      build(doorX - 1, h - 4, "pot_plant");
+      build(doorX - 1, h - 3, "pot_plant");
     if (dis(gen) > 0.8f)
-      build(doorX + 1, h - 4, "pot_plant");
+      build(doorX + 1, h - 3, "pot_plant");
 
     if (x && x != w - 1) {
       if (dis(gen) > 0.9f)
@@ -317,19 +351,19 @@ void LevelGen::generate_house() {
     }
   }
 
-  for (int y = 1; y < h - 3; ++y) {
-    floor(0, y, "sand_walltop_vertical");
-    floor(w - 1, y, "sand_walltop_vertical");
+  for (int y = 1; y < h - 2; ++y) {
+    overlay(0, y, "sand_walltop_vertical");
+    overlay(w - 1, y, "sand_walltop_vertical");
 
     if (dis(gen) > 0.8f)
       build(w - 2, y, "torch_wall_right");
     if (dis(gen) > 0.7f)
       build(1, y, "torch_wall_left");
   }
-  floor(    0,     0, "sand_walltop_leftup");
-  floor(w - 1,     0, "sand_walltop_rightup");
-  floor(    0, h - 3, "sand_walltop_leftbottom");
-  floor(w - 1, h - 3, "sand_walltop_rightbottom");
+  overlay(    0,     0, "sand_walltop_leftup");
+  overlay(w - 1,     0, "sand_walltop_rightup");
+  overlay(    0, h - 2, "sand_walltop_leftbottom");
+  overlay(w - 1, h - 2, "sand_walltop_rightbottom");
 
   build((w - 1) / 2, 1, "clock");
   build((w - 1) / 2, 2, "fireplace_inside");
