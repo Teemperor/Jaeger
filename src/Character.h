@@ -35,7 +35,7 @@ private:
 
   void damage(int dmg) override { reduceHealth(dmg); }
 
-  void tryShootAt(GameObject &o);
+  bool tryShootAt(GameObject &o);
 
   void setWalking(bool v);
   static constexpr float walkSpeed = 45;

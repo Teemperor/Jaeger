@@ -24,7 +24,6 @@ void Projectile::update(float dtime) {
     if (auto C = dynamic_cast<Creature *>(target)) {
       C->addEffect(data->getEffect(source, C));
     }
-    target->damage(8);
     ShouldBeRemoved_ = true;
   }
 }

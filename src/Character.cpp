@@ -197,10 +197,10 @@ void Character::update(float dtime) {
 void Character::equipItem(const Item &i) { equipped_[i.kind()] = i; }
 
 void Character::AIAttack(Creature &C, GameObject &o, float dtime) {
-  if (getPos().distance(o.getPos()) < 80) {
-    // C.damage(20);
+  Item &weapon = equipped_[ItemData::Weapon];
+
+  if (tryShootAt(o)) {
     walkPath_.clear();
-    tryShootAt(o);
   } else {
     if (walkPath_.empty()) {
       PathFinder finder(getLevel());
@@ -231,14 +231,17 @@ void Character::walkToward(Vec2 pos, float dtime) {
   setPos(getPos().mod(dx, dy));
 }
 
-void Character::tryShootAt(GameObject &o) {
+bool Character::tryShootAt(GameObject &o) {
   Item &weapon = equipped_[ItemData::Weapon];
   if (weapon.empty())
-    return;
+    return false;
   if (getPos().distance(o.getPos()) < weapon.getRange()) {
-    if (weapon.tryUse(getLevel()) && weapon.hasProjectiles())
+    if (weapon.tryUse(getLevel()) && weapon.hasProjectiles()) {
       new Projectile(*weapon.getProjectileData(), getLevel(), getPos(), *this, o);
+      return true;
+    }
   }
+  return false;
 }
 
 void Character::setWalking(bool v) {

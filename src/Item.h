@@ -32,7 +32,7 @@ public:
     return static_cast<bool>(getProjectileData());
   }
 
-  float getRange() { return 16 * 5; }
+  float getRange() { return 16 * 10; }
 
   const ProjectileData *getProjectileData() const {
     return Data_->getProjectileData();
