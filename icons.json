@@ -1,0 +1,6 @@
+{
+    "textures" :
+    [
+        { "id" : "default" , "tile" : [7, 8] },
+    ]
+}

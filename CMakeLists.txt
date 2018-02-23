@@ -44,6 +44,10 @@ set(SOURCE_FILES
     src/gamedata/ProjectileData.h
     src/Logger.cpp
     src/Logger.h
+    src/Attribute.cpp
+    src/Attribute.h
+    src/SpellEffect.cpp
+    src/SpellEffect.h
     src/Character.cpp
     src/Character.h
     src/Vec2.cpp
