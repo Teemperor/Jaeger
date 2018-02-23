@@ -27,15 +27,18 @@ public:
               StrengthUnit MinStrength, StrengthUnit MaxStrength);
 
   void applyStart(Creature* caster, Creature *target, StrengthUnit Strength) const {
-    effectStart(caster, target, Strength);
+    if (effectStart)
+      effectStart(caster, target, Strength);
   }
 
   void applyUpdate(Creature* caster, Creature *target, StrengthUnit Strength) const {
-    effectUpdate(caster, target, Strength);
+    if (effectUpdate)
+      effectUpdate(caster, target, Strength);
   }
 
   void applyEnd(Creature* caster, Creature *target, StrengthUnit Strength) const {
-    effectEnd(caster, target, Strength);
+    if (effectEnd)
+      effectEnd(caster, target, Strength);
   }
 
   const std::string &getID() const {
@@ -56,15 +59,15 @@ public:
 };
 
 class AppliedSpellEffect {
-  SpellEffect *E = nullptr;
+  const SpellEffect *E = nullptr;
   Creature *Caster = nullptr;
   bool HasStarted = false;
   SpellEffect::StrengthUnit Strength = 1;
   unsigned DurationLeft = 1;
-  float Time = 0;
+  float Time = 1;
 public:
   AppliedSpellEffect() {}
-  explicit AppliedSpellEffect(SpellEffect &E, Creature *C, unsigned Duration) : E(&E), Caster(C) {
+  explicit AppliedSpellEffect(const SpellEffect &E, Creature *C, unsigned Duration) : E(&E), Caster(C) {
   }
 
   void update(Creature *Target, float dTime) {
@@ -78,7 +81,7 @@ public:
       Time -= 1;
       E->applyUpdate(Caster, Target, Strength);
       DurationLeft--;
-      if (DurationLeft == 0) {
+      if (DurationLeft <= 0) {
         E->applyEnd(Caster, Target, Strength);
       }
     }
@@ -91,6 +94,7 @@ public:
 
 namespace SpellEffects {
   extern const std::vector<SpellEffect>& getList();
+  extern const SpellEffect &getByID(const std::string &ID);
 }
 
 #endif // SPELLEFFECT_H

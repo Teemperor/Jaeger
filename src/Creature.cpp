@@ -1,3 +1,3 @@
 #include "Creature.h"
 
-Creature::Creature(Faction *faction) : faction_(faction) {}
+Creature::Creature(Level &level, Faction *faction) : GameObject(level), faction_(faction) {}

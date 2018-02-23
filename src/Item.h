@@ -29,7 +29,7 @@ public:
   bool hasProjectiles() const {
     if (empty())
       return false;
-    return getProjectileData();
+    return static_cast<bool>(getProjectileData());
   }
 
   float getRange() { return 16 * 5; }

@@ -5,8 +5,9 @@
 
 #include "Faction.h"
 #include "SpellEffect.h"
+#include "GameObject.h"
 
-class Creature {
+class Creature : public GameObject {
   Faction *faction_ = nullptr;
   int health_ = 100;
   int maxHealth_ = 100;
@@ -15,7 +16,11 @@ class Creature {
   std::list<AppliedSpellEffect> Effects;
 
 public:
-  Creature(Faction *faction = nullptr);
+  Creature(Level &level, Faction *faction = nullptr);
+
+  void addEffect(const AppliedSpellEffect& E) {
+    Effects.push_back(E);
+  }
 
   void updateEffects(float DeltaTime) {
     for (auto Iter = Effects.begin(); Iter != Effects.end();) {

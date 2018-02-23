@@ -4,17 +4,19 @@
 #include <GameObject.h>
 
 class ProjectileData;
+class Creature;
 
 class Projectile : public GameObject {
 
   GameObject *target = nullptr;
+  Creature *source = nullptr;
   Vec2 targetPos;
   const ProjectileData *data;
   float rotation = 0;
 
 public:
   Projectile(const ProjectileData &data, Level &level, Vec2 startPos,
-             GameObject &target);
+             Creature &source, GameObject &target);
 
   void update(float dtime) override;
   void render(sf::RenderTarget &target) override;

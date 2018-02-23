@@ -10,7 +10,7 @@
 
 #include <gamedata/GameData.h>
 
-class Character : public GameObject, public Controlable, public Creature {
+class Character : public Controlable, public Creature {
 
 public:
   enum class BodyType { Pale, Normal, Tanned, Green };

@@ -6,7 +6,7 @@
 #include <combat/Projectile.h>
 
 Character::Character(Level &level, Vec2 pos, BodyType type)
-    : GameObject(level) {
+    : Creature(level) {
   setBodyType(type);
   bubbleSprite_ = getGameData().getSprite("speech_bubble_exclamation");
   shadow_ = getGameData().getSprite("shadow");
@@ -139,6 +139,7 @@ struct closest_object {
 } // namespace
 
 void Character::update(float dtime) {
+  Creature::updateEffects(dtime);
   if (isDead()) {
     if (isControlled())
       getControls()->setPossibleTargets({});
@@ -236,7 +237,7 @@ void Character::tryShootAt(GameObject &o) {
     return;
   if (getPos().distance(o.getPos()) < weapon.getRange()) {
     if (weapon.tryUse(getLevel()) && weapon.hasProjectiles())
-      new Projectile(*weapon.getProjectileData(), getLevel(), getPos(), o);
+      new Projectile(*weapon.getProjectileData(), getLevel(), getPos(), *this, o);
   }
 }
 

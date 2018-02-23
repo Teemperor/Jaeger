@@ -1,10 +1,11 @@
+#include <Creature.h>
 #include "Projectile.h"
 
 #include "gamedata/ProjectileData.h"
 
 Projectile::Projectile(const ProjectileData &data, Level &level, Vec2 startPos,
-                       GameObject &target)
-    : GameObject(level), target(&target), data(&data) {
+                       Creature &source, GameObject &target)
+    : GameObject(level), source(&source), target(&target), data(&data) {
   assert(&data && "No data supplied?");
   assert(&target && "No target supplied?");
   setPos(startPos);
@@ -20,6 +21,9 @@ void Projectile::update(float dtime) {
   toTarget = Vec2(std::cos(direction), std::sin(direction));
   setPos(getPos() + (toTarget * dtime * data->getSpeed()));
   if (targetPos.distance(getPos()) < 5) {
+    if (auto C = dynamic_cast<Creature *>(target)) {
+      C->addEffect(data->getEffect(source, C));
+    }
     target->damage(8);
     ShouldBeRemoved_ = true;
   }

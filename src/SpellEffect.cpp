@@ -1,4 +1,6 @@
+#include <iostream>
 #include "SpellEffect.h"
+#include "Creature.h"
 
 SpellEffect::SpellEffect(std::string ID, std::string Name,
                          std::function<void (Creature*, Creature *, StrengthUnit)> effectUpdate,
@@ -22,9 +24,22 @@ const std::vector<SpellEffect> &SpellEffects::getList() {
   if (List.empty()) {
     List = {
         SpellEffect("damage", "Damage", [](Creature *Caster, Creature* Target, SpellEffect::StrengthUnit u) {
-
+          Target->reduceHealth(u);
+        }, 1, 100),
+        SpellEffect("switchPos", "Switch Positions", [](Creature *Caster, Creature* Target, SpellEffect::StrengthUnit u) {
+          auto pos = Target->getPos();
+          Target->setPos(Caster->getPos());
+          Caster->setPos(pos);
         }, 1, 100)
     };
   }
   return List;
+}
+const SpellEffect &::SpellEffects::getByID(const std::string &ID) {
+  for (auto &E : getList()) {
+    if (E.getID() == ID)
+      return E;
+  }
+  std::cerr << "Couldn't find effect with ID '" << ID << "'\n";
+  assert(false);
 }

@@ -1,3 +1,4 @@
+#include <SpellEffect.h>
 #include "GameData.h"
 
 void GameData::parseItemData(const std::string &path) {
@@ -74,7 +75,9 @@ void GameData::parseProjectileData(const std::string &path) {
     std::string id = proj["id"];
 
     sf::Sprite sprite = getSprite(proj["sprite"]);
-    Projectiles[id] = new ProjectileData(sprite);
+    std::string effectName = proj["effect"];
+    const SpellEffect &E = SpellEffects::getByID(effectName);
+    Projectiles[id] = new ProjectileData(sprite, E);
   }
 }
 
