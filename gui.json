@@ -1,0 +1,6 @@
+{
+    "textures" :
+    [
+        { "id" : "combat_selection" , "offset" :  [75, 0], "size" : [36, 35], "center" : [18, 36]}
+    ]
+}

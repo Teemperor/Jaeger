@@ -148,7 +148,6 @@
 
         { "id" : "door_light" , "tile" :  [0, 37] },
         { "id" : "selection" , "tile" :  [0, 38] },
-        { "id" : "combat_selection" , "tile" :  [0, 39], "center" : [8, 16]},
 
         { "id" : "leather_armor" , "offset" :  [102, 595] },
 

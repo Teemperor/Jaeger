@@ -46,7 +46,7 @@ public:
 
   void setFaction(Faction *faction) { faction_ = faction; }
 
-  void reduceHealth(int dmg) { health_ -= dmg; }
+  virtual void damage(int dmg) { health_ -= dmg; }
 
   float percentageHealth() const { return (float)health_ / maxHealth_; }
 

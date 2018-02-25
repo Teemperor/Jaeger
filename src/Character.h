@@ -31,9 +31,18 @@ private:
 
   void AIAttack(Creature &C, GameObject &o, float dtime);
 
-  void walkToward(Vec2 pos, float dtime);
+  void walkToward(Vec2 pos, float dtime, bool backwards = false);
 
-  void damage(int dmg) override { reduceHealth(dmg); }
+  virtual void damage(int dmg);
+
+  int getArmorValue() const {
+    int Result = 0;
+    for (auto &I : equipped_) {
+      if (!I.empty())
+        Result += I.armor();
+    }
+    return Result;
+  }
 
   bool tryShootAt(GameObject &o);
 

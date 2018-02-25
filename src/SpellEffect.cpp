@@ -24,7 +24,7 @@ const std::vector<SpellEffect> &SpellEffects::getList() {
   if (List.empty()) {
     List = {
         SpellEffect("damage", "Damage", [](Creature *Caster, Creature* Target, SpellEffect::StrengthUnit u) {
-          Target->reduceHealth(u);
+          Target->damage(u);
         }, 1, 100),
         SpellEffect("switchPos", "Switch Positions", [](Creature *Caster, Creature* Target, SpellEffect::StrengthUnit u) {
           auto pos = Target->getPos();

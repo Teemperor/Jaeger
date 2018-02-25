@@ -2,6 +2,7 @@
 
 GameUI::GameUI(GameData &Data, unsigned PlayerNumber) : controls(PlayerNumber) {
   combatSelection = Data.getSprite("combat_selection");
+  combatSelection.scale(0.4f, 0.4f);
   switch (PlayerNumber) {
   case 1:
     combatSelection.setColor(sf::Color::Red);

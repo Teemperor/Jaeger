@@ -199,7 +199,8 @@ void Character::equipItem(const Item &i) { equipped_[i.kind()] = i; }
 void Character::AIAttack(Creature &C, GameObject &o, float dtime) {
   Item &weapon = equipped_[ItemData::Weapon];
 
-  if (tryShootAt(o)) {
+  if (getPos().distance(o.getPos()) < weapon.getRange()) {
+    tryShootAt(o);
     walkPath_.clear();
   } else {
     if (walkPath_.empty()) {
@@ -213,10 +214,13 @@ void Character::AIAttack(Creature &C, GameObject &o, float dtime) {
   }
 }
 
-void Character::walkToward(Vec2 pos, float dtime) {
+void Character::walkToward(Vec2 pos, float dtime, bool backwards) {
   setWalking(true);
   double angle =
       std::atan2(pos.getY() - getPos().getY(), pos.getX() - getPos().getX());
+  if (backwards) {
+    angle += M_PI;
+  }
   float dx = static_cast<float>(std::cos(angle)) * walkSpeed * dtime;
   float dy = static_cast<float>(std::sin(angle)) * walkSpeed * dtime;
 
@@ -249,4 +253,8 @@ void Character::setWalking(bool v) {
     walking_ = v;
     oldWalkingValue_ = true;
   }
+}
+void Character::damage(int dmg) {
+
+  Creature::damage(dmg);
 }

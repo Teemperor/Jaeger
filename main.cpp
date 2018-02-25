@@ -19,7 +19,7 @@ int main() {
   srand(2);
 
   /** Prepare the window */
-  sf::RenderWindow Window(sf::VideoMode::getDesktopMode(), "Test");
+  sf::RenderWindow Window(sf::VideoMode::getFullscreenModes().front(), "Test", sf::Style::Fullscreen);
 
   Window.setFramerateLimit(60);
 
@@ -59,9 +59,6 @@ int main() {
   player2->setPlayerControls(&gui2.getControls());
 
   sf::Clock clock;
-
-  sf::Sprite combatSelection = Data.getSprite("combat_selection");
-  combatSelection.setColor(sf::Color::Red);
 
   while (Window.isOpen()) {
     std::vector<sf::Event> events;
