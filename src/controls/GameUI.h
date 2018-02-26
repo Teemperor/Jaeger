@@ -3,11 +3,16 @@
 
 #include "PlayerControls.h"
 
+#include <cassert>
+
 #include <GameObject.h>
 #include <gamedata/GameData.h>
 
 class GameUI {
-  sf::Sprite combatSelection;
+  sf::Sprite combatSelection,
+  HealthBarStart, HealthBarMid, HealthBarEnd,
+  StaminaBarStart, StaminaBarMid, StaminaBarEnd,
+  StatusBackground;
   PlayerControls controls;
 
 public:

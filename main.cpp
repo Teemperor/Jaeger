@@ -19,7 +19,9 @@ int main() {
   srand(2);
 
   /** Prepare the window */
-  sf::RenderWindow Window(sf::VideoMode::getFullscreenModes().front(), "Test", sf::Style::Fullscreen);
+  assert(!sf::VideoMode::getFullscreenModes().empty());
+  const sf::VideoMode &Mode = sf::VideoMode::getFullscreenModes().front();
+  sf::RenderWindow Window(Mode, "Test", sf::Style::Fullscreen);
 
   Window.setFramerateLimit(60);
 
@@ -37,7 +39,7 @@ int main() {
 
   Character *player1 = new Character(level, Vec2(49 * 16, 46 * 16));
   player1->setFaction(&playerFaction);
-  Character *player2 = new Character(level, Vec2(680, 680));
+  Character *player2 = new Character(level,Vec2(49 * 16, 47 * 16));
   player2->setFaction(&playerFaction);
 
   for (int i = 0; i < 4; i++) {

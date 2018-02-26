@@ -5,6 +5,7 @@
 #include "Creature.h"
 #include "Item.h"
 #include "TilePos.h"
+#include "Inventory.h"
 
 #include <GameObject.h>
 
@@ -23,6 +24,15 @@ public:
   void update(float dtime) override;
 
   void equipItem(const Item &i);
+
+  Inventory &getInventory() {
+    return Inv;
+  }
+
+  void setPlayerControls(PlayerControls *c) override {
+    Controlable::setPlayerControls(c);
+    c->setControlledCharacter(this);
+  }
 
 private:
   std::vector<Item> equipped_;
@@ -55,6 +65,7 @@ private:
   bool walking_ = false;
   bool oldWalkingValue_ = false;
   double walkingStartTime_ = 0;
+  Inventory Inv;
 };
 
 #endif // CHARACTER_H

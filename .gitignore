@@ -4,3 +4,4 @@ CMakeLists.txt.user
 *.autosave
 build
 travis-build
+.gdb_history

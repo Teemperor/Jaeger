@@ -5,6 +5,7 @@
 #include <vector>
 
 class GameObject;
+class Character;
 
 class PlayerControls {
 
@@ -13,6 +14,7 @@ class PlayerControls {
   int player_;
   GameObject *target = nullptr;
   std::vector<GameObject *> possibleTargets;
+  Character *ControlledChar = nullptr;
 
 public:
   PlayerControls(int player) : player_(player) {}
@@ -38,6 +40,14 @@ public:
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         moveY += 1;
     }
+  }
+
+  void setControlledCharacter(Character *C) {
+    ControlledChar = C;
+  }
+
+  Character *getControlledCharacter() {
+    return ControlledChar;
   }
 
   float getXInput() { return moveX; }

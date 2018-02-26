@@ -11,7 +11,7 @@ class Controlable {
 public:
   Controlable();
   virtual ~Controlable();
-  void setPlayerControls(PlayerControls *c) { controls = c; }
+  virtual void setPlayerControls(PlayerControls *c) { controls = c; }
   bool isControlled() { return controls != nullptr; }
   float getXInput() { return controls->getXInput(); }
   float getYInput() { return controls->getYInput(); }

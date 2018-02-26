@@ -91,7 +91,9 @@ set(SOURCE_FILES
     src/Creature.cpp
     src/TilePos.h
     src/TilePos.cpp
-        src/ui/CharacterUI.cpp src/ui/CharacterUI.h)
+    src/Inventory.cpp
+    src/Inventory.h
+)
 add_library(argos_core ${SOURCE_FILES})
 target_link_libraries(argos_core ${SFML_LIBRARIES})
 
