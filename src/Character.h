@@ -43,7 +43,7 @@ private:
 
   void walkToward(Vec2 pos, float dtime, bool backwards = false);
 
-  virtual void damage(int dmg);
+  void damage(int dmg) override;
 
   int getArmorValue() const {
     int Result = 0;

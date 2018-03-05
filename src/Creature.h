@@ -16,7 +16,7 @@ class Creature : public GameObject {
   std::list<AppliedSpellEffect> Effects;
 
 public:
-  Creature(Level &level, Faction *faction = nullptr);
+  explicit Creature(Level &level, Faction *faction = nullptr);
 
   void addEffect(const AppliedSpellEffect& E) {
     Effects.push_back(E);
@@ -46,7 +46,7 @@ public:
 
   void setFaction(Faction *faction) { faction_ = faction; }
 
-  virtual void damage(int dmg) { health_ -= dmg; }
+  virtual void damage(int dmg) override { health_ -= dmg; }
 
   float percentageHealth() const { return (float)health_ / maxHealth_; }
 

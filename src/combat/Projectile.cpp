@@ -5,9 +5,7 @@
 
 Projectile::Projectile(const ProjectileData &data, Level &level, Vec2 startPos,
                        Creature &source, GameObject &target)
-    : GameObject(level), source(&source), target(&target), data(&data) {
-  assert(&data && "No data supplied?");
-  assert(&target && "No target supplied?");
+    : GameObject(level), target(&target), source(&source), data(&data) {
   setPos(startPos);
   targetPos = target.getPos();
 

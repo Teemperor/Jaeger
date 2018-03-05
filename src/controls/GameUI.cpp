@@ -47,7 +47,7 @@ void GameUI::draw(sf::RenderTarget &target, float time) {
     target.draw(StatusBackground);
     target.draw(HealthBarStart);
     for (int i = 0; i < Barlength; ++i) {
-      HealthBarMid.setPosition({i, 0});
+      HealthBarMid.setPosition({(float) i, 0});
       target.draw(HealthBarMid);
     }
   }
