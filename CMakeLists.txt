@@ -93,7 +93,7 @@ set(SOURCE_FILES
     src/TilePos.cpp
     src/Inventory.cpp
     src/Inventory.h
-)
+        src/gamedata/RandomRange.cpp src/gamedata/RandomRange.h)
 add_library(argos_core ${SOURCE_FILES})
 target_link_libraries(argos_core ${SFML_LIBRARIES})
 

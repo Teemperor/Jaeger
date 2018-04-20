@@ -4,6 +4,7 @@
 #include <cassert>
 #include <vector>
 #include <functional>
+#include <gamedata/RandomRange.h>
 
 class Creature;
 
@@ -62,12 +63,13 @@ class AppliedSpellEffect {
   const SpellEffect *E = nullptr;
   Creature *Caster = nullptr;
   bool HasStarted = false;
-  SpellEffect::StrengthUnit Strength = 1;
+  unsigned Strength;
   unsigned DurationLeft = 1;
   float Time = 1;
 public:
   AppliedSpellEffect() {}
-  explicit AppliedSpellEffect(const SpellEffect &E, Creature *C, unsigned Duration) : E(&E), Caster(C) {
+  explicit AppliedSpellEffect(const SpellEffect &E, Creature *C, unsigned Strength, unsigned Duration)
+      : E(&E), Caster(C), Strength(Strength), DurationLeft(Duration) {
   }
 
   void update(Creature *Target, float dTime) {

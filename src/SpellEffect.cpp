@@ -5,7 +5,8 @@
 SpellEffect::SpellEffect(std::string ID, std::string Name,
                          std::function<void (Creature*, Creature *, StrengthUnit)> effectUpdate,
                          StrengthUnit MinStrength, StrengthUnit MaxStrength)
-    : ID(ID), name(Name), effectUpdate(effectUpdate), MinStrength(MinStrength), MaxStrength(MaxStrength)
+    : ID(ID), name(Name), effectUpdate(effectUpdate), MinStrength(MinStrength),
+      MaxStrength(MaxStrength)
 {
 }
 
@@ -13,8 +14,8 @@ SpellEffect::SpellEffect(std::string ID, std::string Name,
                          std::function<void(Creature *, Creature *, StrengthUnit)> effectStart,
                          std::function<void(Creature *, Creature *, StrengthUnit)> effectEnd,
                          StrengthUnit MinStrength, StrengthUnit MaxStrength)
-    : ID(ID), name(Name), effectStart(effectStart), effectEnd(effectEnd), MinStrength(MinStrength),
-      MaxStrength(MaxStrength)
+    : ID(ID), name(Name), effectStart(effectStart), effectEnd(effectEnd),
+      MinStrength(MinStrength), MaxStrength(MaxStrength)
 {
 }
 

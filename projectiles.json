@@ -1,6 +1,6 @@
 {
   "projectiles" : [
-    { "id" : "wood_arrow", "sprite" : "wood_arrow", "effect" : "damage"},
-    { "id" : "magic_ball_purple", "sprite" : "magic_ball_purple", "effect" : "switchPos"}
+    { "id" : "wood_arrow", "sprite" : "wood_arrow", "effect" : "damage", "effectStr" : "20:50"},
+    { "id" : "magic_ball_purple", "sprite" : "magic_ball_purple", "effect" : "switchPos", "effectStr" : "1"}
   ]
 }

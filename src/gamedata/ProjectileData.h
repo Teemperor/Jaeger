@@ -8,12 +8,12 @@
 class ProjectileData {
   sf::Sprite sprite_;
   const SpellEffect &hitEffect_;
-  unsigned strength = 0;
-  unsigned duration = 0;
+  mutable RandomRange strength;
+  mutable RandomRange duration;
 
 public:
   ProjectileData(const sf::Sprite &sprite, const SpellEffect &hitEffect,
-                 unsigned effectStrength, unsigned effectDuration);
+                 RandomRange effectStrength, RandomRange effectDuration);
 
   const sf::Sprite &getSprite() const { return sprite_; }
 

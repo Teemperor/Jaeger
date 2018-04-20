@@ -19,4 +19,5 @@ function(make_unittest)
 endfunction()
 
 make_unittest(NAME DummyTest)
+make_unittest(NAME RandomRangeTest)
 make_unittest(NAME AttributeTest)

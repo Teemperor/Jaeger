@@ -76,8 +76,15 @@ void GameData::parseProjectileData(const std::string &path) {
 
     sf::Sprite sprite = getSprite(proj["sprite"]);
     std::string effectName = proj["effect"];
-    unsigned effectStrength = proj["effectStr"];
-    unsigned effectDuration = proj["effectDuration"];
+    std::string str = proj["effectStr"];
+    std::string dur;
+    if (proj.find("effectDuration") == proj.end()) {
+      dur = "1";
+    } else {
+      dur = proj["effectDuration"];
+    }
+    RandomRange effectStrength(str);
+    RandomRange effectDuration(dur);
     const SpellEffect &E = SpellEffects::getByID(effectName);
     Projectiles[id] = new ProjectileData(sprite, E, effectStrength, effectDuration);
   }
