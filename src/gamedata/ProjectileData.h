@@ -8,9 +8,12 @@
 class ProjectileData {
   sf::Sprite sprite_;
   const SpellEffect &hitEffect_;
+  unsigned strength = 0;
+  unsigned duration = 0;
 
 public:
-  ProjectileData(const sf::Sprite &sprite, const SpellEffect &hitEffect);
+  ProjectileData(const sf::Sprite &sprite, const SpellEffect &hitEffect,
+                 unsigned effectStrength, unsigned effectDuration);
 
   const sf::Sprite &getSprite() const { return sprite_; }
 

@@ -21,7 +21,7 @@ int main() {
   /** Prepare the window */
   assert(!sf::VideoMode::getFullscreenModes().empty());
   const sf::VideoMode &Mode = sf::VideoMode::getFullscreenModes().front();
-  sf::RenderWindow Window(Mode, "Test", sf::Style::Fullscreen);
+  sf::RenderWindow Window(Mode, "Test", sf::Style::Default);
 
   Window.setFramerateLimit(60);
 
