@@ -2,6 +2,7 @@
 #define ARGOS_LEVELGEN_H
 
 #include "Level.h"
+#include "TileRect.h"
 
 #include <Perlin2D.h>
 #include <random>
@@ -15,7 +16,9 @@ class LevelGen {
   void make_tree(int x, int y, bool force = false);
   void make_bush(int x, int y, float random);
 
-  void make_house(int x, int y, int w, int h, int depth);
+  void make_house(TileRect A, int depth);
+
+  void generate_settlements();
 
   void floor(int x, int y, std::string tileName);
   void build(int x, int y, std::string tileName);
@@ -31,15 +34,27 @@ class LevelGen {
 
   void generate_overworld();
 
+  bool generate_settlement(TileRect Area, int limit = 3);
+
   void generate_house();
 
   enum TileCompare {
     CMP_S, // Same group
-    CMP_D, // DIfferent group
+    CMP_D, // Different group
     CMP_A  // all groups
   };
   bool hasSurrounding(int x, int y, const std::string &group,
                       std::array<TileCompare, 8> surrounding);
+
+  bool isFree(TileRect T) {
+    for (int x = T.getX(); x <= T.getRightX(); ++x) {
+      for (int y = T.getY(); y <= T.getLowerY(); ++y) {
+        if (!level->get(x, y).passable())
+          return false;
+      }
+    }
+    return true;
+  }
 
 public:
   struct Connection {

@@ -42,7 +42,11 @@ void LevelGen::make_bush(int x, int y, float random) {
   level->getBuilding(x, y).setData(data->tile(tileName));
 }
 
-void LevelGen::make_house(int x, int y, int w, int h, int depth) {
+void LevelGen::make_house(TileRect A, int depth) {
+  int x = A.getX();
+  int y = A.getY();
+  int w = A.getW();
+  int h = A.getH();
   for (int ix = x; ix < x + w; ix++) {
     for (int iy = y + 1; iy < y + h; iy++) {
       if (ix == x) {
@@ -79,6 +83,7 @@ void LevelGen::make_house(int x, int y, int w, int h, int depth) {
   int doorY = y + h - 1;
   floor(doorX, doorY, "sand_wall_lower_mid_free");
   build(doorX, doorY, "door_open");
+
   openConnections.push_back(
       {Level::Type::House, TilePos(*level, doorX, doorY)});
 
@@ -260,27 +265,7 @@ void LevelGen::generate_overworld() {
     }
   }
 
-  for(int i = 0; i < 300; i++) {
-    int x1 = static_cast<int>(dis(gen) * w);
-    int y1 = static_cast<int>(dis(gen) * h);
-    int x2 = static_cast<int>(x1 + dis(gen) * 20 + 7);
-    int y2 = static_cast<int>(y1 + dis(gen) * 30 + 7);
-
-    bool isFree = true;
-    for (int x = x1; x <= x2; ++x) {
-      for (int y = y1; y <= y2; ++y) {
-        if (!level->passable(TilePos(x, y))) {
-          isFree = false;
-          x = x2 + 1;
-          break;
-        }
-      }
-    }
-    if (!isFree)
-      continue;
-
-    make_house(x1, y1, 7, 7, 3);
-  }
+  generate_settlements();
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -432,4 +417,46 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type) {
   world.addLevel(level);
 
   return level;
+}
+
+bool LevelGen::generate_settlement(TileRect Area, int limit) {
+  if (!isFree(Area))
+    return false;
+
+  if (limit <= 0)
+    return false;
+
+  make_house(Area, 3);
+
+  --limit;
+  if(dis(gen) < 0.8f) {
+    generate_settlement(Area.moveX(-8), limit);
+  }
+  if(dis(gen) < 0.8f) {
+    generate_settlement(Area.moveX(+8), limit);
+  }
+  if(dis(gen) < 0.8f) {
+    generate_settlement(Area.moveY(-8), limit);
+  }
+  if(dis(gen) < 0.8f) {
+    generate_settlement(Area.moveY(+8), limit);
+  }
+  return true;
+}
+
+void LevelGen::generate_settlements() {
+  int Count = 5;
+  for(int i = 0; i < 4000; i++) {
+    if (Count == 0)
+      break;
+    int x = static_cast<int>(dis(gen) * level->getWidth());
+    int y = static_cast<int>(dis(gen) * level->getHeight());
+    int w = 7;
+    int h = 7;
+
+    if (generate_settlement(TileRect(x, y, w, h))) {
+      --Count;
+    }
+  }
+
 }
