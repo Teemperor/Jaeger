@@ -103,6 +103,10 @@ void LevelGen::build(int x, int y, std::string tileName) {
   level->getBuilding(x, y).setData(data->tile(tileName));
 }
 
+void LevelGen::build2(int x, int y, std::string tileName) {
+  level->getBuilding2(x, y).setData(data->tile(tileName));
+}
+
 void LevelGen::overlay(int x, int y, std::string tileName) {
   level->getOverlay(x, y).setData(data->tile(tileName));
 }
@@ -245,6 +249,8 @@ void LevelGen::generate_overworld() {
     }
   }
 
+  generate_settlements();
+
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
       float vegetation = getVegetation(x, y);
@@ -265,7 +271,6 @@ void LevelGen::generate_overworld() {
     }
   }
 
-  generate_settlements();
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -426,26 +431,58 @@ bool LevelGen::generate_settlement(TileRect Area, int limit) {
   if (limit <= 0)
     return false;
 
-  make_house(Area, 3);
+  auto UsedArea = Area.resize(-1, -1);
+  if (Area.biggerThan(3, 4))
+    make_house(UsedArea, 2);
+  else {
+    make_floor(UsedArea, "earth");
+
+    UsedArea = UsedArea.resize(0, -1);
+    for (int x = UsedArea.getX(); x <= UsedArea.getRightX(); ++x) {
+      for (int y = UsedArea.getY(); y <= UsedArea.getLowerY(); ++y) {
+        build2(x, y, "corn");
+      }
+    }
+  }
 
   --limit;
-  if(dis(gen) < 0.8f) {
-    generate_settlement(Area.moveX(-8), limit);
-  }
-  if(dis(gen) < 0.8f) {
-    generate_settlement(Area.moveX(+8), limit);
-  }
-  if(dis(gen) < 0.8f) {
-    generate_settlement(Area.moveY(-8), limit);
-  }
-  if(dis(gen) < 0.8f) {
-    generate_settlement(Area.moveY(+8), limit);
+
+  std::vector<std::pair< int, int> > Offsets = {
+      std::make_pair(-1, 0),
+      std::make_pair( 1, 0),
+      std::make_pair( 0, 1),
+      std::make_pair( 0,-1),
+  };
+
+  for (auto O : Offsets) {
+    if (dis(gen) < 0.6f)
+      continue;
+    for (int Try = 0; Try < 5; ++Try) {
+      int NewW = static_cast<int>(dis(gen) * 4 + 3);
+      int NewH = static_cast<int>(dis(gen) * 4 + 3);
+      TileRect New = Area;
+      New.setW(NewW);
+      New.setH(NewH);
+
+      if (O.first == -1)
+        New = New.moveX(-NewW - 1);
+      else if (O.first == 1)
+        New = New.moveX(Area.getW() + 1);
+
+      if (O.second == -1)
+        New = New.moveY(-NewH - 1);
+      else if (O.second == 1)
+        New = New.moveY(Area.getH() + 1);
+
+      if (generate_settlement(New, limit))
+        break;
+    }
   }
   return true;
 }
 
 void LevelGen::generate_settlements() {
-  int Count = 5;
+  int Count = 15;
   for(int i = 0; i < 4000; i++) {
     if (Count == 0)
       break;
@@ -459,4 +496,28 @@ void LevelGen::generate_settlements() {
     }
   }
 
+}
+
+void LevelGen::make_floor(TileRect A, std::string Prefix) {
+  Prefix += "_";
+
+  build(A.getX(), A.getY(), Prefix + "tl");
+  build(A.getX(), A.getLowerY(), Prefix + "bl");
+  build(A.getRightX(), A.getY(), Prefix + "tr");
+  build(A.getRightX(), A.getLowerY(), Prefix + "br");
+
+  for (int x = A.getX() + 1; x < A.getRightX(); ++x) {
+    build(x, A.getY(), Prefix + "t");
+    build(x, A.getLowerY(), Prefix + "b");
+  }
+  for (int y = A.getY() + 1; y < A.getLowerY(); ++y) {
+    build(A.getX(), y, Prefix + "l");
+    build(A.getRightX(), y, Prefix + "r");
+  }
+
+  for (int x = A.getX() + 1; x < A.getRightX(); ++x) {
+    for (int y = A.getY() + 1; y < A.getLowerY(); ++y) {
+      build(x, y, Prefix + "c");
+    }
+  }
 }

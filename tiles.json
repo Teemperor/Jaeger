@@ -3,6 +3,18 @@
     { "id" : "void", "passable" : false, "sprites" : []},
     { "id" : "placeholder", "passable" : true, "sprites" : []},
 
+    { "id" : "earth_tl", "passable" : true, "sprites" : ["earth_tl"]},
+    { "id" : "earth_t", "passable" : true, "sprites" : ["earth_t"]},
+    { "id" : "earth_tr", "passable" : true, "sprites" : ["earth_tr"]},
+    { "id" : "earth_l", "passable" : true, "sprites" : ["earth_l"]},
+    { "id" : "earth_c", "passable" : true, "sprites" : ["earth_c"]},
+    { "id" : "earth_r", "passable" : true, "sprites" : ["earth_r"]},
+    { "id" : "earth_bl", "passable" : true, "sprites" : ["earth_bl"]},
+    { "id" : "earth_b", "passable" : true, "sprites" : ["earth_b"]},
+    { "id" : "earth_br", "passable" : true, "sprites" : ["earth_br"]},
+
+    { "id" : "corn", "group" : "corn", "passable" : true, "sprites" : ["corn1", "corn2", "corn3", "corn4"]},
+
     { "id" : "grass", "group" : "grass", "passable" : true, "sprites" : ["grass1", "grass2"]},
     { "id" : "fireplace", "animation" : 250, "passable" : false, "sprites" : ["fireplace1", "fireplace2"]},
 

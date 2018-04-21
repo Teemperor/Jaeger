@@ -16,12 +16,15 @@ class LevelGen {
   void make_tree(int x, int y, bool force = false);
   void make_bush(int x, int y, float random);
 
+  void make_floor(TileRect A, std::string Prefix);
+
   void make_house(TileRect A, int depth);
 
   void generate_settlements();
 
   void floor(int x, int y, std::string tileName);
   void build(int x, int y, std::string tileName);
+  void build2(int x, int y, std::string tileName);
   void overlay(int x, int y, std::string tileName);
 
   Perlin2D heightPerlin;
@@ -49,6 +52,8 @@ class LevelGen {
   bool isFree(TileRect T) {
     for (int x = T.getX(); x <= T.getRightX(); ++x) {
       for (int y = T.getY(); y <= T.getLowerY(); ++y) {
+        if (!level->getBuilding(x, y).empty())
+          return false;
         if (!level->get(x, y).passable())
           return false;
       }

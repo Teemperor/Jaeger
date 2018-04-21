@@ -6,6 +6,7 @@ Level::Level(World &world, Level::Type t, int w, int h, GameData &data)
   Tile defaultTile(data.tile("void"));
   FloorTiles = TileMap<Tile>(w, h, defaultTile);
   BuildingTiles = TileMap<Tile>(w, h, defaultTile);
+  BuildingTiles2 = TileMap<Tile>(w, h, defaultTile);
   OverlayTiles = TileMap<Tile>(w, h, defaultTile);
 }
 
@@ -52,6 +53,13 @@ void Level::render(sf::RenderTarget &target, sf::Vector2f center) {
       BuildingTiles.get(x, y).render(*this, target, x, y);
     }
   }
+
+  for (int x = ulx; x <= brx + 1; x++) {
+    for (int y = uly; y <= bry + 1; y++) {
+      BuildingTiles2.get(x, y).render(*this, target, x, y);
+    }
+  }
+
 
   for (GameObject *o : Objects)
     o->render(target);

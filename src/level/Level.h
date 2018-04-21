@@ -17,6 +17,7 @@ class Level {
 
   TileMap<Tile> FloorTiles;
   TileMap<Tile> BuildingTiles;
+  TileMap<Tile> BuildingTiles2;
   // Renders the objects
   TileMap<Tile> OverlayTiles;
   World &world_;
@@ -65,6 +66,8 @@ public:
       return false;
     if (!getBuilding(x, y).passable())
       return false;
+    if (!getBuilding2(x, y).passable())
+      return false;
     if (!get(x, y).passable())
       return false;
     return true;
@@ -79,6 +82,8 @@ public:
       return false;
     if (!getBuilding(x, y).passable())
       return false;
+    if (!getBuilding2(x, y).passable())
+      return false;
     if (!get(x, y).passable())
       return false;
     return true;
@@ -92,6 +97,7 @@ public:
 
   Tile &get(int x, int y) { return FloorTiles.get(x, y); }
   Tile &getBuilding(int x, int y) { return BuildingTiles.get(x, y); }
+  Tile &getBuilding2(int x, int y) { return BuildingTiles2.get(x, y); }
   Tile &getOverlay(int x, int y) { return OverlayTiles.get(x, y); }
 
   Type getType() const { return type; }
