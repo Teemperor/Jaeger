@@ -9,21 +9,29 @@ Projectile::Projectile(const ProjectileData &data, Level &level, Vec2 startPos,
   setPos(startPos);
   targetPos = target.getPos();
 
-  Vec2 toTarget = targetPos - getPos();
-  rotation = std::atan2(toTarget.getY(), toTarget.getX());
+  ToTarget = targetPos - getPos();
+  rotation = std::atan2(ToTarget.getY(), ToTarget.getX());
+  ToTarget = Vec2(std::cos(rotation), std::sin(rotation));
 }
 
 void Projectile::update(float dtime) {
-  Vec2 toTarget = targetPos - getPos();
-  float direction = std::atan2(toTarget.getY(), toTarget.getX());
-  toTarget = Vec2(std::cos(direction), std::sin(direction));
-  setPos(getPos() + (toTarget * dtime * data->getSpeed()));
-  if (targetPos.distance(getPos()) < 5) {
+  setPos(getPos() + (ToTarget * dtime * data->getSpeed()));
+
+  float HitDistance = 16;
+  float newDistance = targetPos.distance(getPos());
+
+  if (target->getPos().distance(getPos()) < HitDistance) {
+    ShouldBeRemoved_ = true;
     if (auto C = dynamic_cast<Creature *>(target)) {
       C->addEffect(data->getEffect(source, C));
     }
+  }
+
+  if (newDistance - 0.1f > distanceToTarget) {
     ShouldBeRemoved_ = true;
   }
+
+  distanceToTarget = newDistance;
 }
 
 void Projectile::render(sf::RenderTarget &target) {

@@ -11,8 +11,10 @@ class Projectile : public GameObject {
   GameObject *target = nullptr;
   Creature *source = nullptr;
   Vec2 targetPos;
+  Vec2 ToTarget;
   const ProjectileData *data;
   float rotation = 0;
+  float distanceToTarget = 100000;
 
 public:
   Projectile(const ProjectileData &data, Level &level, Vec2 startPos,
