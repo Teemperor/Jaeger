@@ -92,8 +92,14 @@ void GameData::parseProjectileData(const std::string &path) {
     RandomRange effectStrength(str);
     RandomRange effectDuration(dur);
     const SpellEffect &E = SpellEffects::getByID(effectName);
-    Projectiles[id] =
-        new ProjectileData(sprite, E, effectStrength, effectDuration);
+
+    auto P = new ProjectileData(sprite, E, effectStrength, effectDuration);
+
+    if (proj.find("speed") != proj.end()) {
+      P->setSpeed(proj["speed"]);
+    }
+
+    Projectiles[id] = P;
   }
 }
 
@@ -125,7 +131,7 @@ void GameData::parseTileData(const std::string &path) {
 
     if (tile.find("sprites") != tile.end()) {
       auto sprites = tile["sprites"];
-      for (auto sprite : sprites)
+      for (const auto &sprite : sprites)
         Tiles[id]->addSprite(getSprite(sprite));
     } else {
       Tiles[id]->addSprite(getSprite(id));

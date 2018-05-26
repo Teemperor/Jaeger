@@ -10,6 +10,7 @@ class ProjectileData {
   const SpellEffect &hitEffect_;
   mutable RandomRange strength;
   mutable RandomRange duration;
+  float Speed = 160;
 
 public:
   ProjectileData(const sf::Sprite &sprite, const SpellEffect &hitEffect,
@@ -19,7 +20,9 @@ public:
 
   float getSpriteRotationSpeed() const { return 0; }
 
-  float getSpeed() const { return 160; }
+  void setSpeed(float S) { Speed = S; }
+
+  float getSpeed() const { return Speed; }
 
   AppliedSpellEffect getEffect(Creature *Caster, Creature *Target) const;
 };
