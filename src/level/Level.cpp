@@ -69,3 +69,26 @@ void Level::render(sf::RenderTarget &target, sf::Vector2f center) {
     }
   }
 }
+
+void Level::update(float dtime) {
+  UpdateGuard guard(updating);
+  time += dtime;
+  for (auto I = Objects.begin(); I != Objects.end();) {
+    (*I)->update(dtime);
+    if ((*I)->shouldBeRemoved()) {
+      delete *I;
+      I = Objects.erase(I);
+    } else {
+      ++I;
+    }
+  }
+
+  for (auto &o : NewObjects)
+    Objects.push_back(o);
+  NewObjects.clear();
+
+  std::sort(Objects.begin(), Objects.end(),
+      [](const GameObject *O1, const GameObject *O2) {
+    return O1->getPos().getY() < O2->getPos().getY();
+  });
+}

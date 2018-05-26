@@ -106,22 +106,7 @@ public:
 
   unsigned timeMillis() { return static_cast<unsigned>(time * 1000); }
 
-  void update(float dtime) {
-    UpdateGuard guard(updating);
-    time += dtime;
-    for (auto I = Objects.begin(); I != Objects.end();) {
-      (*I)->update(dtime);
-      if ((*I)->shouldBeRemoved()) {
-        delete *I;
-        I = Objects.erase(I);
-      } else {
-        ++I;
-      }
-    }
-    for (auto &o : NewObjects)
-      Objects.push_back(o);
-    NewObjects.clear();
-  }
+  void update(float dtime);
 
   std::vector<GameObject *> &getObjects() { return Objects; }
 
