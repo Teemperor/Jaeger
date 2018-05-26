@@ -3,15 +3,9 @@ project(mambo)
 
 enable_testing()
 
-find_package(SFML COMPONENTS graphics window system)
+find_package(SFML COMPONENTS graphics window system REQUIRED)
 
-if(NOT SFML_FOUND)
-  include_directories($ENV{SFML_INC})
-  link_directories($ENV{SFML_LIB})
-  set(SFML_LIBRARIES sfml-audio sfml-graphics sfml-window sfml-system)
-else()
-  include_directories(${SFML_INCLUDE_DIR})
-endif()
+set(SFML_LIBRARIES sfml-audio sfml-graphics sfml-window sfml-system)
 
 set(CMAKE_CXX_STANDARD 11)
 
