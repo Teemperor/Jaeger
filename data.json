@@ -95,6 +95,17 @@
     { "id" : "earth_b" ,  "tile" : [8, 11] },
     { "id" : "earth_br" , "tile" : [9, 11] },
 
+
+    { "id" : "cave_floor1" , "tile" : [44, 51] },
+    { "id" : "cave_floor2" , "tile" : [45, 51] },
+    { "id" : "cave_floor3" , "tile" : [46, 51] },
+    { "id" : "cave_floor4" , "tile" : [47, 51] },
+    { "id" : "cave_floor5" , "tile" : [48, 51] },
+
+    { "id" : "railtracks_vertical1" , "tile" : [43, 19] },
+    { "id" : "railtracks_vertical2" , "tile" : [44, 19] },
+    { "id" : "railtracks_end_bottom" , "tile" : [41, 22] },
+
     { "id" : "corn1" , "tile" : [0, 12] },
     { "id" : "corn2" , "tile" : [1, 12] },
     { "id" : "corn3" , "tile" : [2, 12] },

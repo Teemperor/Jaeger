@@ -29,9 +29,31 @@ public:
     return Inv;
   }
 
+  bool equipped(const Item &I) const {
+    if (I.empty())
+      return false;
+    return equipped_[I.kind()] == I;
+  }
+
   void setPlayerControls(PlayerControls *c) override {
     Controlable::setPlayerControls(c);
     c->setControlledCharacter(this);
+  }
+
+  void addItem(const Item &I) {
+    if (Inv.add(I)) {
+      if (equipped_[I.kind()].empty()) {
+        equipItem(I);
+      }
+    }
+  }
+
+  void updateEquipped() {
+    for (Item &I : equipped_) {
+      if (!Inv.contains(I)) {
+        I = Item();
+      }
+    }
   }
 
 private:

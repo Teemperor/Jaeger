@@ -18,7 +18,9 @@ class LevelGen {
 
   void make_floor(TileRect A, std::string Prefix);
 
-  void make_house(TileRect A, int depth);
+  void make_house(TileRect A, int depth, Level::Type ConnectsTo = Level::Type::House);
+
+  void make_mine(int x, int y);
 
   void generate_settlements();
 
@@ -40,6 +42,8 @@ class LevelGen {
   bool generate_settlement(TileRect Area, int limit = 3);
 
   void generate_house();
+
+  void generate_mine();
 
   enum TileCompare {
     CMP_S, // Same group

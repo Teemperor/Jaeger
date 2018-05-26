@@ -24,12 +24,15 @@ private:
   int value_ = 0;
   double cooldown_ = 1;
   sf::Sprite sprite_;
+  sf::Sprite icon_;
   std::string projectileName_;
   const ProjectileData *projectileData_ = nullptr;
   Kind kind_;
 
+  uint64_t IdCounter = 0;
+
 public:
-  ItemData(Kind kind) : kind_(kind) {}
+  explicit ItemData(Kind kind) : kind_(kind) {}
 
   void init(GameData &data);
 
@@ -37,6 +40,9 @@ public:
 
   const sf::Sprite &sprite() const { return sprite_; }
   void setSprite(const sf::Sprite &sprite) { sprite_ = sprite; }
+
+  const sf::Sprite &icon() const { return icon_; }
+  void setIcon(const sf::Sprite &icon) { icon_ = icon; }
 
   double getCooldown() const { return cooldown_; }
 

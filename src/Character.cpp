@@ -17,14 +17,27 @@ Character::Character(Level &level, Vec2 pos, BodyType type)
   setPos(pos);
   equipped_.resize(ItemData::KindLimit);
 
-  equipItem(Item(*level.getData().item("leather_pants")));
-  equipItem(Item(*level.getData().item("leather_armor")));
-  equipItem(Item(*level.getData().item("steel_buckler")));
-  equipItem(Item(*level.getData().item("red_steel_helmet")));
+  auto &W = level.getWorld();
+  auto &ID = level.getData();
+  addItem(Item(*ID.item("leather_pants"), W));
+  addItem(Item(*ID.item("leather_armor"), W));
+  addItem(Item(*ID.item("steel_buckler"), W));
+  addItem(Item(*ID.item("red_steel_helmet"), W));
   if (rand() % 2)
-    equipItem(Item(*level.getData().item("wood_bow")));
+    addItem(Item(*ID.item("wood_bow"), W));
   else
-    equipItem(Item(*level.getData().item("magic_staff")));
+    addItem(Item(*ID.item("magic_staff"), W));
+
+  addItem(Item(*ID.item("steel_buckler"), W));
+  addItem(Item(*ID.item("steel_buckler"), W));
+  addItem(Item(*ID.item("steel_buckler"), W));
+  addItem(Item(*ID.item("steel_buckler"), W));
+  addItem(Item(*ID.item("steel_buckler"), W));
+  addItem(Item(*ID.item("steel_buckler"), W));
+  addItem(Item(*ID.item("steel_buckler"), W));
+  addItem(Item(*ID.item("steel_buckler"), W));
+  addItem(Item(*ID.item("steel_buckler"), W));
+  addItem(Item(*ID.item("steel_buckler"), W));
 }
 
 void Character::setBodyType(Character::BodyType t) {

@@ -12,9 +12,15 @@ class World {
   GameData &data_;
   std::vector<std::pair<GameObject *, TilePos>> ToTeleport;
 
+  uint64_t ItemId;
+
 public:
   World(GameData &d);
   void update(float dtime);
+
+  uint64_t getFreshItemID() {
+    return ++ItemId;
+  }
 
   void queryTeleport(GameObject *o, TilePos target) {
     ToTeleport.push_back(std::make_pair(o, target));

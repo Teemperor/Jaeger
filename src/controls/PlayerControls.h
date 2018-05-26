@@ -17,7 +17,7 @@ class PlayerControls {
   Character *ControlledChar = nullptr;
 
 public:
-  PlayerControls(int player) : player_(player) {}
+  explicit PlayerControls(int player) : player_(player) {}
 
   void update() {
     moveX = moveY = 0;

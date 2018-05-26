@@ -31,7 +31,7 @@ class Level {
   };
 
 public:
-  enum class Type { Overworld, Cave, House };
+  enum class Type { Overworld, Mine, House };
 
 private:
   Type type;

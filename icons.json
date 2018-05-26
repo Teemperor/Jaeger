@@ -1,6 +1,15 @@
 {
-    "textures" :
-    [
-        { "id" : "default" , "tile" : [7, 8] },
-    ]
+  "textures" :
+  [
+    { "id" : "glow_icon" , "tile" : [3, 0] },
+    { "id" : "select_icon" , "tile" : [6, 1] },
+
+    { "id" : "icon_wood_bow" , "tile" : [1, 11] },
+    { "id" : "icon_leather_pants" , "tile" : [0, 14] },
+    { "id" : "icon_leather_armor" , "tile" : [2, 13] },
+    { "id" : "icon_steel_buckler" , "tile" : [7, 12] },
+    { "id" : "icon_red_steel_helmet" , "tile" : [1, 11] },
+    { "id" : "icon_magic_staff" , "tile" : [7, 9] },
+    { "id" : "icon_corn" , "tile" : [2, 0] }
+  ]
 }

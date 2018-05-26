@@ -2,7 +2,11 @@
 
 #include "level/Level.h"
 
-Item::Item(ItemData &Data) : Data_(&Data) {}
+#include <level/World.h>
+
+Item::Item(ItemData &Data, World& W) : Data_(&Data) {
+  Id_ = W.getFreshItemID();
+}
 
 bool Item::available(Level &level) { return level.getTime() > nextAvailable; }
 

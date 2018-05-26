@@ -33,14 +33,13 @@ public:
       delete s.second;
   }
 
-  const sf::Sprite &getSprite(const std::string &id) {
+  sf::Sprite getSprite(const std::string &id) {
     for (TextureAtlas *ts : TextureAtlas_) {
       if (ts->contains(id)) {
         return (*ts)[id];
       }
     }
-    std::cerr << "getSprite(" << id << ")" << std::endl;
-    assert(false);
+    return sf::Sprite();
   }
 
   TileData *tile(const std::string &id) {

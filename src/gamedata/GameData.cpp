@@ -61,6 +61,12 @@ void GameData::parseItemData(const std::string &path) {
 
     auto sprite = item["sprite"];
     Items[id]->setSprite(getSprite(sprite));
+
+    if (item.find("icon") != item.end()) {
+      Items[id]->setIcon(getSprite(item["icon"]));
+    } else {
+      Items[id]->setIcon(getSprite("icon_" + id));
+    }
   }
 }
 

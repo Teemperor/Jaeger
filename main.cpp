@@ -37,12 +37,12 @@ int main() {
 
   Faction playerFaction;
 
-  Character *player1 = new Character(level, Vec2(49 * 16, 46 * 16));
+  Character *player1 = new Character(level, Vec2(48 * 16, 52 * 16));
   player1->setFaction(&playerFaction);
-  Character *player2 = new Character(level,Vec2(49 * 16, 47 * 16));
+  Character *player2 = new Character(level,Vec2(48 * 16, 51 * 16));
   player2->setFaction(&playerFaction);
 
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 1; i++) {
     Vec2 pos = Vec2(200 + rand() % 700, 200 + rand() % 700);
     if (level.passable(pos))
       new Character(level, Vec2(TilePos(pos)));
@@ -84,6 +84,9 @@ int main() {
         view = Window.getView();
         view.zoom(0.3f);
       }
+      gui.handleEvent(event);
+      gui2.handleEvent(event);
+
     }
     viewCenter.x = player1->getPos().getX();
     viewCenter.y = player1->getPos().getY();

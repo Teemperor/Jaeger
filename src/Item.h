@@ -4,15 +4,17 @@
 #include "gamedata/ItemData.h"
 
 class Level;
+class World;
 
 class Item {
   ItemData *Data_ = nullptr;
+  uint64_t Id_ = 0;
 
   double nextAvailable = 0;
 
 public:
-  Item(ItemData &Data);
-  Item() {}
+  explicit Item(ItemData &Data, World& W);
+  Item() = default;
 
   bool empty() const { return Data_ == nullptr; }
 
@@ -20,7 +22,18 @@ public:
 
   bool tryUse(Level &level);
 
+  bool operator==(const Item& I) const {
+    if (Id_ == 0)
+      return false;
+    return I.Id_ == Id_;
+  }
+
+  bool operator!=(const Item& I) const {
+    return !(I == *this);
+  }
+
   const sf::Sprite &sprite() { return Data_->sprite(); }
+  const sf::Sprite &icon() { return Data_->icon(); }
 
   ItemData::Kind kind() const { return Data_->kind(); }
 

@@ -42,7 +42,7 @@ void LevelGen::make_bush(int x, int y, float random) {
   level->getBuilding(x, y).setData(data->tile(tileName));
 }
 
-void LevelGen::make_house(TileRect A, int depth) {
+void LevelGen::make_house(TileRect A, int depth, Level::Type ConnectsTo) {
   int x = A.getX();
   int y = A.getY();
   int w = A.getW();
@@ -85,7 +85,7 @@ void LevelGen::make_house(TileRect A, int depth) {
   build(doorX, doorY, "door_open");
 
   openConnections.push_back(
-      {Level::Type::House, TilePos(*level, doorX, doorY)});
+      {ConnectsTo, TilePos(*level, doorX, doorY)});
 
   overlay(x, y + h - 1 - depth, "brown_roof_angular_left_lower");
   overlay(x + w - 1, y + h - 1 - depth, "brown_roof_angular_right_lower");
@@ -250,6 +250,8 @@ void LevelGen::generate_overworld() {
   }
 
   generate_settlements();
+
+  make_mine(50, 50);
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -416,6 +418,10 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type) {
     level = new Level(world, type, 12, 15, data);
     generate_house();
     break;
+  case Level::Type::Mine:
+    level = new Level(world, type, 12, 15, data);
+    generate_mine();
+    break;
   default:
     assert(false && "Not implemented level type for generation!");
   }
@@ -517,7 +523,76 @@ void LevelGen::make_floor(TileRect A, std::string Prefix) {
 
   for (int x = A.getX() + 1; x < A.getRightX(); ++x) {
     for (int y = A.getY() + 1; y < A.getLowerY(); ++y) {
-      build(x, y, Prefix + "c");
+      floor(x, y, Prefix + "c");
     }
   }
+}
+
+void LevelGen::make_mine(int x, int y) {
+  TileRect Area(x - 1, y - 3, 3, 9);
+  if (!isFree(Area))
+    return;
+  make_floor(Area.resize(-1, -4).moveY(1), "earth");
+  make_house(Area.resize(0, -6), 2, Level::Type::Mine);
+  build(x, y, "railtracks_vertical");
+  build(x, y + 1, "railtracks_vertical");
+  build(x, y + 1, "railtracks_end_bottom");
+}
+
+void LevelGen::generate_mine() {
+  const int w = level->getWidth();
+  const int h = level->getHeight();
+  GameData &data = level->getData();
+
+  int doorX = (w - 1) / 2;
+
+  for (int x = 0; x < w; ++x)
+    for (int y = 0; y < h - 1; ++y)
+      level->get(x, y).setData(data.tile("cave_floor"));
+
+  for (int x = 0; x < w; ++x) {
+    overlay(x, 0, "sand_walltop_horizontal");
+    floor(x, 1, "sand_wall_mid");
+    floor(x, 2, "sand_wall_lower_mid");
+
+    if (x != doorX) {
+      if (x == doorX - 1) {
+        overlay(x, h - 2, "sand_walltop_leftend");
+        overlay(x, h - 1, "sand_wall_right");
+      } else if (x == doorX + 1) {
+        overlay(x, h - 2, "sand_walltop_rightend");
+        overlay(x, h - 1, "sand_wall_left");
+      } else {
+        overlay(x, h - 2, "sand_walltop_horizontal");
+        overlay(x, h - 1, "sand_wall_mid");
+      }
+    }
+
+    if (x && x != w - 1) {
+      if (dis(gen) > 0.9f)
+        build(x, 1, "brown_window_round");
+      if (dis(gen) > 0.7f)
+        build(x, 2, "shelf");
+    }
+  }
+
+  for (int y = 1; y < h - 2; ++y) {
+    overlay(0, y, "sand_walltop_vertical");
+    overlay(w - 1, y, "sand_walltop_vertical");
+
+    if (dis(gen) > 0.8f)
+      build(w - 2, y, "torch_wall_right");
+    if (dis(gen) > 0.7f)
+      build(1, y, "torch_wall_left");
+  }
+  overlay(    0,     0, "sand_walltop_leftup");
+  overlay(w - 1,     0, "sand_walltop_rightup");
+  overlay(    0, h - 2, "sand_walltop_leftbottom");
+  overlay(w - 1, h - 2, "sand_walltop_rightbottom");
+
+  int doorY = h - 1;
+  openConnections.push_back(
+      {Level::Type::Overworld, TilePos(*level, doorX, doorY)});
+  level->get(doorX, doorY).setData(data.tile("cave_floor"));
+  overlay(doorX, doorY, "door_light");
 }

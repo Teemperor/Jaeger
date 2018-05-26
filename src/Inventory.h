@@ -17,6 +17,10 @@ public:
     return false;
   }
 
+  bool contains(Item &I) const {
+    return std::find(Slots.begin(), Slots.end(), I) != Slots.end();
+  }
+
   std::array<Item, 16>::iterator begin() {
     return Slots.begin();
   }

@@ -1,5 +1,6 @@
 texatlas data
 texatlas gui
+texatlas icons
 tiles tiles.json
 items items.json
 projectiles projectiles.json

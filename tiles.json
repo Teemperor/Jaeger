@@ -15,6 +15,11 @@
 
     { "id" : "corn", "group" : "corn", "passable" : true, "sprites" : ["corn1", "corn2", "corn3", "corn4"]},
 
+    { "id" : "railtracks_vertical", "passable" : true, "sprites" : ["railtracks_vertical1", "railtracks_vertical2"]},
+    { "id" : "railtracks_end_bottom", "passable" : true, "sprites" : ["railtracks_end_bottom"]},
+
+    { "id" : "cave_floor", "group" : "grass", "passable" : true, "sprites" : ["cave_floor1", "cave_floor2", "cave_floor3", "cave_floor4", "cave_floor5"]},
+
     { "id" : "grass", "group" : "grass", "passable" : true, "sprites" : ["grass1", "grass2"]},
     { "id" : "fireplace", "animation" : 250, "passable" : false, "sprites" : ["fireplace1", "fireplace2"]},
 

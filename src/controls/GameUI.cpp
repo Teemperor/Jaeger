@@ -25,10 +25,21 @@ GameUI::GameUI(GameData &Data, unsigned PlayerNumber) : controls(PlayerNumber) {
   StaminaBarEnd = Data.getSprite("staminabar_end");
 
   StatusBackground = Data.getSprite("status_background");
+
+  InventoryBackground = Data.getSprite("inventory_background");
+  InventoryBackground.setScale(InventoryScale, InventoryScale);
+
+  EquipGlow = Data.getSprite("glow_icon");
+  EquipGlow.setOrigin(EquipGlow.getLocalBounds().width / 2,
+                      EquipGlow.getLocalBounds().height / 2);
+
+  EquipGlow = Data.getSprite("select_icon");
+  EquipGlow.setOrigin(EquipGlow.getLocalBounds().width / 2,
+                      EquipGlow.getLocalBounds().height / 2);
 }
 
 void GameUI::draw(sf::RenderTarget &target, float time) {
-  controls.update();
+  update();
   if (GameObject *t = controls.getTarget()) {
     float offset = (std::abs(std::sin(time * 10.0f)) * 4.0f);
     combatSelection.setPosition(t->getPos().getX(), t->getPos().getY() - 16 - offset);
@@ -52,5 +63,67 @@ void GameUI::draw(sf::RenderTarget &target, float time) {
     }
   }
 
+  if (InventoryOpen)
+    drawInventory(target, time);
+
   target.setView(ViewBak);
+}
+
+void GameUI::drawInventory(sf::RenderTarget &target, float time) {
+  int InvOffsetX = 100;
+  int InvOffsetY = 100;
+  InventoryBackground.setPosition(InvOffsetX, InvOffsetY);
+  target.draw(InventoryBackground);
+
+  if (Character *C = controls.getControlledCharacter()) {
+    int x = 0;
+    int y = 0;
+    for(Item &I : C->getInventory()) {
+      const float scale = InventoryScale;
+      float CenterX = x * 18 + 5;
+      float CenterY = y * 18 + 5;
+
+
+      if (!I.empty()) {
+        sf::Sprite s = I.icon();
+        s.setOrigin(s.getLocalBounds().width / 2,
+                    s.getLocalBounds().height / 2);
+        s.scale(scale, scale);
+        s.setPosition(InvOffsetX + (CenterX + s.getOrigin().x) * scale,
+                      InvOffsetY + (CenterY + s.getOrigin().y) * scale);
+        target.draw(s);
+      }
+
+      if (C->equipped(I)) {
+        float GlowScale = scale + 0.2f;
+        EquipGlow.setScale(GlowScale, GlowScale);
+        EquipGlow.setPosition(InvOffsetX + (CenterX + EquipGlow.getOrigin().x) * scale,
+                              InvOffsetY + (CenterY + EquipGlow.getOrigin().y) * scale);
+        target.draw(EquipGlow);
+      }
+
+      if (x == InvX && y == InvY) {
+        float GlowScale = scale + 0.2f;
+        SelectGlow.setScale(GlowScale, GlowScale);
+        SelectGlow.setPosition(InvOffsetX + (CenterX + SelectGlow.getOrigin().x) * scale,
+                              InvOffsetY + (CenterY + SelectGlow.getOrigin().y) * scale);
+        target.draw(SelectGlow);
+      }
+
+      ++x;
+      if (x >= 4) {
+        x = 0;
+        ++y;
+      }
+    }
+  }
+}
+
+void GameUI::handleEvent(sf::Event event) {
+  if (event.type == sf::Event::KeyPressed) {
+    const auto KeyCode = event.key.code;
+    if (KeyCode == sf::Keyboard::Tab) {
+      toggleInventory();
+    }
+  }
 }
