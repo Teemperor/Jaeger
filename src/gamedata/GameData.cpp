@@ -1,5 +1,5 @@
-#include <SpellEffect.h>
 #include "GameData.h"
+#include <SpellEffect.h>
 
 void GameData::parseItemData(const std::string &path) {
   nlohmann::json data;
@@ -92,7 +92,8 @@ void GameData::parseProjectileData(const std::string &path) {
     RandomRange effectStrength(str);
     RandomRange effectDuration(dur);
     const SpellEffect &E = SpellEffects::getByID(effectName);
-    Projectiles[id] = new ProjectileData(sprite, E, effectStrength, effectDuration);
+    Projectiles[id] =
+        new ProjectileData(sprite, E, effectStrength, effectDuration);
   }
 }
 

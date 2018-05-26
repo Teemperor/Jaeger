@@ -3,9 +3,9 @@
 
 #include "Controlable.h"
 #include "Creature.h"
+#include "Inventory.h"
 #include "Item.h"
 #include "TilePos.h"
-#include "Inventory.h"
 
 #include <GameObject.h>
 
@@ -25,9 +25,7 @@ public:
 
   void equipItem(const Item &i);
 
-  Inventory &getInventory() {
-    return Inv;
-  }
+  Inventory &getInventory() { return Inv; }
 
   bool equipped(const Item &I) const {
     if (I.empty())
@@ -81,8 +79,7 @@ private:
   void setWalking(bool v);
   static constexpr float WalkSpeed = 45;
   BodyType TheBodyType = BodyType::Pale;
-  sf::Sprite Sprite, TalkingSprite, BubbleSprite, Shadow, Gravestone,
-      Selection;
+  sf::Sprite Sprite, TalkingSprite, BubbleSprite, Shadow, Gravestone, Selection;
   bool Talking = false;
   bool Walking = false;
   bool OldWalkingValue = false;

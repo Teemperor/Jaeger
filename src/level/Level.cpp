@@ -60,7 +60,6 @@ void Level::render(sf::RenderTarget &target, sf::Vector2f center) {
     }
   }
 
-
   for (GameObject *o : Objects)
     o->render(target);
 

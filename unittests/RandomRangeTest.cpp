@@ -1,7 +1,7 @@
 
 
-#include <gamedata/RandomRange.h>
 #include <cassert>
+#include <gamedata/RandomRange.h>
 #include <iostream>
 
 void test(RandomRange R, int Min, int Max) {

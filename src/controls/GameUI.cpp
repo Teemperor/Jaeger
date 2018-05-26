@@ -42,23 +42,23 @@ void GameUI::draw(sf::RenderTarget &target, float time) {
   update();
   if (GameObject *t = controls.getTarget()) {
     float offset = (std::abs(std::sin(time * 10.0f)) * 4.0f);
-    combatSelection.setPosition(t->getPos().getX(), t->getPos().getY() - 16 - offset);
+    combatSelection.setPosition(t->getPos().getX(),
+                                t->getPos().getY() - 16 - offset);
     target.draw(combatSelection);
   }
 
   sf::View ViewBak = target.getView();
   target.setView(target.getDefaultView());
 
-
   if (Character *C = controls.getControlledCharacter()) {
     int MaxBarLenght = 100;
-    int Barlength = (int) (MaxBarLenght * C->percentageHealth());
+    int Barlength = (int)(MaxBarLenght * C->percentageHealth());
 
     float p = C->percentageHealth();
     target.draw(StatusBackground);
     target.draw(HealthBarStart);
     for (int i = 0; i < Barlength; ++i) {
-      HealthBarMid.setPosition({(float) i, 0});
+      HealthBarMid.setPosition({(float)i, 0});
       target.draw(HealthBarMid);
     }
   }
@@ -78,11 +78,10 @@ void GameUI::drawInventory(sf::RenderTarget &target, float time) {
   if (Character *C = controls.getControlledCharacter()) {
     int x = 0;
     int y = 0;
-    for(Item &I : C->getInventory()) {
+    for (Item &I : C->getInventory()) {
       const float scale = InventoryScale;
       float CenterX = x * 18 + 5;
       float CenterY = y * 18 + 5;
-
 
       if (!I.empty()) {
         sf::Sprite s = I.icon();
@@ -97,16 +96,18 @@ void GameUI::drawInventory(sf::RenderTarget &target, float time) {
       if (C->equipped(I)) {
         float GlowScale = scale + 0.2f;
         EquipGlow.setScale(GlowScale, GlowScale);
-        EquipGlow.setPosition(InvOffsetX + (CenterX + EquipGlow.getOrigin().x) * scale,
-                              InvOffsetY + (CenterY + EquipGlow.getOrigin().y) * scale);
+        EquipGlow.setPosition(
+            InvOffsetX + (CenterX + EquipGlow.getOrigin().x) * scale,
+            InvOffsetY + (CenterY + EquipGlow.getOrigin().y) * scale);
         target.draw(EquipGlow);
       }
 
       if (x == InvX && y == InvY) {
         float GlowScale = scale + 0.2f;
         SelectGlow.setScale(GlowScale, GlowScale);
-        SelectGlow.setPosition(InvOffsetX + (CenterX + SelectGlow.getOrigin().x) * scale,
-                              InvOffsetY + (CenterY + SelectGlow.getOrigin().y) * scale);
+        SelectGlow.setPosition(
+            InvOffsetX + (CenterX + SelectGlow.getOrigin().x) * scale,
+            InvOffsetY + (CenterY + SelectGlow.getOrigin().y) * scale);
         target.draw(SelectGlow);
       }
 

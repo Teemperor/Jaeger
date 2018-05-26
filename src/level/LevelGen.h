@@ -18,7 +18,8 @@ class LevelGen {
 
   void make_floor(TileRect A, std::string Prefix);
 
-  void make_house(TileRect A, int depth, Level::Type ConnectsTo = Level::Type::House);
+  void make_house(TileRect A, int depth,
+                  Level::Type ConnectsTo = Level::Type::House);
 
   void make_mine(int x, int y);
 

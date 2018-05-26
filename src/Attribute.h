@@ -1,7 +1,6 @@
 #ifndef ATTRIBUTE_H
 #define ATTRIBUTE_H
 
-
 class Attribute {
 
   int Value = 0;
@@ -11,9 +10,7 @@ class Attribute {
 public:
   Attribute(int Value, int Max);
 
-  void damage(int v) {
-    Modifier -= v;
-  }
+  void damage(int v) { Modifier -= v; }
 
   void restore(int v) {
     if (Modifier < 0) {
@@ -23,16 +20,10 @@ public:
     }
   }
 
-  void setValue(int v) {
-    Value = v;
-  }
+  void setValue(int v) { Value = v; }
 
-  bool isBoosted() const {
-    return Modifier > 0;
-  }
-  bool isDamaged() const {
-    return Modifier < 0;
-  }
+  bool isBoosted() const { return Modifier > 0; }
+  bool isDamaged() const { return Modifier < 0; }
 
   int getValue() const {
     int v = Value + Modifier;
@@ -43,7 +34,6 @@ public:
     }
     return 0;
   }
-
 };
 
 #endif // ATTRIBUTE_H

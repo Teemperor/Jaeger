@@ -1,9 +1,9 @@
 #include "RandomRange.h"
 
-#include <regex>
-#include <iostream>
 #include <cassert>
+#include <iostream>
 #include <random>
+#include <regex>
 
 RandomRange::RandomRange(std::string V) {
   std::regex NumRegex("[0-9]+");
@@ -18,9 +18,7 @@ RandomRange::RandomRange(std::string V) {
       Max = std::atoi(m[2].str().c_str());
     }
   }
-  distribution = std::uniform_int_distribution<int>(Min,Max);
+  distribution = std::uniform_int_distribution<int>(Min, Max);
 }
 
-int RandomRange::get() {
-  return distribution(generator);
-}
+int RandomRange::get() { return distribution(generator); }

@@ -13,7 +13,7 @@ class Item {
   double NextAvailableTime = 0;
 
 public:
-  explicit Item(ItemData &Data, World& W);
+  explicit Item(ItemData &Data, World &W);
   Item() = default;
 
   bool empty() const { return Data == nullptr; }
@@ -22,15 +22,13 @@ public:
 
   bool tryUse(Level &level);
 
-  bool operator==(const Item& I) const {
+  bool operator==(const Item &I) const {
     if (ID == 0)
       return false;
     return I.ID == ID;
   }
 
-  bool operator!=(const Item& I) const {
-    return !(I == *this);
-  }
+  bool operator!=(const Item &I) const { return !(I == *this); }
 
   const sf::Sprite &sprite() { return Data->sprite(); }
   const sf::Sprite &icon() { return Data->icon(); }

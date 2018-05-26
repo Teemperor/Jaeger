@@ -5,8 +5,7 @@
 
 #include <combat/Projectile.h>
 
-Character::Character(Level &level, Vec2 pos, BodyType type)
-    : Creature(level) {
+Character::Character(Level &level, Vec2 pos, BodyType type) : Creature(level) {
   setBodyType(type);
   BubbleSprite = getGameData().getSprite("speech_bubble_exclamation");
   Shadow = getGameData().getSprite("shadow");
@@ -102,14 +101,14 @@ void Character::render(sf::RenderTarget &target) {
     sf::Color c(255, 0, 0, alpha);
     Selection.setColor(c);
     Selection.setPosition(this->getPos().getX() - 12,
-                           this->getPos().getY() - 12);
+                          this->getPos().getY() - 12);
     target.draw(Selection);
   }
 
   int offset = 0;
   if (Walking) {
-    offset = (int)(std::abs(std::sin(
-                       (getLevel().getTime() - WalkingStartTime) * 10)) *
+    offset = (int)(std::abs(std::sin((getLevel().getTime() - WalkingStartTime) *
+                                     10)) *
                    4);
   }
   if (isDead()) {
@@ -134,7 +133,7 @@ void Character::render(sf::RenderTarget &target) {
   }
   if (shouldHaveSpeechBubble) {
     BubbleSprite.setPosition(this->getPos().getX() + 2,
-                              this->getPos().getY() - 22);
+                             this->getPos().getY() - 22);
     target.draw(BubbleSprite);
   }
 }
@@ -254,7 +253,8 @@ bool Character::tryShootAt(GameObject &o) {
     return false;
   if (getPos().distance(o.getPos()) < weapon.getRange()) {
     if (weapon.tryUse(getLevel()) && weapon.hasProjectiles()) {
-      new Projectile(*weapon.getProjectileData(), getLevel(), getPos(), *this, o);
+      new Projectile(*weapon.getProjectileData(), getLevel(), getPos(), *this,
+                     o);
       return true;
     }
   }
@@ -267,7 +267,4 @@ void Character::setWalking(bool v) {
     OldWalkingValue = true;
   }
 }
-void Character::damage(int dmg) {
-
-  Creature::damage(dmg);
-}
+void Character::damage(int dmg) { Creature::damage(dmg); }

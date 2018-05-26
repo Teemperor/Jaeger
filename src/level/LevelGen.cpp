@@ -84,8 +84,7 @@ void LevelGen::make_house(TileRect A, int depth, Level::Type ConnectsTo) {
   floor(doorX, doorY, "sand_wall_lower_mid_free");
   build(doorX, doorY, "door_open");
 
-  openConnections.push_back(
-      {ConnectsTo, TilePos(*level, doorX, doorY)});
+  openConnections.push_back({ConnectsTo, TilePos(*level, doorX, doorY)});
 
   overlay(x, y + h - 1 - depth, "brown_roof_angular_left_lower");
   overlay(x + w - 1, y + h - 1 - depth, "brown_roof_angular_right_lower");
@@ -138,20 +137,18 @@ namespace {
 class Area {
 public:
   int x1, y1, x2, y2;
-  Area(int x1, int y1, int x2, int y2) : x1(x1), y1(y1), x2(x2), y2(y2) {
-  }
+  Area(int x1, int y1, int x2, int y2) : x1(x1), y1(y1), x2(x2), y2(y2) {}
 
   bool contains(int x, int y) {
     return x >= x1 && x <= x2 && y >= y1 && y <= y2;
   }
 
-  bool overlaps(Area& a) {
-    return (this->x1 < a.x2 && this->x2 > a.x1 &&
-        this->y1 > a.y2 && this->y2 < a.y1);
+  bool overlaps(Area &a) {
+    return (this->x1 < a.x2 && this->x2 > a.x1 && this->y1 > a.y2 &&
+            this->y2 < a.y1);
   }
-
 };
-}
+} // namespace
 
 void LevelGen::generate_overworld() {
   const int w = level->getWidth();
@@ -189,8 +186,6 @@ void LevelGen::generate_overworld() {
     build(49, i, "placeholder");
     build(50, i, "placeholder");
   }
-
-
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -273,7 +268,6 @@ void LevelGen::generate_overworld() {
     }
   }
 
-
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
       float height = getHeight(x, y);
@@ -352,14 +346,13 @@ void LevelGen::generate_house() {
     if (dis(gen) > 0.7f)
       build(1, y, "torch_wall_left");
   }
-  overlay(    0,     0, "sand_walltop_leftup");
-  overlay(w - 1,     0, "sand_walltop_rightup");
-  overlay(    0, h - 2, "sand_walltop_leftbottom");
+  overlay(0, 0, "sand_walltop_leftup");
+  overlay(w - 1, 0, "sand_walltop_rightup");
+  overlay(0, h - 2, "sand_walltop_leftbottom");
   overlay(w - 1, h - 2, "sand_walltop_rightbottom");
 
   build((w - 1) / 2, 1, "clock");
   build((w - 1) / 2, 2, "fireplace_inside");
-
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h - 1; ++y) {
@@ -369,7 +362,6 @@ void LevelGen::generate_house() {
         build(x, y, "wood_table");
     }
   }
-
 
   int doorY = h - 1;
   openConnections.push_back(
@@ -453,11 +445,11 @@ bool LevelGen::generate_settlement(TileRect Area, int limit) {
 
   --limit;
 
-  std::vector<std::pair< int, int> > Offsets = {
+  std::vector<std::pair<int, int>> Offsets = {
       std::make_pair(-1, 0),
-      std::make_pair( 1, 0),
-      std::make_pair( 0, 1),
-      std::make_pair( 0,-1),
+      std::make_pair(1, 0),
+      std::make_pair(0, 1),
+      std::make_pair(0, -1),
   };
 
   for (auto O : Offsets) {
@@ -489,7 +481,7 @@ bool LevelGen::generate_settlement(TileRect Area, int limit) {
 
 void LevelGen::generate_settlements() {
   int Count = 15;
-  for(int i = 0; i < 4000; i++) {
+  for (int i = 0; i < 4000; i++) {
     if (Count == 0)
       break;
     int x = static_cast<int>(dis(gen) * level->getWidth());
@@ -501,7 +493,6 @@ void LevelGen::generate_settlements() {
       --Count;
     }
   }
-
 }
 
 void LevelGen::make_floor(TileRect A, std::string Prefix) {
@@ -585,9 +576,9 @@ void LevelGen::generate_mine() {
     if (dis(gen) > 0.7f)
       build(1, y, "torch_wall_left");
   }
-  overlay(    0,     0, "sand_walltop_leftup");
-  overlay(w - 1,     0, "sand_walltop_rightup");
-  overlay(    0, h - 2, "sand_walltop_leftbottom");
+  overlay(0, 0, "sand_walltop_leftup");
+  overlay(w - 1, 0, "sand_walltop_rightup");
+  overlay(0, h - 2, "sand_walltop_leftbottom");
   overlay(w - 1, h - 2, "sand_walltop_rightbottom");
 
   int doorY = h - 1;

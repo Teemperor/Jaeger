@@ -11,7 +11,7 @@ class TileRect {
   int h = 0;
 
 public:
-  TileRect(int x, int y, int w, int h) : x(x), y(y), w(w), h(h){
+  TileRect(int x, int y, int w, int h) : x(x), y(y), w(w), h(h) {
     assert(h > 0);
     assert(w > 0);
   }
@@ -20,9 +20,7 @@ public:
     return TileRect(x, y, x - rx, y - ly);
   }
 
-  bool biggerThan(int w, int h) {
-    return this->w > w && this->h > h;
-  }
+  bool biggerThan(int w, int h) { return this->w > w && this->h > h; }
 
   TileRect moveX(int v) const {
     TileRect copy = *this;
@@ -43,47 +41,25 @@ public:
     return copy;
   }
 
-  int getX() const {
-    return x;
-  }
+  int getX() const { return x; }
 
-  void setX(int x) {
-    TileRect::x = x;
-  }
+  void setX(int x) { TileRect::x = x; }
 
-  int getY() const {
-    return y;
-  }
+  int getY() const { return y; }
 
-  void setY(int y) {
-    TileRect::y = y;
-  }
+  void setY(int y) { TileRect::y = y; }
 
-  int getW() const {
-    return w;
-  }
+  int getW() const { return w; }
 
-  void setW(int w) {
-    TileRect::w = w;
-  }
+  void setW(int w) { TileRect::w = w; }
 
-  int getH() const {
-    return h;
-  }
+  int getH() const { return h; }
 
-  void setH(int h) {
-    TileRect::h = h;
-  }
+  void setH(int h) { TileRect::h = h; }
 
-  int getRightX() const {
-    return x + w;
-  }
+  int getRightX() const { return x + w; }
 
-  int getLowerY() const {
-    return y + h;
-  }
-
+  int getLowerY() const { return y + h; }
 };
 
-
-#endif //MAMBO_TILERECT_H
+#endif // MAMBO_TILERECT_H

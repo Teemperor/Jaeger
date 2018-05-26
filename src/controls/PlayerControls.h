@@ -42,13 +42,9 @@ public:
     }
   }
 
-  void setControlledCharacter(Character *C) {
-    ControlledChar = C;
-  }
+  void setControlledCharacter(Character *C) { ControlledChar = C; }
 
-  Character *getControlledCharacter() {
-    return ControlledChar;
-  }
+  Character *getControlledCharacter() { return ControlledChar; }
 
   float getXInput() { return moveX; }
   float getYInput() { return moveY; }

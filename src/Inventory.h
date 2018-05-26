@@ -5,8 +5,8 @@
 
 class Inventory {
   std::array<Item, 16> Slots;
-public:
 
+public:
   bool add(const Item &I) {
     for (auto &Slot : Slots) {
       if (Slot.empty()) {
@@ -21,13 +21,9 @@ public:
     return std::find(Slots.begin(), Slots.end(), I) != Slots.end();
   }
 
-  std::array<Item, 16>::iterator begin() {
-    return Slots.begin();
-  }
+  std::array<Item, 16>::iterator begin() { return Slots.begin(); }
 
-  std::array<Item, 16>::iterator end() {
-    return Slots.end();
-  }
+  std::array<Item, 16>::iterator end() { return Slots.end(); }
 };
 
 #endif // INVENTORY_H

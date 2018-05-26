@@ -4,11 +4,11 @@
 
 #include <level/World.h>
 
-Item::Item(ItemData &Data, World& W) : Data(&Data) {
-  ID = W.getFreshItemID();
-}
+Item::Item(ItemData &Data, World &W) : Data(&Data) { ID = W.getFreshItemID(); }
 
-bool Item::available(Level &level) { return level.getTime() > NextAvailableTime; }
+bool Item::available(Level &level) {
+  return level.getTime() > NextAvailableTime;
+}
 
 bool Item::tryUse(Level &level) {
   if (available(level)) {

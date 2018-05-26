@@ -4,8 +4,8 @@
 #include <list>
 
 #include "Faction.h"
-#include "SpellEffect.h"
 #include "GameObject.h"
+#include "SpellEffect.h"
 
 class Creature : public GameObject {
   Faction *TheFaction = nullptr;
@@ -18,9 +18,7 @@ class Creature : public GameObject {
 public:
   explicit Creature(Level &level, Faction *faction = nullptr);
 
-  void addEffect(const AppliedSpellEffect& E) {
-    Effects.push_back(E);
-  }
+  void addEffect(const AppliedSpellEffect &E) { Effects.push_back(E); }
 
   void updateEffects(float DeltaTime) {
     for (auto Iter = Effects.begin(); Iter != Effects.end();) {

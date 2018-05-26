@@ -39,7 +39,7 @@ int main() {
 
   Character *player1 = new Character(level, Vec2(48 * 16, 52 * 16));
   player1->setFaction(&playerFaction);
-  Character *player2 = new Character(level,Vec2(48 * 16, 51 * 16));
+  Character *player2 = new Character(level, Vec2(48 * 16, 51 * 16));
   player2->setFaction(&playerFaction);
 
   for (int i = 0; i < 1; i++) {
@@ -86,7 +86,6 @@ int main() {
       }
       gui.handleEvent(event);
       gui2.handleEvent(event);
-
     }
     viewCenter.x = player1->getPos().getX();
     viewCenter.y = player1->getPos().getY();

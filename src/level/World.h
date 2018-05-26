@@ -18,9 +18,7 @@ public:
   World(GameData &d);
   void update(float dtime);
 
-  uint64_t getFreshItemID() {
-    return ++ItemId;
-  }
+  uint64_t getFreshItemID() { return ++ItemId; }
 
   void queryTeleport(GameObject *o, TilePos target) {
     ToTeleport.push_back(std::make_pair(o, target));

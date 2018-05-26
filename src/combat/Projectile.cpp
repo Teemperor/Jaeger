@@ -1,5 +1,5 @@
-#include <Creature.h>
 #include "Projectile.h"
+#include <Creature.h>
 
 #include "gamedata/ProjectileData.h"
 
