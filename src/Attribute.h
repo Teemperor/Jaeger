@@ -10,11 +10,11 @@ class Attribute {
 public:
   Attribute(int Value, int Max);
 
-  void damage(int v) { Modifier -= v; }
+  void damage(int V) { Modifier -= V; }
 
-  void restore(int v) {
+  void restore(int V) {
     if (Modifier < 0) {
-      Modifier += v;
+      Modifier += V;
       if (Modifier > 0)
         Modifier = 0;
     }
