@@ -8,14 +8,14 @@
 Character::Character(Level &level, Vec2 pos, BodyType type)
     : Creature(level) {
   setBodyType(type);
-  bubbleSprite_ = getGameData().getSprite("speech_bubble_exclamation");
-  shadow_ = getGameData().getSprite("shadow");
-  selection_ = getGameData().getSprite("selection");
-  selection_.setScale(1.5f, 1.5f);
-  gravestone_ =
+  BubbleSprite = getGameData().getSprite("speech_bubble_exclamation");
+  Shadow = getGameData().getSprite("shadow");
+  Selection = getGameData().getSprite("selection");
+  Selection.setScale(1.5f, 1.5f);
+  Gravestone =
       getGameData().getSprite("gravestone" + std::to_string(rand() % 9 + 1));
   setPos(pos);
-  equipped_.resize(ItemData::KindLimit);
+  Equipped.resize(ItemData::KindLimit);
 
   auto &W = level.getWorld();
   auto &ID = level.getData();
@@ -41,7 +41,7 @@ Character::Character(Level &level, Vec2 pos, BodyType type)
 }
 
 void Character::setBodyType(Character::BodyType t) {
-  BodyType_ = t;
+  TheBodyType = t;
   std::string SpriteName = "";
   switch (t) {
   case Character::BodyType::Pale:
@@ -57,8 +57,8 @@ void Character::setBodyType(Character::BodyType t) {
     SpriteName = "body_normal";
     break;
   }
-  sprite_ = getGameData().getSprite(SpriteName);
-  talkingSprite_ = getGameData().getSprite(SpriteName + "_talking");
+  Sprite = getGameData().getSprite(SpriteName);
+  TalkingSprite = getGameData().getSprite(SpriteName + "_talking");
 }
 
 void Character::render(sf::RenderTarget &target) {
@@ -83,7 +83,7 @@ void Character::render(sf::RenderTarget &target) {
 
   bool shouldUseTalkingSprite = false;
   bool shouldHaveSpeechBubble = false;
-  if (talking_) {
+  if (Talking) {
     if (getLevel().getTimeModulo(0.4) > 0.2 ||
         getLevel().getTimeModulo(2.5) > 2.1) {
       shouldUseTalkingSprite = true;
@@ -93,38 +93,38 @@ void Character::render(sf::RenderTarget &target) {
     }
   }
 
-  shadow_.setPosition(this->getPos().getX() - 8, this->getPos().getY() - 2);
-  target.draw(shadow_);
+  Shadow.setPosition(this->getPos().getX() - 8, this->getPos().getY() - 2);
+  target.draw(Shadow);
 
   if (isControlled()) {
     int alpha = (int)(std::abs(std::sin(getLevel().getTime() * 2)) * 100) + 50;
 
     sf::Color c(255, 0, 0, alpha);
-    selection_.setColor(c);
-    selection_.setPosition(this->getPos().getX() - 12,
+    Selection.setColor(c);
+    Selection.setPosition(this->getPos().getX() - 12,
                            this->getPos().getY() - 12);
-    target.draw(selection_);
+    target.draw(Selection);
   }
 
   int offset = 0;
-  if (walking_) {
+  if (Walking) {
     offset = (int)(std::abs(std::sin(
-                       (getLevel().getTime() - walkingStartTime_) * 10)) *
+                       (getLevel().getTime() - WalkingStartTime) * 10)) *
                    4);
   }
   if (isDead()) {
-    sf::Sprite &f = gravestone_;
+    sf::Sprite &f = Gravestone;
     f.setPosition(this->getPos().getX() - 8, this->getPos().getY() - 16);
     target.draw(f);
     return;
   } else {
-    sf::Sprite &f = shouldUseTalkingSprite ? talkingSprite_ : sprite_;
+    sf::Sprite &f = shouldUseTalkingSprite ? TalkingSprite : Sprite;
     f.setPosition(this->getPos().getX() - 8,
                   this->getPos().getY() - 16 - offset);
     target.draw(f);
   }
-  for (unsigned layer = 0; layer < equipped_.size(); layer++) {
-    Item &i = equipped_.at(layer);
+  for (unsigned layer = 0; layer < Equipped.size(); layer++) {
+    Item &i = Equipped.at(layer);
     if (!i.empty()) {
       sf::Sprite f = i.sprite();
       f.setPosition(this->getPos().getX() - 8,
@@ -133,9 +133,9 @@ void Character::render(sf::RenderTarget &target) {
     }
   }
   if (shouldHaveSpeechBubble) {
-    bubbleSprite_.setPosition(this->getPos().getX() + 2,
+    BubbleSprite.setPosition(this->getPos().getX() + 2,
                               this->getPos().getY() - 22);
-    target.draw(bubbleSprite_);
+    target.draw(BubbleSprite);
   }
 }
 
@@ -181,7 +181,7 @@ void Character::update(float dtime) {
     std::vector<GameObject *> PossibleTargets;
     for (auto &e : ClosestEnemies) {
       if (e->getPos().distance(getPos()) <
-          equipped_[ItemData::Weapon].getRange()) {
+          Equipped[ItemData::Weapon].getRange()) {
         PossibleTargets.push_back(e);
       }
     }
@@ -200,29 +200,29 @@ void Character::update(float dtime) {
 
   GameObject::update(dtime);
 
-  talking_ = !isControlled();
-  if (oldWalkingValue_ != walking_) {
-    walkingStartTime_ = getLevel().getTime();
-    oldWalkingValue_ = walking_;
+  Talking = !isControlled();
+  if (OldWalkingValue != Walking) {
+    WalkingStartTime = getLevel().getTime();
+    OldWalkingValue = Walking;
   }
 }
 
-void Character::equipItem(const Item &i) { equipped_[i.kind()] = i; }
+void Character::equipItem(const Item &i) { Equipped[i.kind()] = i; }
 
 void Character::AIAttack(Creature &C, GameObject &o, float dtime) {
-  Item &weapon = equipped_[ItemData::Weapon];
+  Item &weapon = Equipped[ItemData::Weapon];
 
   if (getPos().distance(o.getPos()) < weapon.getRange()) {
     tryShootAt(o);
-    walkPath_.clear();
+    WalkPath.clear();
   } else {
-    if (walkPath_.empty()) {
+    if (WalkPath.empty()) {
       PathFinder finder(getLevel());
-      finder.findPath(getTilePos(), o.getTilePos(), walkPath_);
+      finder.findPath(getTilePos(), o.getTilePos(), WalkPath);
     } else {
-      if (Vec2(walkPath_.back()).distance(getPos()) < 5)
-        walkPath_.pop_back();
-      walkToward(walkPath_.back(), dtime);
+      if (Vec2(WalkPath.back()).distance(getPos()) < 5)
+        WalkPath.pop_back();
+      walkToward(WalkPath.back(), dtime);
     }
   }
 }
@@ -234,8 +234,8 @@ void Character::walkToward(Vec2 pos, float dtime, bool backwards) {
   if (backwards) {
     angle += M_PI;
   }
-  float dx = static_cast<float>(std::cos(angle)) * walkSpeed * dtime;
-  float dy = static_cast<float>(std::sin(angle)) * walkSpeed * dtime;
+  float dx = static_cast<float>(std::cos(angle)) * WalkSpeed * dtime;
+  float dy = static_cast<float>(std::sin(angle)) * WalkSpeed * dtime;
 
   if (dy < 0 && !getLevel().passable(getPos().modY(dy - 3)))
     dy = 0;
@@ -249,7 +249,7 @@ void Character::walkToward(Vec2 pos, float dtime, bool backwards) {
 }
 
 bool Character::tryShootAt(GameObject &o) {
-  Item &weapon = equipped_[ItemData::Weapon];
+  Item &weapon = Equipped[ItemData::Weapon];
   if (weapon.empty())
     return false;
   if (getPos().distance(o.getPos()) < weapon.getRange()) {
@@ -262,9 +262,9 @@ bool Character::tryShootAt(GameObject &o) {
 }
 
 void Character::setWalking(bool v) {
-  if (v != walking_) {
-    walking_ = v;
-    oldWalkingValue_ = true;
+  if (v != Walking) {
+    Walking = v;
+    OldWalkingValue = true;
   }
 }
 void Character::damage(int dmg) {

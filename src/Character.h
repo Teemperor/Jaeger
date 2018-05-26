@@ -32,7 +32,7 @@ public:
   bool equipped(const Item &I) const {
     if (I.empty())
       return false;
-    return equipped_[I.kind()] == I;
+    return Equipped[I.kind()] == I;
   }
 
   void setPlayerControls(PlayerControls *c) override {
@@ -42,14 +42,14 @@ public:
 
   void addItem(const Item &I) {
     if (Inv.add(I)) {
-      if (equipped_[I.kind()].empty()) {
+      if (Equipped[I.kind()].empty()) {
         equipItem(I);
       }
     }
   }
 
   void updateEquipped() {
-    for (Item &I : equipped_) {
+    for (Item &I : Equipped) {
       if (!Inv.contains(I)) {
         I = Item();
       }
@@ -57,9 +57,9 @@ public:
   }
 
 private:
-  std::vector<Item> equipped_;
+  std::vector<Item> Equipped;
 
-  std::vector<TilePos> walkPath_;
+  std::vector<TilePos> WalkPath;
 
   void AIAttack(Creature &C, GameObject &o, float dtime);
 
@@ -69,7 +69,7 @@ private:
 
   int getArmorValue() const {
     int Result = 0;
-    for (auto &I : equipped_) {
+    for (auto &I : Equipped) {
       if (!I.empty())
         Result += I.armor();
     }
@@ -79,14 +79,14 @@ private:
   bool tryShootAt(GameObject &o);
 
   void setWalking(bool v);
-  static constexpr float walkSpeed = 45;
-  BodyType BodyType_ = BodyType::Pale;
-  sf::Sprite sprite_, talkingSprite_, bubbleSprite_, shadow_, gravestone_,
-      selection_;
-  bool talking_ = false;
-  bool walking_ = false;
-  bool oldWalkingValue_ = false;
-  double walkingStartTime_ = 0;
+  static constexpr float WalkSpeed = 45;
+  BodyType TheBodyType = BodyType::Pale;
+  sf::Sprite Sprite, TalkingSprite, BubbleSprite, Shadow, Gravestone,
+      Selection;
+  bool Talking = false;
+  bool Walking = false;
+  bool OldWalkingValue = false;
+  double WalkingStartTime = 0;
   Inventory Inv;
 };
 

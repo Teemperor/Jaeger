@@ -21,14 +21,14 @@ void Projectile::update(float dtime) {
   float newDistance = targetPos.distance(getPos());
 
   if (target->getPos().distance(getPos()) < HitDistance) {
-    ShouldBeRemoved_ = true;
+    ShouldBeRemoved = true;
     if (auto C = dynamic_cast<Creature *>(target)) {
       C->addEffect(data->getEffect(source, C));
     }
   }
 
   if (newDistance - 0.1f > distanceToTarget) {
-    ShouldBeRemoved_ = true;
+    ShouldBeRemoved = true;
   }
 
   distanceToTarget = newDistance;

@@ -4,6 +4,6 @@
 TilePos::TilePos() {}
 
 TilePos::TilePos(const Vec2 &v) {
-  x = v.getX() / 16;
-  y = v.getY() / 16;
+  X = v.getX() / 16;
+  Y = v.getY() / 16;
 }

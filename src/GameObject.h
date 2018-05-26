@@ -10,33 +10,33 @@ class Level;
 
 class GameObject {
 
-  Vec2 pos;
-  Level *level_;
+  Vec2 Pos;
+  Level *TheLevel;
 
 protected:
-  bool ShouldBeRemoved_ = false;
-  GameObject(Level &l);
+  bool ShouldBeRemoved = false;
+  explicit GameObject(Level &l);
 
 public:
   virtual ~GameObject();
   virtual void update(float dtime);
   virtual void render(sf::RenderTarget &target) {}
-  bool shouldBeRemoved() const { return ShouldBeRemoved_; }
+  bool shouldBeRemoved() const { return ShouldBeRemoved; }
 
-  Vec2 getPos() const { return pos; }
+  Vec2 getPos() const { return Pos; }
   TilePos getTilePos() const {
-    return TilePos(pos.getX() / 16, pos.getY() / 16);
+    return TilePos(Pos.getX() / 16, Pos.getY() / 16);
   }
 
-  virtual void damage(int dmg) { }
+  virtual void damage(int Dmg) { }
 
-  Level &getLevel() { return *level_; }
+  Level &getLevel() { return *TheLevel; }
 
-  void setLevel(Level *l) { level_ = l; }
+  void setLevel(Level *L) { TheLevel = L; }
 
   GameData &getGameData();
 
-  void setPos(Vec2 p) { pos = p; }
+  void setPos(Vec2 p) { Pos = p; }
 };
 
 #endif // ARGOS_GAMEOBJECT_H

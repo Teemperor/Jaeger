@@ -27,7 +27,7 @@ public:
   void PrintNodeInfo();
 
   bool isFree(int x, int y) {
-    return PathFinder::level_->passable(TilePos(x, y));
+    return PathFinder::TheLevel->passable(TilePos(x, y));
   }
 };
 
@@ -112,9 +112,9 @@ bool MapSearchNode::GetSuccessors(AStarSearch<MapSearchNode> *astarsearch,
 
 float MapSearchNode::GetCost(MapSearchNode &successor) { return 1; }
 
-Level *PathFinder::level_ = nullptr;
+Level *PathFinder::TheLevel = nullptr;
 
-PathFinder::PathFinder(Level &level) { level_ = &level; }
+PathFinder::PathFinder(Level &level) { TheLevel = &level; }
 
 void PathFinder::findPath(TilePos start, TilePos end,
                           std::vector<TilePos> &result) {

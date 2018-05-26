@@ -6,19 +6,19 @@
 #include <controls/PlayerControls.h>
 
 class Controlable {
-  PlayerControls *controls = nullptr;
+  PlayerControls *Controls = nullptr;
 
 public:
   Controlable();
   virtual ~Controlable();
-  virtual void setPlayerControls(PlayerControls *c) { controls = c; }
-  bool isControlled() { return controls != nullptr; }
-  float getXInput() { return controls->getXInput(); }
-  float getYInput() { return controls->getYInput(); }
+  virtual void setPlayerControls(PlayerControls *C) { Controls = C; }
+  bool isControlled() { return Controls != nullptr; }
+  float getXInput() { return Controls->getXInput(); }
+  float getYInput() { return Controls->getYInput(); }
 
   PlayerControls *getControls() {
-    assert(controls);
-    return controls;
+    assert(Controls);
+    return Controls;
   }
 };
 

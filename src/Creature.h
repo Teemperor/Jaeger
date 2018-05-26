@@ -8,11 +8,11 @@
 #include "GameObject.h"
 
 class Creature : public GameObject {
-  Faction *faction_ = nullptr;
-  int health_ = 100;
-  int maxHealth_ = 100;
-  int fatigue_ = 100;
-  int maxFatigue_ = 100;
+  Faction *TheFaction = nullptr;
+  int Health = 100;
+  int MaxHealth = 100;
+  int Fatigue = 100;
+  int MaxFatigue = 100;
   std::list<AppliedSpellEffect> Effects;
 
 public:
@@ -37,20 +37,20 @@ public:
   bool isEnemy(Creature &Other) {
     if (&Other == this)
       return false;
-    if (!faction_)
+    if (!TheFaction)
       return true;
-    if (!Other.faction_)
+    if (!Other.TheFaction)
       return true;
-    return faction_->isEnemyFaction(*Other.faction_);
+    return TheFaction->isEnemyFaction(*Other.TheFaction);
   }
 
-  void setFaction(Faction *faction) { faction_ = faction; }
+  void setFaction(Faction *NewFaction) { TheFaction = NewFaction; }
 
-  void damage(int dmg) override { health_ -= dmg; }
+  void damage(int Dmg) override { Health -= Dmg; }
 
-  float percentageHealth() const { return (float)health_ / maxHealth_; }
+  float percentageHealth() const { return (float)Health / MaxHealth; }
 
-  bool isDead() const { return health_ <= 0; }
+  bool isDead() const { return Health <= 0; }
 };
 
 #endif // CREATURE_H

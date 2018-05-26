@@ -10,7 +10,7 @@ class MapSearchNode;
 class PathFinder {
   // Not thread safe due to the A-Star design which requires
   // a default constructor....
-  static Level *level_;
+  static Level *TheLevel;
   friend class MapSearchNode;
 
 public:

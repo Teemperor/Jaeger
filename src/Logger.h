@@ -4,14 +4,14 @@
 #include <iostream>
 
 class Logger {
-  bool newLog = true;
+  bool NewLog = true;
 
 public:
   Logger() {}
 
   Logger &operator<<(const std::string &s) {
-    if (newLog) {
-      newLog = false;
+    if (NewLog) {
+      NewLog = false;
       std::cout << "[LOG] ";
     }
     std::cout << s;
@@ -19,7 +19,7 @@ public:
   }
 
   void operator<<(Logger &) {
-    newLog = true;
+    NewLog = true;
     std::cout << std::endl;
   }
 };

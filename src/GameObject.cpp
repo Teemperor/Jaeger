@@ -3,7 +3,7 @@
 #include "level/Level.h"
 #include "level/World.h"
 
-GameObject::GameObject(Level &l) : level_(&l) { l.add(this); }
+GameObject::GameObject(Level &l) : TheLevel(&l) { l.add(this); }
 
 GameObject::~GameObject() {}
 
@@ -12,11 +12,11 @@ void GameObject::update(float dtime) {
   TilePos teleportTarget;
   if (getLevel().getTeleportTarget(currentPos, teleportTarget)) {
     if (teleportTarget.hasLevel()) {
-      level_->getWorld().queryTeleport(this, teleportTarget);
+      TheLevel->getWorld().queryTeleport(this, teleportTarget);
     } else {
       setPos(Vec2(teleportTarget));
     }
   }
 }
 
-GameData &GameObject::getGameData() { return level_->getData(); }
+GameData &GameObject::getGameData() { return TheLevel->getData(); }
