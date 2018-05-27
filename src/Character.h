@@ -23,9 +23,10 @@ public:
   void render(sf::RenderTarget &target) override;
   void update(float dtime) override;
 
-  void equipItem(const Item &i);
+  void equipItem(const Item &I);
+  void unequipItem(const Item &I);
 
-  Inventory &getInventory() { return Inv; }
+  Inventory &getPrivateInventory() { return Inv; }
 
   bool equipped(const Item &I) const {
     if (I.empty())
@@ -43,6 +44,12 @@ public:
       if (Equipped[I.kind()].empty()) {
         equipItem(I);
       }
+    }
+  }
+
+  void removeItem(const Item &I) {
+    if (Inv.remove(I)) {
+      updateEquipped();
     }
   }
 
@@ -72,6 +79,10 @@ private:
         Result += I.armor();
     }
     return Result;
+  }
+
+  void onDeath() {
+    setInventory(&Inv);
   }
 
   bool tryShootAt(GameObject &o);

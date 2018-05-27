@@ -16,12 +16,18 @@ class GameUI {
 
   float InventoryScale = 4;
 
-  int InvX = 0;
-  int InvY = 0;
+  int InventoryWidth = 4;
+
+  int InvX = 1;
+  int InvY = 1;
 
   bool InventoryOpen = false;
 
   void drawInventory(sf::RenderTarget &target, float time);
+
+  std::size_t selectedItem() {
+    return static_cast<size_t>(InvX + InvY * InventoryWidth);
+  }
 
 public:
   GameUI(GameData &Data, unsigned PlayerNumber);

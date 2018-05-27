@@ -7,15 +7,20 @@
 
 class GameData;
 class Level;
+class Inventory;
 
 class GameObject {
 
   Vec2 Pos;
   Level *TheLevel;
+  Inventory *Inv = nullptr;
 
 protected:
   bool ShouldBeRemoved = false;
   explicit GameObject(Level &l);
+  void setInventory(Inventory *I) {
+    Inv = I;
+  }
 
 public:
   virtual ~GameObject();
@@ -26,6 +31,10 @@ public:
   Vec2 getPos() const { return Pos; }
   TilePos getTilePos() const {
     return TilePos(Pos.getX() / 16, Pos.getY() / 16);
+  }
+
+  Inventory *getInventory() {
+    return Inv;
   }
 
   virtual void damage(int Dmg) {}

@@ -87,7 +87,13 @@ set(SOURCE_FILES
     src/TilePos.cpp
     src/Inventory.cpp
     src/Inventory.h
-        src/gamedata/RandomRange.cpp src/gamedata/RandomRange.h src/level/TileRect.cpp src/level/TileRect.h)
+    src/gamedata/RandomRange.cpp
+    src/gamedata/RandomRange.h
+    src/level/TileRect.cpp
+    src/level/TileRect.h
+    src/ItemBag.cpp
+    src/ItemBag.h
+)
 add_library(argos_core ${SOURCE_FILES})
 target_link_libraries(argos_core ${SFML_LIBRARIES})
 

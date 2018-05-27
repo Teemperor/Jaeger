@@ -206,7 +206,13 @@ void Character::update(float dtime) {
   }
 }
 
-void Character::equipItem(const Item &i) { Equipped[i.kind()] = i; }
+void Character::equipItem(const Item &I) { Equipped[I.kind()] = I; }
+
+void Character::unequipItem(const Item &I) {
+  if (equipped(I)) {
+    Equipped[I.kind()] = Item();
+  }
+}
 
 void Character::AIAttack(Creature &C, GameObject &o, float dtime) {
   Item &weapon = Equipped[ItemData::Weapon];
@@ -267,4 +273,10 @@ void Character::setWalking(bool v) {
     OldWalkingValue = true;
   }
 }
-void Character::damage(int dmg) { Creature::damage(dmg); }
+void Character::damage(int dmg) {
+  bool WasDead = isDead();
+  Creature::damage(dmg);
+  if (!WasDead && isDead()) {
+    onDeath();
+  }
+}

@@ -4,7 +4,8 @@
 #include "Item.h"
 
 class Inventory {
-  std::array<Item, 16> Slots;
+  const static unsigned Size = 16;
+  std::array<Item, Size> Slots;
 
 public:
   bool add(const Item &I) {
@@ -17,13 +18,33 @@ public:
     return false;
   }
 
+  bool remove(const Item &I) {
+    for (auto &Slot : Slots) {
+      if (Slot == I) {
+        Slot = Item();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Item& at(std::size_t I) {
+    return Slots.at(I);
+  }
+
+  const Item& at(std::size_t I) const {
+    return Slots.at(I);
+  }
+
   bool contains(Item &I) const {
     return std::find(Slots.begin(), Slots.end(), I) != Slots.end();
   }
 
-  std::array<Item, 16>::iterator begin() { return Slots.begin(); }
+  typedef std::array<Item, Size>::iterator Iter;
 
-  std::array<Item, 16>::iterator end() { return Slots.end(); }
+  Iter begin() { return Slots.begin(); }
+
+  Iter end() { return Slots.end(); }
 };
 
 #endif // INVENTORY_H

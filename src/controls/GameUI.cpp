@@ -33,9 +33,9 @@ GameUI::GameUI(GameData &Data, unsigned PlayerNumber) : controls(PlayerNumber) {
   EquipGlow.setOrigin(EquipGlow.getLocalBounds().width / 2,
                       EquipGlow.getLocalBounds().height / 2);
 
-  EquipGlow = Data.getSprite("select_icon");
-  EquipGlow.setOrigin(EquipGlow.getLocalBounds().width / 2,
-                      EquipGlow.getLocalBounds().height / 2);
+  SelectGlow = Data.getSprite("select_icon");
+  SelectGlow.setOrigin(SelectGlow.getLocalBounds().width / 2,
+                       SelectGlow.getLocalBounds().height / 2);
 }
 
 void GameUI::draw(sf::RenderTarget &target, float time) {
@@ -54,7 +54,6 @@ void GameUI::draw(sf::RenderTarget &target, float time) {
     int MaxBarLenght = 100;
     int Barlength = (int)(MaxBarLenght * C->percentageHealth());
 
-    float p = C->percentageHealth();
     target.draw(StatusBackground);
     target.draw(HealthBarStart);
     for (int i = 0; i < Barlength; ++i) {
@@ -78,7 +77,7 @@ void GameUI::drawInventory(sf::RenderTarget &target, float time) {
   if (Character *C = controls.getControlledCharacter()) {
     int x = 0;
     int y = 0;
-    for (Item &I : C->getInventory()) {
+    for (Item &I : C->getPrivateInventory()) {
       const float scale = InventoryScale;
       float CenterX = x * 18 + 5;
       float CenterY = y * 18 + 5;
@@ -112,7 +111,7 @@ void GameUI::drawInventory(sf::RenderTarget &target, float time) {
       }
 
       ++x;
-      if (x >= 4) {
+      if (x >= InventoryWidth) {
         x = 0;
         ++y;
       }
@@ -125,6 +124,44 @@ void GameUI::handleEvent(sf::Event event) {
     const auto KeyCode = event.key.code;
     if (KeyCode == sf::Keyboard::Tab) {
       toggleInventory();
+    }
+    if (InventoryOpen) {
+      switch(KeyCode) {
+        case sf::Keyboard::A:
+          InvX--;
+          break;
+        case sf::Keyboard::D:
+          InvX++;
+          break;
+        case sf::Keyboard::W:
+          InvY--;
+          break;
+        case sf::Keyboard::S:
+          InvY++;
+          break;
+        default:
+          break;
+      }
+
+      // Handle wrapping.
+      while(InvX < 0)
+        InvX += InventoryWidth;
+      while(InvY < 0)
+        InvY += InventoryWidth;
+      InvX %= InventoryWidth;
+      InvY %= InventoryWidth;
+
+      if (KeyCode == sf::Keyboard::Space) {
+        auto C = controls.getControlledCharacter();
+        if (C) {
+          auto &I = C->getPrivateInventory().at(selectedItem());
+          if (C->equipped(I)) {
+            C->unequipItem(I);
+          } else {
+            C->equipItem(I);
+          }
+        }
+      }
     }
   }
 }
