@@ -7,8 +7,8 @@
 class RandomRange {
   int Min = 0;
   int Max = 0;
-  std::default_random_engine generator;
-  std::uniform_int_distribution<int> distribution;
+  std::default_random_engine Generator;
+  std::uniform_int_distribution<int> Distribution;
 
 public:
   RandomRange() = default;

@@ -155,10 +155,14 @@ void GameUI::handleEvent(sf::Event event) {
         auto C = controls.getControlledCharacter();
         if (C) {
           auto &I = C->getPrivateInventory().at(selectedItem());
-          if (C->equipped(I)) {
-            C->unequipItem(I);
+          if (I.kind() == ItemData::Consumable) {
+            C->useItem(I);
           } else {
-            C->equipItem(I);
+            if (C->equipped(I)) {
+              C->unequipItem(I);
+            } else {
+              C->equipItem(I);
+            }
           }
         }
       }

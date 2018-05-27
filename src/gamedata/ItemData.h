@@ -10,12 +10,13 @@ class GameData;
 class ItemData {
 public:
   enum Kind {
-    Pants = 0,
-    Helmet = 1,
-    Armor = 2,
-    Shield = 3,
-    Weapon = 4,
-    KindLimit = 5
+    Pants,
+    Helmet,
+    Armor,
+    Shield,
+    Weapon,
+    Consumable,
+    KindLimit
   };
 
 private:
@@ -29,7 +30,9 @@ private:
   const ProjectileData *projectileData_ = nullptr;
   Kind kind_;
 
-  uint64_t IdCounter = 0;
+  const SpellEffect *UseEffect = nullptr;
+  mutable RandomRange UseStrength;
+  mutable RandomRange UseDuration;
 
 public:
   explicit ItemData(Kind kind) : kind_(kind) {}
@@ -37,6 +40,22 @@ public:
   void init(GameData &data);
 
   Kind kind() { return kind_; }
+
+  void setUseEffect(const SpellEffect *E, RandomRange S, RandomRange D) {
+    UseEffect = E;
+    UseStrength = S;
+    UseDuration = D;
+  }
+
+  bool hasEffect() {
+    return UseEffect != nullptr;
+  }
+
+  AppliedSpellEffect getEffect(Creature *User) const {
+    assert(UseEffect);
+    return AppliedSpellEffect(*UseEffect, User, UseStrength.get(),
+                              UseDuration.get());
+  }
 
   const sf::Sprite &sprite() const { return sprite_; }
   void setSprite(const sf::Sprite &sprite) { sprite_ = sprite; }

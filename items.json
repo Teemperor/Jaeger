@@ -1,5 +1,7 @@
 {
   "items" : [
+    { "id" : "small_health_potion", "kind" : "consumable", "effect" : "heal", "effectStr" : "20"},
+
     { "id" : "ninja_pants", "kind" : "pants", "sprite" : "black_pants"},
     { "id" : "leather_pants", "kind" : "pants", "sprite" : "brown_pants"},
     { "id" : "fine_pants", "kind" : "pants", "sprite" : "white_pants"},

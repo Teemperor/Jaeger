@@ -18,7 +18,7 @@ RandomRange::RandomRange(std::string V) {
       Max = std::atoi(m[2].str().c_str());
     }
   }
-  distribution = std::uniform_int_distribution<int>(Min, Max);
+  Distribution = std::uniform_int_distribution<int>(Min, Max);
 }
 
-int RandomRange::get() { return distribution(generator); }
+int RandomRange::get() { return Distribution(Generator); }

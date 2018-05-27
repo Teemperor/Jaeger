@@ -23,6 +23,8 @@ void GameData::parseItemData(const std::string &path) {
       kind = ItemData::Weapon;
     else if (kindStr == "shield")
       kind = ItemData::Shield;
+    else if (kindStr == "consumable")
+      kind = ItemData::Consumable;
     else {
       std::cerr << "Unknown kind " << kindStr << "\n";
       assert(false);
@@ -59,8 +61,27 @@ void GameData::parseItemData(const std::string &path) {
     }
     Items[id]->setProjectileName(projectile);
 
-    auto sprite = item["sprite"];
-    Items[id]->setSprite(getSprite(sprite));
+    if (item.find("sprite") != item.end()) {
+      auto sprite = item["sprite"];
+      Items[id]->setSprite(getSprite(sprite));
+    }
+
+
+    if (item.find("effect") != item.end()) {
+      std::string EffectName = item["effect"];
+      std::string Str = item["effectStr"];
+      std::string Dur;
+      if (item.find("effectDuration") == item.end()) {
+        Dur = "1";
+      } else {
+        Dur = item["effectDuration"];
+      }
+      RandomRange EffectStrength(Str);
+      RandomRange EffectDuration(Dur);
+      const SpellEffect &E = SpellEffects::getByID(EffectName);
+
+      Items[id]->setUseEffect(&E, EffectStrength, EffectDuration);
+    }
 
     if (item.find("icon") != item.end()) {
       Items[id]->setIcon(getSprite(item["icon"]));

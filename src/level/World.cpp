@@ -1,6 +1,6 @@
 #include "World.h"
 
-World::World(GameData &d) : data_(d) {}
+World::World(GameData &d) : Data(d) {}
 
 void World::update(float dtime) {
   for (auto level : levels_) {

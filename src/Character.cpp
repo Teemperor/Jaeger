@@ -37,6 +37,7 @@ Character::Character(Level &level, Vec2 pos, BodyType type) : Creature(level) {
   addItem(Item(*ID.item("steel_buckler"), W));
   addItem(Item(*ID.item("steel_buckler"), W));
   addItem(Item(*ID.item("steel_buckler"), W));
+  addItem(Item(*ID.item("small_health_potion"), W));
 }
 
 void Character::setBodyType(Character::BodyType t) {
@@ -273,10 +274,17 @@ void Character::setWalking(bool v) {
     OldWalkingValue = true;
   }
 }
-void Character::damage(int dmg) {
+void Character::damage(int Dmg) {
   bool WasDead = isDead();
-  Creature::damage(dmg);
+  Creature::damage(Dmg);
   if (!WasDead && isDead()) {
     onDeath();
+  }
+}
+
+void Character::useItem(Item &I) {
+  if (Inv.contains(I)) {
+    addEffect(AppliedSpellEffect(I.getEffect(this)));
+    Inv.remove(I);
   }
 }

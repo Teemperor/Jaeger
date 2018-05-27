@@ -30,6 +30,10 @@ public:
 
   bool operator!=(const Item &I) const { return !(I == *this); }
 
+  AppliedSpellEffect getEffect(Creature *User) const {
+    return Data->getEffect(User);
+  }
+
   const sf::Sprite &sprite() { return Data->sprite(); }
   const sf::Sprite &icon() { return Data->icon(); }
 

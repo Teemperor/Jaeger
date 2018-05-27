@@ -41,7 +41,8 @@ public:
 
   void addItem(const Item &I) {
     if (Inv.add(I)) {
-      if (Equipped[I.kind()].empty()) {
+      if (I.kind() != ItemData::Consumable &&
+          Equipped[I.kind()].empty()) {
         equipItem(I);
       }
     }
@@ -60,6 +61,8 @@ public:
       }
     }
   }
+
+  void useItem(Item &item);
 
 private:
   std::vector<Item> Equipped;

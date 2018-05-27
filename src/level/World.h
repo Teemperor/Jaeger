@@ -9,7 +9,7 @@ class GameObject;
 
 class World {
   std::vector<Level *> levels_;
-  GameData &data_;
+  GameData &Data;
   std::vector<std::pair<GameObject *, TilePos>> ToTeleport;
 
   uint64_t ItemId;

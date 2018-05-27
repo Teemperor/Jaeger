@@ -25,6 +25,10 @@ const std::vector<SpellEffect> &SpellEffects::getList() {
                         [](Creature *Caster, Creature *Target,
                            SpellEffect::StrengthUnit u) { Target->damage(u); },
                         1, 100),
+            SpellEffect("heal", "Heal",
+                        [](Creature *Caster, Creature *Target,
+                           SpellEffect::StrengthUnit u) { Target->damage(-u); },
+                        1, 100),
             SpellEffect("switchPos", "Switch Positions",
                         [](Creature *Caster, Creature *Target,
                            SpellEffect::StrengthUnit u) {

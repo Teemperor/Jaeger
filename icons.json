@@ -4,6 +4,7 @@
     { "id" : "glow_icon" , "tile" : [3, 0] },
     { "id" : "select_icon" , "tile" : [6, 1] },
 
+    { "id" : "icon_small_health_potion" , "tile" : [7, 2] },
     { "id" : "icon_wood_bow" , "tile" : [1, 11] },
     { "id" : "icon_leather_pants" , "tile" : [0, 14] },
     { "id" : "icon_leather_armor" , "tile" : [2, 13] },

@@ -6,17 +6,17 @@
 #include <SpellEffect.h>
 
 class ProjectileData {
-  sf::Sprite sprite_;
-  const SpellEffect &hitEffect_;
-  mutable RandomRange strength;
-  mutable RandomRange duration;
+  sf::Sprite TheSprite;
+  const SpellEffect &HitEffect;
+  mutable RandomRange Strength;
+  mutable RandomRange Duration;
   float Speed = 160;
 
 public:
   ProjectileData(const sf::Sprite &sprite, const SpellEffect &hitEffect,
                  RandomRange effectStrength, RandomRange effectDuration);
 
-  const sf::Sprite &getSprite() const { return sprite_; }
+  const sf::Sprite &getSprite() const { return TheSprite; }
 
   float getSpriteRotationSpeed() const { return 0; }
 
