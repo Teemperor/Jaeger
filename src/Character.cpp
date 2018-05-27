@@ -160,6 +160,22 @@ void Character::update(float dtime) {
   }
   setWalking(false);
 
+  if (isControlled()) {
+    const float InventoryRange = 40;
+    std::vector<GameObject *> ClosestInventories;
+    for (GameObject *o : getLevel().getObjects()) {
+      if (o->getInventory() &&
+          o->getPos().distance(getPos()) < InventoryRange) {
+        ClosestInventories.push_back(o);
+      }
+    }
+    std::sort(ClosestInventories.begin(), ClosestInventories.end(),
+              closest_object(this));
+    getControls()->setPossibleInventoryTargets(ClosestInventories);
+  }
+
+
+
   std::vector<GameObject *> ClosestEnemies;
   for (GameObject *o : getLevel().getObjects()) {
     if (auto C = dynamic_cast<Creature *>(o)) {

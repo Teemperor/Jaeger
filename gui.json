@@ -4,6 +4,8 @@
     { "id" : "inventory_background" , "offset" :  [191, 0], "size" : [85, 81], "center" : [0, 0]},
     { "id" : "status_background" , "offset" :  [0, 37], "size" : [190, 46], "center" : [0, 0]},
     { "id" : "combat_selection" , "offset" :  [75, 0], "size" : [36, 35], "center" : [18, 36]},
+    { "id" : "combat_selection" , "offset" :  [75, 0], "size" : [36, 35], "center" : [18, 36]},
+    
     { "id" : "healthbar_start" , "offset" :  [0, 0], "size" : [9, 18], "center" : [0, 0]},
     { "id" : "healthbar_mid" , "offset" :  [9, 0], "size" : [1, 18], "center" : [0, 0]},
     { "id" : "healthbar_end" , "offset" :  [27, 0], "size" : [9, 18], "center" : [0, 0]},

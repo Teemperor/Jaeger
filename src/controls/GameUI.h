@@ -9,7 +9,8 @@
 #include <gamedata/GameData.h>
 
 class GameUI {
-  sf::Sprite combatSelection, HealthBarStart, HealthBarMid, HealthBarEnd,
+  sf::Sprite combatSelection, itemSelection,
+      HealthBarStart, HealthBarMid, HealthBarEnd,
       StaminaBarStart, StaminaBarMid, StaminaBarEnd, StatusBackground,
       InventoryBackground, EquipGlow, SelectGlow;
   PlayerControls controls;

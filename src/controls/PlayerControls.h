@@ -12,8 +12,13 @@ class PlayerControls {
   float moveX = 0;
   float moveY = 0;
   int player_;
+
   GameObject *target = nullptr;
   std::vector<GameObject *> possibleTargets;
+
+  GameObject *inventoryTarget = nullptr;
+  std::vector<GameObject *> possibleInventoryTargets;
+
   Character *ControlledChar = nullptr;
 
 public:
@@ -50,6 +55,7 @@ public:
   float getYInput() { return moveY; }
 
   GameObject *getTarget() { return target; }
+  GameObject *getInventoryTarget() { return inventoryTarget; }
 
   bool isShooting() const;
 
@@ -63,6 +69,20 @@ public:
     } else {
       if (!possibleTargets.empty())
         target = possibleTargets.front();
+    }
+  }
+
+  void setPossibleInventoryTargets(const std::vector<GameObject *> &targets) {
+    this->possibleInventoryTargets = targets;
+    if (inventoryTarget) {
+      if (std::find(possibleInventoryTargets.begin(),
+                    possibleInventoryTargets.end(), target) ==
+          possibleInventoryTargets.end()) {
+        target = nullptr;
+      }
+    } else {
+      if (!possibleInventoryTargets.empty())
+        inventoryTarget = possibleInventoryTargets.front();
     }
   }
 };
