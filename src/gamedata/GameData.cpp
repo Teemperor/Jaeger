@@ -32,6 +32,9 @@ void GameData::parseItemData(const std::string &path) {
 
     Items[id] = new ItemData(kind);
 
+    if (kind == ItemData::Weapon)
+      Items[id]->setFatigueCost(item["fatigueCost"]);
+
     int attack = 0;
     if (item.find("attack") != item.end()) {
       attack = item["attack"];

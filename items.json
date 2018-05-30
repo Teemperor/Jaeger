@@ -8,9 +8,9 @@
     { "id" : "desert_pants", "kind" : "pants", "sprite" : "sand_pants"},
     { "id" : "leather_armor", "kind" : "armor", "sprite" : "leather_armor"},
     { "id" : "red_steel_helmet", "kind" : "helmet", "sprite" : "red_steel_helmet"},
-    { "id" : "wood_bow", "kind" : "weapon", "sprite" : "wood_bow", "cooldown" : 0.8, "projectile" : "wood_arrow"},
-    { "id" : "magic_staff", "kind" : "weapon", "sprite" : "magic_staff_purple", "cooldown" : 4.8, "projectile" : "magic_ball_purple"},
-    { "id" : "wood_spear", "kind" : "weapon", "sprite" : "wood_spear", "cooldown" : 0.8},
+    { "id" : "wood_bow", "kind" : "weapon", "fatigueCost" : 20, "sprite" : "wood_bow", "cooldown" : 0.8, "projectile" : "wood_arrow"},
+    { "id" : "magic_staff", "kind" : "weapon", "fatigueCost" : 20, "sprite" : "magic_staff_purple", "cooldown" : 4.8, "projectile" : "magic_ball_purple"},
+    { "id" : "wood_spear", "kind" : "weapon", "fatigueCost" : 20, "sprite" : "wood_spear", "cooldown" : 0.8},
     { "id" : "steel_buckler", "kind" : "shield", "sprite" : "steel_buckler"},
     { "id" : "wood_buckler", "kind" : "shield", "sprite" : "wood_buckler"}
   ]

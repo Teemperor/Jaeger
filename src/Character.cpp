@@ -265,12 +265,14 @@ bool Character::tryShootAt(GameObject &o) {
   Item &weapon = Equipped[ItemData::Weapon];
   if (weapon.empty())
     return false;
-  if (getPos().distance(o.getPos()) < weapon.getRange()) {
-    if (weapon.tryUse(getLevel()) && weapon.hasProjectiles()) {
-      new Projectile(*weapon.getProjectileData(), getLevel(), getPos(), *this,
-                     o);
-      return true;
-    }
+  if (getPos().distance(o.getPos()) > weapon.getRange())
+    return false;
+  if (!trySpendFatigue(weapon.getFatigueCost()))
+    return false;
+  if (weapon.tryUse(getLevel()) && weapon.hasProjectiles()) {
+    new Projectile(*weapon.getProjectileData(), getLevel(), getPos(), *this,
+                   o);
+    return true;
   }
   return false;
 }

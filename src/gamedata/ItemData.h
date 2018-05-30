@@ -53,6 +53,10 @@ public:
     return UseEffect != nullptr;
   }
 
+  void setFatigueCost(int V) {
+    FatigueCost = V;
+  }
+
   int getFatigueCost() const {
     return FatigueCost;
   }
