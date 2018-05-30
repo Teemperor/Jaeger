@@ -87,8 +87,8 @@ int main() {
       gui.handleEvent(event);
       gui2.handleEvent(event);
     }
-    viewCenter.x = player1->getPos().getX();
-    viewCenter.y = player1->getPos().getY();
+    viewCenter.x = player2->getPos().getX();
+    viewCenter.y = player2->getPos().getY();
 
     sf::Time elapsed = clock.restart();
     world->update(elapsed.asSeconds());

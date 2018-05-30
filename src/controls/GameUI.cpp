@@ -21,17 +21,14 @@ GameUI::GameUI(GameData &Data, unsigned PlayerNumber) : controls(PlayerNumber) {
     assert(false && "Player number not supported");
   }
 
-  HealthBarStart = Data.getSprite("healthbar_start");
-  HealthBarMid = Data.getSprite("healthbar_mid");
-  HealthBarEnd = Data.getSprite("healthbar_end");
-
-  StaminaBarStart = Data.getSprite("staminabar_start");
-  StaminaBarMid = Data.getSprite("staminabar_mid");
-  StaminaBarEnd = Data.getSprite("staminabar_end");
+  HealthBar = StatusBar(Data, "healthbar", 100);
+  StaminaBar = StatusBar(Data, "staminabar", 100);
 
   StatusBackground = Data.getSprite("status_background");
 
   int InvSize = 350;
+
+
 
   MyWindow = new InventoryWindow(Data);
   MyWindow->setOffset(InvSize, InvSize * (PlayerNumber - 1));
@@ -61,21 +58,15 @@ void GameUI::draw(sf::RenderTarget &target, float time) {
   target.setView(target.getDefaultView());
 
   if (Character *C = controls.getControlledCharacter()) {
-    int MaxBarLenght = 100;
-    int Barlength = (int)(MaxBarLenght * C->percentageHealth());
-
     target.draw(StatusBackground);
-    target.draw(HealthBarStart);
-    sf::Sprite S = HealthBarStart;
-    int Pos = 0;
-    for (int i = 0; i < Barlength; ++i) {
-      if (i == Barlength - 1)
-        S = HealthBarEnd;
-      S.setPosition({(float)Pos, 0});
-      target.draw(S);
-      Pos += S.getLocalBounds().width;
-      S = HealthBarMid;
-    }
+    HealthBar.setValue(C->getHealth());
+    HealthBar.setMax(C->getMaxHealth());
+    HealthBar.draw(target);
+
+    StaminaBar.setOffset(0, 20);
+    StaminaBar.setValue(C->getFatigue());
+    StaminaBar.setMax(C->getMaxFatigue());
+    StaminaBar.draw(target);
   }
 
   if (InventoryOpen)

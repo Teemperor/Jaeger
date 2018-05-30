@@ -48,6 +48,22 @@ public:
 
   float percentageHealth() const { return (float)Health / MaxHealth; }
 
+  int getHealth() const {
+    return Health;
+  }
+
+  int getMaxHealth() const {
+    return MaxHealth;
+  }
+
+  int getFatigue() const {
+    return Fatigue;
+  }
+
+  int getMaxFatigue() const {
+    return MaxFatigue;
+  }
+
   bool isDead() const { return Health <= 0; }
 };
 

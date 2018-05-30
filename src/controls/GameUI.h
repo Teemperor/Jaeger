@@ -3,6 +3,7 @@
 
 #include "PlayerControls.h"
 #include "InventoryWindow.h"
+#include "StatusBar.h"
 
 #include <cassert>
 
@@ -22,6 +23,8 @@ class GameUI {
   InventoryWindow *FocusedWindow = nullptr;
   InventoryWindow *MyWindow = nullptr;
   InventoryWindow *OtherWindow = nullptr;
+
+  StatusBar HealthBar, StaminaBar;
 
   InventoryWindow *getUnfocusedWindow() {
     if (FocusedWindow == MyWindow)
