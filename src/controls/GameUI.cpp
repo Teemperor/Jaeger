@@ -80,9 +80,10 @@ void GameUI::drawInventory(sf::RenderTarget &target, float time) {
   if (MyWindow)
     MyWindow->draw(target, FocusedWindow == MyWindow);
   if (OtherWindow) {
-    if (auto Target = controls.getInventoryTarget())
+    if (auto Target = controls.getInventoryTarget()) {
       OtherWindow->setInventory(Target->getInventory());
-    OtherWindow->draw(target, FocusedWindow == OtherWindow);
+      OtherWindow->draw(target, FocusedWindow == OtherWindow);
+    }
   }
 }
 
