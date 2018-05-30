@@ -5,7 +5,7 @@
 GameUI::GameUI(GameData &Data, unsigned PlayerNumber) : controls(PlayerNumber) {
   combatSelection = Data.getSprite("combat_selection");
   combatSelection.scale(0.4f, 0.4f);
-  itemSelection = Data.getSprite("item_selection");
+  itemSelection = Data.getSprite("inventory_selection");
   itemSelection.scale(0.4f, 0.4f);
 
   switch (PlayerNumber) {
@@ -31,16 +31,13 @@ GameUI::GameUI(GameData &Data, unsigned PlayerNumber) : controls(PlayerNumber) {
 
   StatusBackground = Data.getSprite("status_background");
 
-  InventoryBackground = Data.getSprite("inventory_background");
-  InventoryBackground.setScale(InventoryScale, InventoryScale);
+  int InvSize = 350;
 
-  EquipGlow = Data.getSprite("glow_icon");
-  EquipGlow.setOrigin(EquipGlow.getLocalBounds().width / 2,
-                      EquipGlow.getLocalBounds().height / 2);
-
-  SelectGlow = Data.getSprite("select_icon");
-  SelectGlow.setOrigin(SelectGlow.getLocalBounds().width / 2,
-                       SelectGlow.getLocalBounds().height / 2);
+  MyWindow = new InventoryWindow(Data);
+  MyWindow->setOffset(InvSize, InvSize * (PlayerNumber - 1));
+  FocusedWindow = MyWindow;
+  OtherWindow = new InventoryWindow(Data);
+  OtherWindow->setOffset(InvSize * 2, InvSize * (PlayerNumber - 1));
 }
 
 void GameUI::draw(sf::RenderTarget &target, float time) {
@@ -69,9 +66,15 @@ void GameUI::draw(sf::RenderTarget &target, float time) {
 
     target.draw(StatusBackground);
     target.draw(HealthBarStart);
+    sf::Sprite S = HealthBarStart;
+    int Pos = 0;
     for (int i = 0; i < Barlength; ++i) {
-      HealthBarMid.setPosition({(float)i, 0});
-      target.draw(HealthBarMid);
+      if (i == Barlength - 1)
+        S = HealthBarEnd;
+      S.setPosition({(float)Pos, 0});
+      target.draw(S);
+      Pos += S.getLocalBounds().width;
+      S = HealthBarMid;
     }
   }
 
@@ -82,53 +85,13 @@ void GameUI::draw(sf::RenderTarget &target, float time) {
 }
 
 void GameUI::drawInventory(sf::RenderTarget &target, float time) {
-  int InvOffsetX = 100;
-  int InvOffsetY = 100;
-  InventoryBackground.setPosition(InvOffsetX, InvOffsetY);
-  target.draw(InventoryBackground);
-
-  if (Character *C = controls.getControlledCharacter()) {
-    int x = 0;
-    int y = 0;
-    for (Item &I : C->getPrivateInventory()) {
-      const float scale = InventoryScale;
-      float CenterX = x * 18 + 5;
-      float CenterY = y * 18 + 5;
-
-      if (!I.empty()) {
-        sf::Sprite s = I.icon();
-        s.setOrigin(s.getLocalBounds().width / 2,
-                    s.getLocalBounds().height / 2);
-        s.scale(scale, scale);
-        s.setPosition(InvOffsetX + (CenterX + s.getOrigin().x) * scale,
-                      InvOffsetY + (CenterY + s.getOrigin().y) * scale);
-        target.draw(s);
-      }
-
-      if (C->equipped(I)) {
-        float GlowScale = scale + 0.2f;
-        EquipGlow.setScale(GlowScale, GlowScale);
-        EquipGlow.setPosition(
-            InvOffsetX + (CenterX + EquipGlow.getOrigin().x) * scale,
-            InvOffsetY + (CenterY + EquipGlow.getOrigin().y) * scale);
-        target.draw(EquipGlow);
-      }
-
-      if (x == InvX && y == InvY) {
-        float GlowScale = scale + 0.2f;
-        SelectGlow.setScale(GlowScale, GlowScale);
-        SelectGlow.setPosition(
-            InvOffsetX + (CenterX + SelectGlow.getOrigin().x) * scale,
-            InvOffsetY + (CenterY + SelectGlow.getOrigin().y) * scale);
-        target.draw(SelectGlow);
-      }
-
-      ++x;
-      if (x >= InventoryWidth) {
-        x = 0;
-        ++y;
-      }
-    }
+  MyWindow->setCharacter(controls.getControlledCharacter());
+  if (MyWindow)
+    MyWindow->draw(target, FocusedWindow == MyWindow);
+  if (OtherWindow) {
+    if (auto Target = controls.getInventoryTarget())
+      OtherWindow->setInventory(Target->getInventory());
+    OtherWindow->draw(target, FocusedWindow == OtherWindow);
   }
 }
 
@@ -138,43 +101,70 @@ void GameUI::handleEvent(sf::Event event) {
     if (KeyCode == sf::Keyboard::Tab) {
       toggleInventory();
     }
-    if (InventoryOpen) {
+    if (InventoryOpen && FocusedWindow) {
+      bool HasOtherInv = getControls().getInventoryTarget() != nullptr;
       switch(KeyCode) {
         case sf::Keyboard::A:
-          InvX--;
+          if (HasOtherInv && FocusedWindow->isOnLeftBorder()) {
+            if (FocusedWindow == MyWindow) {
+              FocusedWindow = OtherWindow;
+              FocusedWindow->moveToRight();
+            } else if (FocusedWindow == OtherWindow){
+              FocusedWindow = MyWindow;
+              FocusedWindow->moveToRight();
+            }
+          } else {
+            FocusedWindow->moveControl(-1, 0);
+          }
           break;
         case sf::Keyboard::D:
-          InvX++;
+          if (HasOtherInv && FocusedWindow->isOnRightBorder()) {
+            if (FocusedWindow == MyWindow) {
+              FocusedWindow = OtherWindow;
+              FocusedWindow->moveToLeft();
+            } else if (FocusedWindow == OtherWindow){
+              FocusedWindow = MyWindow;
+              FocusedWindow->moveToLeft();
+            }
+          } else {
+            FocusedWindow->moveControl(1, 0);
+          }
           break;
         case sf::Keyboard::W:
-          InvY--;
+          FocusedWindow->moveControl(0, -1);
           break;
         case sf::Keyboard::S:
-          InvY++;
+          FocusedWindow->moveControl(0, 1);
           break;
         default:
           break;
       }
 
-      // Handle wrapping.
-      while(InvX < 0)
-        InvX += InventoryWidth;
-      while(InvY < 0)
-        InvY += InventoryWidth;
-      InvX %= InventoryWidth;
-      InvY %= InventoryWidth;
-
       if (KeyCode == sf::Keyboard::Space) {
-        auto C = controls.getControlledCharacter();
-        if (C) {
-          auto &I = C->getPrivateInventory().at(selectedItem());
-          if (I.kind() == ItemData::Consumable) {
-            C->useItem(I);
-          } else {
-            if (C->equipped(I)) {
-              C->unequipItem(I);
-            } else {
-              C->equipItem(I);
+        if (HasOtherInv) {
+          // Inventory exchange mode
+          auto I = FocusedWindow->getSelectedItem();
+          if (!I.empty() && getUnfocusedWindow()->getInventory()->add(I)) {
+            bool RemoveResult = FocusedWindow->getInventory()->remove(I);
+            assert(RemoveResult);
+            controls.getControlledCharacter()->updateEquipped();
+          }
+        } else {
+          // Equip mode
+          auto C = controls.getControlledCharacter();
+          if (C) {
+            auto &I = FocusedWindow->getSelectedItem();
+            if (!I.empty()) {
+              if (I.kind() == ItemData::Consumable) {
+                C->useItem(I);
+              }
+              else {
+                if (C->equipped(I)) {
+                  C->unequipItem(I);
+                } else {
+                  C->equipItem(I);
+                }
+              }
             }
           }
         }

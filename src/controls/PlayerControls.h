@@ -66,7 +66,8 @@ public:
           possibleTargets.end()) {
         target = nullptr;
       }
-    } else {
+    }
+    if (!target) {
       if (!possibleTargets.empty())
         target = possibleTargets.front();
     }
@@ -76,11 +77,12 @@ public:
     this->possibleInventoryTargets = targets;
     if (inventoryTarget) {
       if (std::find(possibleInventoryTargets.begin(),
-                    possibleInventoryTargets.end(), target) ==
+                    possibleInventoryTargets.end(), inventoryTarget) ==
           possibleInventoryTargets.end()) {
-        target = nullptr;
+        inventoryTarget = nullptr;
       }
-    } else {
+    }
+    if (!inventoryTarget) {
       if (!possibleInventoryTargets.empty())
         inventoryTarget = possibleInventoryTargets.front();
     }

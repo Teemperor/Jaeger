@@ -28,15 +28,6 @@ Character::Character(Level &level, Vec2 pos, BodyType type) : Creature(level) {
     addItem(Item(*ID.item("magic_staff"), W));
 
   addItem(Item(*ID.item("steel_buckler"), W));
-  addItem(Item(*ID.item("steel_buckler"), W));
-  addItem(Item(*ID.item("steel_buckler"), W));
-  addItem(Item(*ID.item("steel_buckler"), W));
-  addItem(Item(*ID.item("steel_buckler"), W));
-  addItem(Item(*ID.item("steel_buckler"), W));
-  addItem(Item(*ID.item("steel_buckler"), W));
-  addItem(Item(*ID.item("steel_buckler"), W));
-  addItem(Item(*ID.item("steel_buckler"), W));
-  addItem(Item(*ID.item("steel_buckler"), W));
   addItem(Item(*ID.item("small_health_potion"), W));
 }
 

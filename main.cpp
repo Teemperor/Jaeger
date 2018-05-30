@@ -37,12 +37,12 @@ int main() {
 
   Faction playerFaction;
 
-  Character *player1 = new Character(level, Vec2(48 * 16, 52 * 16));
+  Character *player1 = new Character(level, Vec2(78 * 16, 52 * 16));
   player1->setFaction(&playerFaction);
-  Character *player2 = new Character(level, Vec2(48 * 16, 51 * 16));
+  Character *player2 = new Character(level, Vec2(78 * 16, 51 * 16));
   player2->setFaction(&playerFaction);
 
-  for (int i = 0; i < 1; i++) {
+  for (int i = 0; i < 300; i++) {
     Vec2 pos = Vec2(200 + rand() % 700, 200 + rand() % 700);
     if (level.passable(pos))
       new Character(level, Vec2(TilePos(pos)));

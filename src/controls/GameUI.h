@@ -2,6 +2,7 @@
 #define GAMEUI_H
 
 #include "PlayerControls.h"
+#include "InventoryWindow.h"
 
 #include <cassert>
 
@@ -11,23 +12,21 @@
 class GameUI {
   sf::Sprite combatSelection, itemSelection,
       HealthBarStart, HealthBarMid, HealthBarEnd,
-      StaminaBarStart, StaminaBarMid, StaminaBarEnd, StatusBackground,
-      InventoryBackground, EquipGlow, SelectGlow;
+      StaminaBarStart, StaminaBarMid, StaminaBarEnd, StatusBackground;
   PlayerControls controls;
-
-  float InventoryScale = 4;
-
-  int InventoryWidth = 4;
-
-  int InvX = 1;
-  int InvY = 1;
 
   bool InventoryOpen = false;
 
   void drawInventory(sf::RenderTarget &target, float time);
 
-  std::size_t selectedItem() {
-    return static_cast<size_t>(InvX + InvY * InventoryWidth);
+  InventoryWindow *FocusedWindow = nullptr;
+  InventoryWindow *MyWindow = nullptr;
+  InventoryWindow *OtherWindow = nullptr;
+
+  InventoryWindow *getUnfocusedWindow() {
+    if (FocusedWindow == MyWindow)
+      return OtherWindow;
+    return MyWindow;
   }
 
 public:

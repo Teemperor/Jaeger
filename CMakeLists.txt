@@ -93,7 +93,7 @@ set(SOURCE_FILES
     src/level/TileRect.h
     src/ItemBag.cpp
     src/ItemBag.h
-)
+    src/controls/InventoryWindow.cpp src/controls/InventoryWindow.h)
 add_library(argos_core ${SOURCE_FILES})
 target_link_libraries(argos_core ${SFML_LIBRARIES})
 
