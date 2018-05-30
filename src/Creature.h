@@ -9,16 +9,37 @@
 
 class Creature : public GameObject {
   Faction *TheFaction = nullptr;
-  int Health = 100;
+  int Health = 80;
   int MaxHealth = 100;
-  int Fatigue = 100;
+  int Fatigue = 0;
   int MaxFatigue = 100;
   std::list<AppliedSpellEffect> Effects;
+
+  float FatigueRegTime = 0.1;
+  float TimeSinceLastFatigueReg = 0;
 
 public:
   explicit Creature(Level &level, Faction *faction = nullptr);
 
   void addEffect(const AppliedSpellEffect &E) { Effects.push_back(E); }
+
+  void update(float dtime) override {
+    GameObject::update(dtime);
+    TimeSinceLastFatigueReg += dtime;
+    while (TimeSinceLastFatigueReg > FatigueRegTime) {
+      TimeSinceLastFatigueReg -= FatigueRegTime;
+      if (Fatigue < MaxFatigue)
+        Fatigue++;
+    }
+  }
+
+  bool trySpendFatigue(int FatiguePointsToSpend) {
+    if (Fatigue >= FatiguePointsToSpend) {
+      Fatigue -= FatiguePointsToSpend;
+      return true;
+    }
+    return false;
+  }
 
   void updateEffects(float DeltaTime) {
     for (auto Iter = Effects.begin(); Iter != Effects.end();) {

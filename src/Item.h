@@ -34,6 +34,10 @@ public:
     return Data->getEffect(User);
   }
 
+  int getFatigueCost() const {
+    return Data->getFatigueCost();
+  }
+
   const sf::Sprite &sprite() { return Data->sprite(); }
   const sf::Sprite &icon() { return Data->icon(); }
 

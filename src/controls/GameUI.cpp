@@ -61,12 +61,12 @@ void GameUI::draw(sf::RenderTarget &target, float time) {
     target.draw(StatusBackground);
     HealthBar.setValue(C->getHealth());
     HealthBar.setMax(C->getMaxHealth());
-    HealthBar.draw(target);
+    HealthBar.draw(target, time);
 
     StaminaBar.setOffset(0, 20);
     StaminaBar.setValue(C->getFatigue());
     StaminaBar.setMax(C->getMaxFatigue());
-    StaminaBar.draw(target);
+    StaminaBar.draw(target, time);
   }
 
   if (InventoryOpen)

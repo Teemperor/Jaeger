@@ -6,17 +6,20 @@
 #include <gamedata/GameData.h>
 
 class StatusBar {
-  int Length;
+  int Length = 1;
   sf::Sprite BarStart, BarMid, BarEnd;
   int Max = 100;
   int Value = 100;
+  float ShadowValue = 100;
   int OffX = 0;
   int OffY = 0;
+
+  static constexpr float ShadowValueSpeedPercentage = 0.1;
+
 public:
   StatusBar() = default;
   StatusBar(GameData &Data, const std::string &SpriteNamePrefix, int Length)
       : Length(Length) {
-
     BarStart = Data.getSprite(SpriteNamePrefix + "_start");
     BarMid = Data.getSprite(SpriteNamePrefix + "_mid");
     BarEnd = Data.getSprite(SpriteNamePrefix + "_end");
@@ -35,20 +38,7 @@ public:
     Value = V;
   }
 
-  void draw(sf::RenderTarget &Target) {
-    int Barlength = (int)(Value / (float) Max * Length);
-
-    sf::Sprite S = BarStart;
-    int Pos = 0;
-    for (int I = 0; I < Barlength; ++I) {
-      if (I == Barlength - 1)
-        S = BarEnd;
-      S.setPosition({(float)Pos + OffX, (float)OffY});
-      Target.draw(S);
-      Pos += S.getLocalBounds().width;
-      S = BarMid;
-    }
-  }
+  void draw(sf::RenderTarget &Target, float dtime);
 };
 
 

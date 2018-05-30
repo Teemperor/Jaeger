@@ -205,7 +205,7 @@ void Character::update(float dtime) {
     }
   }
 
-  GameObject::update(dtime);
+  Creature::update(dtime);
 
   Talking = !isControlled();
   if (OldWalkingValue != Walking) {

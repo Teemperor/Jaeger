@@ -30,6 +30,8 @@ private:
   const ProjectileData *projectileData_ = nullptr;
   Kind kind_;
 
+  int FatigueCost = 1;
+
   const SpellEffect *UseEffect = nullptr;
   mutable RandomRange UseStrength;
   mutable RandomRange UseDuration;
@@ -49,6 +51,10 @@ public:
 
   bool hasEffect() {
     return UseEffect != nullptr;
+  }
+
+  int getFatigueCost() const {
+    return FatigueCost;
   }
 
   AppliedSpellEffect getEffect(Creature *User) const {

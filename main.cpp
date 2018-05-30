@@ -84,11 +84,11 @@ int main() {
         view = Window.getView();
         view.zoom(0.3f);
       }
-      gui.handleEvent(event);
       gui2.handleEvent(event);
+      gui.handleEvent(event);
     }
-    viewCenter.x = player2->getPos().getX();
-    viewCenter.y = player2->getPos().getY();
+    viewCenter.x = player1->getPos().getX();
+    viewCenter.y = player1->getPos().getY();
 
     sf::Time elapsed = clock.restart();
     world->update(elapsed.asSeconds());
@@ -112,8 +112,8 @@ int main() {
     Level &currentLevel = player1->getLevel();
     currentLevel.render(Window, viewCenter);
 
-    gui.draw(Window, level.getTime());
-    gui2.draw(Window, level.getTime());
+    gui2.draw(Window, elapsed.asSeconds());
+    gui.draw(Window, elapsed.asSeconds());
 
     Window.display();
     // FPS:
