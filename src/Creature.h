@@ -9,9 +9,9 @@
 
 class Creature : public GameObject {
   Faction *TheFaction = nullptr;
-  int Health = 80;
+  int Health = 100;
   int MaxHealth = 100;
-  int Fatigue = 0;
+  int Fatigue = 100;
   int MaxFatigue = 100;
   std::list<AppliedSpellEffect> Effects;
 
@@ -66,8 +66,6 @@ public:
   void setFaction(Faction *NewFaction) { TheFaction = NewFaction; }
 
   void damage(int Dmg) override { Health -= Dmg; }
-
-  float percentageHealth() const { return (float)Health / MaxHealth; }
 
   int getHealth() const {
     return Health;

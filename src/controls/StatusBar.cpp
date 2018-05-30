@@ -3,13 +3,16 @@
 void StatusBar::draw(sf::RenderTarget &Target, float dtime) {
   const float ShadowValueSpeed = ShadowValueSpeedPercentage * Max;
 
-  float MaxShadowValueChange = dtime * ShadowValueSpeed;
+  float ShadowValueChange = dtime * ShadowValueSpeed;
 
-  
+  float ShadowDiff = Value - ShadowValue;
+  if (std::abs(ShadowDiff) < ShadowValueChange) {
+    ShadowValue = Value;
+  } else {
+    float ShadowDirection = Value < ShadowValue ? -1 : 1;
+    ShadowValue += ShadowValueChange * ShadowDirection;
+  }
 
-  ShadowValue += static_cast<float>((Value - ShadowValue) * 0.32 * dtime);
-
-  std::cout << ShadowValue << std::endl;
   int Barlength = (int)(ShadowValue / (float) Max * Length);
   sf::Sprite S;
   int Pos = 0;
@@ -18,7 +21,7 @@ void StatusBar::draw(sf::RenderTarget &Target, float dtime) {
   for (int I = 0; I < Barlength; ++I) {
     if (I == Barlength - 1)
       S = BarEnd;
-    S.setColor(sf::Color(255, 255, 255, 100));
+    S.setColor(sf::Color(255, 0, 0, 180));
     S.setPosition({(float)Pos + OffX, (float)OffY});
     Target.draw(S);
     Pos += S.getLocalBounds().width;

@@ -14,7 +14,7 @@ class StatusBar {
   int OffX = 0;
   int OffY = 0;
 
-  static constexpr float ShadowValueSpeedPercentage = 0.1;
+  static constexpr float ShadowValueSpeedPercentage = 0.7;
 
 public:
   StatusBar() = default;
