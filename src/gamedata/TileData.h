@@ -15,10 +15,12 @@ class TileData {
   bool passable_ = false;
   int animationTime_ = -1;
 
+  bool HasInventory = false;
+
   sf::Sprite noSprite;
 
 public:
-  TileData(const std::string &name, std::string group, bool passable,
+  TileData(const std::string &name, const std::string &group, bool passable,
            int animationTime)
       : name_(name), group_(group), passable_(passable),
         animationTime_(animationTime) {
@@ -29,6 +31,14 @@ public:
   const std::string &name() const { return name_; }
 
   const std::string &group() const { return group_; }
+
+  void enableInventory() {
+    HasInventory = true;
+  }
+
+  bool hasInventory() const {
+    return HasInventory;
+  }
 
   void passable(bool v) { passable_ = v; }
 

@@ -140,6 +140,15 @@ struct closest_object {
            b->getPos().distance(target->getPos());
   }
 };
+struct ClosestInventory {
+  GameObject *target;
+  ClosestInventory(GameObject *target) : target(target) {}
+
+  inline bool operator()(const InventoryLocation &a, const InventoryLocation &b) {
+    return a.InvPos.distance(target->getPos()) <
+           b.InvPos.distance(target->getPos());
+  }
+};
 } // namespace
 
 void Character::update(float dtime) {
@@ -153,15 +162,23 @@ void Character::update(float dtime) {
 
   if (isControlled()) {
     const float InventoryRange = 40;
-    std::vector<GameObject *> ClosestInventories;
+    std::vector<InventoryLocation> ClosestInventories;
     for (GameObject *o : getLevel().getObjects()) {
       if (o->getInventory() &&
           o->getPos().distance(getPos()) < InventoryRange) {
-        ClosestInventories.push_back(o);
+        ClosestInventories.push_back({o->getInventory(), o->getPos()});
       }
     }
+    for (int x = getTilePos().getX() - 1; x < getTilePos().getX() + 1; ++x) {
+      for (int y = getTilePos().getY() - 1; y < getTilePos().getY() + 1; ++y) {
+        if (auto Inv = getLevel().getInventory(x, y)) {
+          ClosestInventories.push_back({Inv, Vec2(TilePos(x, y))});
+        }
+      }
+    }
+
     std::sort(ClosestInventories.begin(), ClosestInventories.end(),
-              closest_object(this));
+              ClosestInventory(this));
     getControls()->setPossibleInventoryTargets(ClosestInventories);
   }
 

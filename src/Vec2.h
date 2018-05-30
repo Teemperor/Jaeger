@@ -32,7 +32,7 @@ public:
     }
   }
 
-  float distance(const Vec2 &other) {
+  float distance(const Vec2 &other) const {
     float dx = other.x - x;
     float dy = other.y - y;
     return std::sqrt(dx * dx + dy * dy);

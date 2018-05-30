@@ -17,7 +17,8 @@ class Tile {
 
 public:
   Tile() {}
-  Tile(TileData *Data) : Data(Data) {}
+  Tile(TileData *Data) : Data(Data) {
+  }
 
   const std::string &name() const {
     if (Data)
@@ -35,6 +36,14 @@ public:
       static std::string noGroup;
       return noGroup;
     }
+  }
+
+  Inventory *getInventory() {
+    if (Data && Data->hasInventory()) {
+      createExtraInfo().createInventory();
+      return &createExtraInfo().getInventory();
+    }
+    return nullptr;
   }
 
   void setTeleportTarget(const TilePos &target);

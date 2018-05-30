@@ -12,6 +12,9 @@ class World;
 class LevelGen {
   GameData *data;
   Level *level;
+  World *world;
+
+  void make_chest(int x, int y);
 
   void make_tree(int x, int y, bool force = false);
   void make_bush(int x, int y, float random);

@@ -3,9 +3,23 @@
 
 #include <SFML/Window.hpp>
 #include <vector>
+#include <Inventory.h>
+#include <Vec2.h>
 
 class GameObject;
 class Character;
+
+struct InventoryLocation {
+  Inventory *Inv = nullptr;
+  // Where the inventory is located on the current level.
+  Vec2 InvPos = {0, 0};
+  InventoryLocation() = default;
+  InventoryLocation(Inventory *Inv, Vec2 Pos) : Inv(Inv), InvPos(Pos) {
+  }
+  bool valid() {
+    return Inv != nullptr;
+  }
+};
 
 class PlayerControls {
 
@@ -16,8 +30,8 @@ class PlayerControls {
   GameObject *target = nullptr;
   std::vector<GameObject *> possibleTargets;
 
-  GameObject *inventoryTarget = nullptr;
-  std::vector<GameObject *> possibleInventoryTargets;
+  InventoryLocation TargetInv;
+  std::vector<InventoryLocation> possibleInventories;
 
   Character *ControlledChar = nullptr;
 
@@ -55,7 +69,7 @@ public:
   float getYInput() { return moveY; }
 
   GameObject *getTarget() { return target; }
-  GameObject *getInventoryTarget() { return inventoryTarget; }
+  InventoryLocation getInventoryTarget() { return TargetInv; }
 
   bool isShooting() const;
 
@@ -73,19 +87,12 @@ public:
     }
   }
 
-  void setPossibleInventoryTargets(const std::vector<GameObject *> &targets) {
-    this->possibleInventoryTargets = targets;
-    if (inventoryTarget) {
-      if (std::find(possibleInventoryTargets.begin(),
-                    possibleInventoryTargets.end(), inventoryTarget) ==
-          possibleInventoryTargets.end()) {
-        inventoryTarget = nullptr;
-      }
-    }
-    if (!inventoryTarget) {
-      if (!possibleInventoryTargets.empty())
-        inventoryTarget = possibleInventoryTargets.front();
-    }
+  void setPossibleInventoryTargets(const std::vector<InventoryLocation> &targets) {
+    this->possibleInventories = targets;
+    if (!possibleInventories.empty())
+      TargetInv = possibleInventories.front();
+    else
+      TargetInv = InventoryLocation();
   }
 };
 

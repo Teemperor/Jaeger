@@ -18,6 +18,8 @@ class GameUI {
 
   bool InventoryOpen = false;
 
+  float AbsoluteTime = 0;
+
   void drawInventory(sf::RenderTarget &target, float time);
 
   InventoryWindow *FocusedWindow = nullptr;
@@ -46,7 +48,7 @@ public:
 
   void toggleInventory() { InventoryOpen = !InventoryOpen; }
 
-  void draw(sf::RenderTarget &target, float time);
+  void draw(sf::RenderTarget &target, float dtime);
 };
 
 #endif // GAMEUI_H

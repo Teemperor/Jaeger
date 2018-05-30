@@ -153,6 +153,10 @@ void GameData::parseTileData(const std::string &path) {
 
     Tiles[id] = new TileData(id, group, passable, animationTime);
 
+    if (tile.find("inventory") != tile.end() && tile["inventory"]) {
+      Tiles[id]->enableInventory();
+    }
+
     if (tile.find("sprites") != tile.end()) {
       auto sprites = tile["sprites"];
       for (const auto &sprite : sprites)

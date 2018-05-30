@@ -104,6 +104,18 @@ public:
 
   World &getWorld() { return world_; }
 
+  Inventory *getInventory(int x, int y) {
+    if (auto I = getOverlay(x, y).getInventory())
+      return I;
+    if (auto I = getBuilding(x, y).getInventory())
+      return I;
+    if (auto I = getBuilding2(x, y).getInventory())
+      return I;
+    if (auto I = get(x, y).getInventory())
+      return I;
+    return nullptr;
+  }
+
   unsigned timeMillis() { return static_cast<unsigned>(time * 1000); }
 
   void update(float dtime);

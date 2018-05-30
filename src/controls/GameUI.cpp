@@ -37,18 +37,20 @@ GameUI::GameUI(GameData &Data, unsigned PlayerNumber) : controls(PlayerNumber) {
   OtherWindow->setOffset(InvSize * 2, InvSize * (PlayerNumber - 1));
 }
 
-void GameUI::draw(sf::RenderTarget &target, float time) {
+void GameUI::draw(sf::RenderTarget &target, float dtime) {
   update();
+  AbsoluteTime += dtime;
 
-  if (GameObject *t = controls.getInventoryTarget()) {
-    float offset = (std::abs(std::sin(time * 10.0f)) * 4.0f);
-    itemSelection.setPosition(t->getPos().getX(),
-                                t->getPos().getY() - 16 - offset);
+  InventoryLocation Inv = controls.getInventoryTarget();
+  if (Inv.valid()) {
+    float offset = (std::abs(std::sin(AbsoluteTime * 10.0f)) * 4.0f);
+    itemSelection.setPosition(Inv.InvPos.getX(),
+                              Inv.InvPos.getY() - 16 - offset);
     target.draw(itemSelection);
   }
 
   if (GameObject *t = controls.getTarget()) {
-    float offset = (std::abs(std::sin(time * 10.0f)) * 4.0f);
+    float offset = (std::abs(std::sin(AbsoluteTime * 10.0f)) * 4.0f);
     combatSelection.setPosition(t->getPos().getX(),
                                 t->getPos().getY() - 16 - offset);
     target.draw(combatSelection);
@@ -61,16 +63,16 @@ void GameUI::draw(sf::RenderTarget &target, float time) {
     target.draw(StatusBackground);
     HealthBar.setValue(C->getHealth());
     HealthBar.setMax(C->getMaxHealth());
-    HealthBar.draw(target, time);
+    HealthBar.draw(target, dtime);
 
     StaminaBar.setOffset(0, 20);
     StaminaBar.setValue(C->getFatigue());
     StaminaBar.setMax(C->getMaxFatigue());
-    StaminaBar.draw(target, time);
+    StaminaBar.draw(target, dtime);
   }
 
   if (InventoryOpen)
-    drawInventory(target, time);
+    drawInventory(target, dtime);
 
   target.setView(ViewBak);
 }
@@ -80,8 +82,9 @@ void GameUI::drawInventory(sf::RenderTarget &target, float time) {
   if (MyWindow)
     MyWindow->draw(target, FocusedWindow == MyWindow);
   if (OtherWindow) {
-    if (auto Target = controls.getInventoryTarget()) {
-      OtherWindow->setInventory(Target->getInventory());
+    auto TargetInv = controls.getInventoryTarget();
+    if (TargetInv.valid()) {
+      OtherWindow->setInventory(TargetInv.Inv);
       OtherWindow->draw(target, FocusedWindow == OtherWindow);
     } else {
       FocusedWindow = MyWindow;
@@ -96,7 +99,7 @@ void GameUI::handleEvent(sf::Event event) {
       toggleInventory();
     }
     if (InventoryOpen && FocusedWindow) {
-      bool HasOtherInv = getControls().getInventoryTarget() != nullptr;
+      bool HasOtherInv = getControls().getInventoryTarget().valid();
       switch(KeyCode) {
         case sf::Keyboard::A:
           if (HasOtherInv && FocusedWindow->isOnLeftBorder()) {

@@ -336,6 +336,7 @@ void LevelGen::generate_house() {
         build(x, 2, "shelf");
     }
   }
+  make_chest(doorX + 2, h - 3);
 
   for (int y = 1; y < h - 2; ++y) {
     overlay(0, y, "sand_walltop_vertical");
@@ -399,6 +400,7 @@ LevelGen::LevelGen(unsigned seed)
       dis(0, 1) {}
 
 Level *LevelGen::generate(World &world, GameData &data, Level::Type type) {
+  this->world = &world;
   this->data = &data;
 
   switch (type) {
@@ -586,4 +588,9 @@ void LevelGen::generate_mine() {
       {Level::Type::Overworld, TilePos(*level, doorX, doorY)});
   level->get(doorX, doorY).setData(data.tile("cave_floor"));
   overlay(doorX, doorY, "door_light");
+}
+
+void LevelGen::make_chest(int x, int y) {
+  build(x, y, "chest");
+  level->getBuilding(x, y).getInventory()->add(Item(*data->item("small_health_potion"), *world));
 }

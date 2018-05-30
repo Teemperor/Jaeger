@@ -13,6 +13,8 @@
     { "id" : "earth_b", "passable" : true, "sprites" : ["earth_b"]},
     { "id" : "earth_br", "passable" : true, "sprites" : ["earth_br"]},
 
+    { "id" : "chest", "passable" : false, "sprites" : ["chest"], "inventory" : true},
+
     { "id" : "corn", "group" : "corn", "passable" : true, "sprites" : ["corn1", "corn2", "corn3", "corn4"]},
 
     { "id" : "railtracks_vertical", "passable" : true, "sprites" : ["railtracks_vertical1", "railtracks_vertical2"]},
