@@ -12,11 +12,11 @@ void LevelGen::make_tree(int x, int y, bool force) {
       return;
   }
   std::string isDark;
-  if (dis(gen) > 0.5f)
+  if (chance() > 0.5f)
     isDark = "dark";
 
-  if (dis(gen) > 0.1f) {
-    if (dis(gen) > 0.5f) {
+  if (chance() > 0.1f) {
+    if (chance() > 0.5f) {
       level->getBuilding(x, y).setData(
           data->tile("tree_" + isDark + "green_lower"));
       level->getOverlay(x, y - 1).setData(
@@ -73,7 +73,7 @@ void LevelGen::make_house(TileRect A, int depth, Level::Type ConnectsTo) {
         overlay(ix, iy, "brown_roof_mid");
       } else if (iy > y + h - depth - 1 && iy < y + h - 1 && ix > x &&
                  ix < x + w - 1 && ix % 2 == 0 && iy % 2 == 0) {
-        if (dis(gen) > 0.0f) {
+        if (chance() > 0.0f) {
           overlay(ix, iy, "brown_window_round");
         }
       }
@@ -185,7 +185,7 @@ void LevelGen::generate_overworld() {
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
       if (water.get(x, y)) {
-        if (dis(gen) > 0.01f)
+        if (chance() > 0.01f)
           level->get(x, y).setData(data.tile("water_c"));
         else
           floor(x, y, "water_rock");
@@ -263,15 +263,15 @@ void LevelGen::generate_overworld() {
       float vegetation = getVegetation(x, y);
       float height = getHeight(x, y);
       if (height > 0) {
-        if (vegetation > 0.2f && dis(gen) > 0.75f) {
+        if (vegetation > 0.2f && chance() > 0.75f) {
           make_tree(x, y);
-        } else if (vegetation > 0 && dis(gen) > 0.8f) {
+        } else if (vegetation > 0 && chance() > 0.8f) {
           // make_bush(x, y);
-        } else if (dis(gen) > 0.8f) {
-          make_bush(x, y, dis(gen));
+        } else if (chance() > 0.8f) {
+          make_bush(x, y, chance());
         }
       } else {
-        if (height > -0.1f && vegetation > 0 && dis(gen) > 0.8f) {
+        if (height > -0.1f && vegetation > 0 && chance() > 0.8f) {
           level->getBuilding(x, y).setData(data.tile("lilypad"));
         }
       }
@@ -294,7 +294,7 @@ void LevelGen::generate_overworld() {
         float tree_chance =
             (tree_border - coord) / static_cast<float>(tree_border);
         if (height >= 0) {
-          if (dis(gen) < tree_chance) {
+          if (chance() < tree_chance) {
             make_tree(x, y);
           }
         }
@@ -334,15 +334,15 @@ void LevelGen::generate_house() {
       }
     }
 
-    if (dis(gen) > 0.8f)
+    if (chance() > 0.8f)
       build(doorX - 1, h - 3, "pot_plant");
-    if (dis(gen) > 0.8f)
+    if (chance() > 0.8f)
       build(doorX + 1, h - 3, "pot_plant");
 
     if (x && x != w - 1) {
-      if (dis(gen) > 0.9f)
+      if (chance() > 0.9f)
         build(x, 1, "brown_window_round");
-      if (dis(gen) > 0.7f)
+      if (chance() > 0.7f)
         build(x, 2, "shelf");
     }
   }
@@ -352,9 +352,9 @@ void LevelGen::generate_house() {
     overlay(0, y, "sand_walltop_vertical");
     overlay(w - 1, y, "sand_walltop_vertical");
 
-    if (dis(gen) > 0.8f)
+    if (chance() > 0.8f)
       build(w - 2, y, "torch_wall_right");
-    if (dis(gen) > 0.7f)
+    if (chance() > 0.7f)
       build(1, y, "torch_wall_left");
   }
   overlay(0, 0, "sand_walltop_leftup");
@@ -369,7 +369,7 @@ void LevelGen::generate_house() {
     for (int y = 0; y < h - 1; ++y) {
       if (!level->passable(TilePos(x, y)))
         continue;
-      if (dis(gen) > 0.999f)
+      if (chance() > 0.999f)
         build(x, y, "wood_table");
     }
   }
@@ -465,11 +465,11 @@ bool LevelGen::generate_settlement(TileRect Area, int limit) {
   };
 
   for (auto O : Offsets) {
-    if (dis(gen) < 0.6f)
+    if (chance() < 0.6f)
       continue;
     for (int Try = 0; Try < 5; ++Try) {
-      int NewW = static_cast<int>(dis(gen) * 4 + 3);
-      int NewH = static_cast<int>(dis(gen) * 4 + 3);
+      int NewW = static_cast<int>(chance() * 4 + 3);
+      int NewH = static_cast<int>(chance() * 4 + 3);
       TileRect New = Area;
       New.setW(NewW);
       New.setH(NewH);
@@ -496,8 +496,8 @@ void LevelGen::generate_settlements() {
   for (int i = 0; i < 4000; i++) {
     if (Count == 0)
       break;
-    int x = static_cast<int>(dis(gen) * level->getWidth());
-    int y = static_cast<int>(dis(gen) * level->getHeight());
+    int x = static_cast<int>(chance() * level->getWidth());
+    int y = static_cast<int>(chance() * level->getHeight());
     int w = 7;
     int h = 7;
 
