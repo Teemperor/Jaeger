@@ -694,7 +694,7 @@ void LevelGen::makeStalagmite(int x, int y) {
   if (chance() < 0.4)
     build(x, y, "stalagmite_small");
   else {
-    build(x, y - 1, "stalagmite_top");
+    overlay(x, y - 1, "stalagmite_top");
     build(x, y, "stalagmite_bottom");
   }
 }
