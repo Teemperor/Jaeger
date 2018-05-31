@@ -169,8 +169,8 @@ void Character::update(float dtime) {
         ClosestInventories.push_back({o->getInventory(), o->getPos()});
       }
     }
-    for (int x = getTilePos().getX() - 1; x < getTilePos().getX() + 1; ++x) {
-      for (int y = getTilePos().getY() - 1; y < getTilePos().getY() + 1; ++y) {
+    for (int x = getTilePos().getX() - 1; x <= getTilePos().getX() + 1; ++x) {
+      for (int y = getTilePos().getY() - 1; y <= getTilePos().getY() + 1; ++y) {
         if (auto Inv = getLevel().getInventory(x, y)) {
           ClosestInventories.push_back({Inv, Vec2(TilePos(x, y))});
         }
