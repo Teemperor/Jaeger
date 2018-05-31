@@ -96,6 +96,13 @@
     { "id" : "earth_br" , "tile" : [9, 11] },
 
 
+    { "id" : "stalagmite_small1" , "tile" : [29, 42] },
+    { "id" : "stalagmite_small2" , "tile" : [30, 42] },
+    { "id" : "stalagmite_bottom1" , "tile" : [33, 42] },
+    { "id" : "stalagmite_bottom2" , "tile" : [34, 42] },
+    { "id" : "stalagmite_top1" , "tile" : [33, 41] },
+    { "id" : "stalagmite_top2" , "tile" : [34, 41] },
+
     { "id" : "cave_wall_top" , "tile" : [37, 42] },
 
     { "id" : "cave_wall" , "tile" : [37, 43] },

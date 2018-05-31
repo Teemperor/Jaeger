@@ -20,6 +20,10 @@
     { "id" : "railtracks_vertical", "passable" : true, "sprites" : ["railtracks_vertical1", "railtracks_vertical2"]},
     { "id" : "railtracks_end_bottom", "passable" : true, "sprites" : ["railtracks_end_bottom"]},
 
+    { "id" : "stalagmite_small", "passable" : false, "sprites" : ["stalagmite_small1", "stalagmite_small2"]},
+    { "id" : "stalagmite_bottom", "passable" : false, "sprites" : ["stalagmite_bottom1", "stalagmite_bottom2"]},
+    { "id" : "stalagmite_top", "passable" : false, "sprites" : ["stalagmite_top1", "stalagmite_top2"]},
+
     { "id" : "cave_wall_top", "passable" : false, "sprites" : ["cave_wall_top"]},
 
     { "id" : "cave_wall", "passable" : false, "sprites" : ["cave_wall"]},

@@ -2,6 +2,7 @@
 #define TILEPOS_H
 
 #include <cassert>
+#include <cmath>
 #include <initializer_list>
 #include <tuple>
 
@@ -52,6 +53,12 @@ public:
     X += xd;
     Y += yd;
     return *this;
+  }
+
+  float distance(const TilePos &Other) {
+    int dx = X - Other.X;
+    int dy = Y - Other.Y;
+    return static_cast<float>(std::sqrt(dx * dx + dy * dy));
   }
 
   bool operator<(const TilePos &o) const {

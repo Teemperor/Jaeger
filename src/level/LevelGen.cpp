@@ -11,7 +11,7 @@ void LevelGen::make_tree(int x, int y, bool force) {
     if (!level->getBuilding(x, y).empty())
       return;
   }
-  std::string isDark = "";
+  std::string isDark;
   if (dis(gen) > 0.5f)
     isDark = "dark";
 
@@ -669,9 +669,32 @@ void LevelGen::generate_mine() {
     }
   }
 
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      if (TilePos(x, y).distance(TilePos(DoorX, DoorY)) < 6)
+        continue;
+      if (x == DoorX && y == DoorY) continue;
+      if (level->get(x, y).name() != "cave_floor")
+        continue;
+      if (level->get(x, y - 1).name() != "cave_floor")
+        continue;
+      if (chance() < 0.03f)
+        makeStalagmite(x, y);
+    }
+  }
+
 }
 
 void LevelGen::make_chest(int x, int y) {
   build(x, y, "chest");
   level->getBuilding(x, y).getInventory()->add(Item(*data->item("small_health_potion"), *world));
+}
+
+void LevelGen::makeStalagmite(int x, int y) {
+  if (chance() < 0.4)
+    build(x, y, "stalagmite_small");
+  else {
+    build(x, y - 1, "stalagmite_top");
+    build(x, y, "stalagmite_bottom");
+  }
 }

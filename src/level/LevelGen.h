@@ -46,6 +46,10 @@ class LevelGen {
   std::mt19937 gen;
   std::uniform_real_distribution<float> dis;
 
+  float chance() {
+    return dis(gen);
+  }
+
   void generate_overworld();
 
   bool generate_settlement(TileRect Area, int limit = 3);
@@ -53,6 +57,8 @@ class LevelGen {
   void generate_house();
 
   void generate_mine();
+
+  void makeStalagmite(int x, int y);
 
   enum TileCompare {
     CMP_S, // Same group
