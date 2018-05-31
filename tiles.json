@@ -47,7 +47,7 @@
 
     { "id" : "water_rock", "group" : "water", "passable" : false, "sprites" : ["water_rock_brown1", "water_rock_brown2", "water_rock_brown3", "water_rock_grey1", "water_rock_grey2", "water_rock_grey3"]},
 
-    { "id" : "shelf", "passable" : false, "sprites" : ["shelf_small", "shelf_medium", "shelf_big"]},
+    { "id" : "shelf", "passable" : false, "sprites" : ["shelf_small", "shelf_medium", "shelf_big"], "inventory" : true},
 
     { "id" : "planks", "group" : "planks", "passable" : true, "sprites" : ["planks1", "planks2"]},
 
