@@ -131,6 +131,16 @@ float LevelGen::getHeight(int x, int y) {
   return result;
 }
 
+float LevelGen::getCavePerlin(int x, int y) {
+  float result = cavePerlin.get(x, y);
+
+  result += 0.3f;
+  if (result > 1)
+    return 1;
+  return result;
+}
+
+
 float LevelGen::getVegetation(int x, int y) { return woodPerlin.get(x, y); }
 
 namespace {
@@ -396,7 +406,7 @@ bool LevelGen::hasSurrounding(
 }
 
 LevelGen::LevelGen(unsigned seed)
-    : heightPerlin(seed, 0.07), woodPerlin(seed * 55, 0.03), gen(seed),
+    : heightPerlin(seed, 0.07), woodPerlin(seed * 55, 0.03), cavePerlin(seed * 3, 0.07), gen(seed),
       dis(0, 1) {}
 
 Level *LevelGen::generate(World &world, GameData &data, Level::Type type) {
@@ -413,7 +423,7 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type) {
     generate_house();
     break;
   case Level::Type::Mine:
-    level = new Level(world, type, 12, 15, data);
+    level = new Level(world, type, 100, 100, data);
     generate_mine();
     break;
   default:
@@ -537,57 +547,128 @@ void LevelGen::generate_mine() {
   const int h = level->getHeight();
   GameData &data = level->getData();
 
-  int doorX = (w - 1) / 2;
+  int DoorX = w / 2;
 
-  for (int x = 0; x < w; ++x)
-    for (int y = 0; y < h - 1; ++y)
-      level->get(x, y).setData(data.tile("cave_floor"));
+  int StartX = w / 2;
+  int StartY = h / 2;
+  while (!isCave(StartX, StartY)) {
+    StartY += 1;
+    assert(StartY <= h);
+  }
 
-  for (int x = 0; x < w; ++x) {
-    overlay(x, 0, "sand_walltop_horizontal");
-    floor(x, 1, "sand_wall_mid");
-    floor(x, 2, "sand_wall_lower_mid");
+  int DoorY = StartY;
+  while (isCave(DoorX, DoorY)) {
+    DoorY += 1;
+    assert(DoorY <= h);
+  }
+  --DoorY;
 
-    if (x != doorX) {
-      if (x == doorX - 1) {
-        overlay(x, h - 2, "sand_walltop_leftend");
-        overlay(x, h - 1, "sand_wall_right");
-      } else if (x == doorX + 1) {
-        overlay(x, h - 2, "sand_walltop_rightend");
-        overlay(x, h - 1, "sand_wall_left");
-      } else {
-        overlay(x, h - 2, "sand_walltop_horizontal");
-        overlay(x, h - 1, "sand_wall_mid");
+
+  std::set<TilePos> Checked = {TilePos(StartX, StartY)};
+  std::vector<TilePos> ToCheck = {TilePos(StartX, StartY)};
+
+  while (!ToCheck.empty()) {
+    TilePos P = ToCheck.back();
+    ToCheck.pop_back();
+    Checked.insert(P);
+
+    int x = P.getX();
+    int y = P.getY();
+    if (isCave(x, y))
+      floor(x, y, "cave_floor");
+    else
+      continue;
+
+    std::vector<TilePos> ToAdd = {
+        TilePos(x, y + 1),
+        TilePos(x, y - 1),
+        TilePos(x + 1, y),
+        TilePos(x - 1, y),
+        TilePos(x + 1, y + 1),
+        TilePos(x - 1, y + 1),
+        TilePos(x + 1, y - 1),
+        TilePos(x - 1, y - 1),
+    };
+    for (TilePos T : ToAdd) {
+      if (x < 0 || y < 0 || x >= w || y >= h)
+        continue;
+      if (Checked.find(T) == Checked.end()) {
+        Checked.insert(T);
+        ToCheck.push_back(T);
       }
     }
+  }
 
-    if (x && x != w - 1) {
-      if (dis(gen) > 0.9f)
-        build(x, 1, "brown_window_round");
-      if (dis(gen) > 0.7f)
-        build(x, 2, "shelf");
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      if (!level->get(x, y).empty())
+        continue;
+      if (level->get(x, y + 1).name() != "cave_floor")
+        continue;
+      floor(x, y, "cave_floor");
+
+      bool LeftFloor = level->get(x - 1, y).name() == "cave_floor"
+                      && level->getBuilding(x - 1, y).empty();
+      bool RightFloor = level->get(x + 1, y).name() == "cave_floor"
+                        && level->getBuilding(x + 1, y).empty();
+      std::string Suffix;
+      if (LeftFloor && RightFloor)
+        Suffix = "_single";
+      else if (LeftFloor)
+        Suffix = "_left";
+      else if (RightFloor)
+        Suffix = "_right";
+      else
+        Suffix = "";
+
+      build(x, y, "cave_wall_bottom" + Suffix);
+      build(x, y - 1, "cave_wall" + Suffix);
+      build(x, y - 2, "cave_wall_top");
     }
   }
 
-  for (int y = 1; y < h - 2; ++y) {
-    overlay(0, y, "sand_walltop_vertical");
-    overlay(w - 1, y, "sand_walltop_vertical");
-
-    if (dis(gen) > 0.8f)
-      build(w - 2, y, "torch_wall_right");
-    if (dis(gen) > 0.7f)
-      build(1, y, "torch_wall_left");
-  }
-  overlay(0, 0, "sand_walltop_leftup");
-  overlay(w - 1, 0, "sand_walltop_rightup");
-  overlay(0, h - 2, "sand_walltop_leftbottom");
-  overlay(w - 1, h - 2, "sand_walltop_rightbottom");
-
-  int doorY = h - 1;
   openConnections.push_back(
-      {Level::Type::Overworld, TilePos(*level, doorX, doorY)});
-  level->get(doorX, doorY).setData(data.tile("cave_floor"));
-  overlay(doorX, doorY, "door_light");
+      {Level::Type::Overworld, TilePos(*level, DoorX, DoorY)});
+  level->get(DoorX, DoorY).setData(data.tile("cave_floor"));
+  overlay(DoorX, DoorY, "door_light");
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      if (x == DoorX && y == DoorY) continue;
+      if (!level->get(x, y).empty())
+        continue;
+      if (!level->get(x, y + 1).empty())
+        continue;
+      if (level->get(x + 1, y).name() != "cave_floor")
+        continue;
+      build(x, y, "cave_wall_right");
+    }
+  }
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      if (x == DoorX && y == DoorY) continue;
+      if (!level->get(x, y).empty())
+        continue;
+      if (!level->get(x, y + 1).empty())
+        continue;
+      if (level->get(x - 1, y).name() != "cave_floor")
+        continue;
+      build(x, y, "cave_wall_left");
+    }
+  }
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      if (x == DoorX && y == DoorY) continue;
+      if (level->get(x, y).name() != "cave_floor")
+        continue;
+      if (!level->get(x, y + 1).empty())
+        continue;
+      build(x, y, "cave_wall_top");
+    }
+  }
+
 }
 
 void LevelGen::make_chest(int x, int y) {

@@ -96,6 +96,18 @@
     { "id" : "earth_br" , "tile" : [9, 11] },
 
 
+    { "id" : "cave_wall_top" , "tile" : [37, 42] },
+
+    { "id" : "cave_wall" , "tile" : [37, 43] },
+    { "id" : "cave_wall_left" , "tile" : [36, 43] },
+    { "id" : "cave_wall_right" , "tile" : [38, 43] },
+    { "id" : "cave_wall_single" , "tile" : [39, 43] },
+
+    { "id" : "cave_wall_bottom" , "tile" : [37, 45] },
+    { "id" : "cave_wall_bottom_left" , "tile" : [36, 45] },
+    { "id" : "cave_wall_bottom_right" , "tile" : [38, 45] },
+    { "id" : "cave_wall_bottom_single" , "tile" : [39, 45] },
+
     { "id" : "cave_floor1" , "tile" : [44, 51] },
     { "id" : "cave_floor2" , "tile" : [45, 51] },
     { "id" : "cave_floor3" , "tile" : [46, 51] },

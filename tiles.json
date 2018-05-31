@@ -20,6 +20,17 @@
     { "id" : "railtracks_vertical", "passable" : true, "sprites" : ["railtracks_vertical1", "railtracks_vertical2"]},
     { "id" : "railtracks_end_bottom", "passable" : true, "sprites" : ["railtracks_end_bottom"]},
 
+    { "id" : "cave_wall_top", "passable" : false, "sprites" : ["cave_wall_top"]},
+
+    { "id" : "cave_wall", "passable" : false, "sprites" : ["cave_wall"]},
+    { "id" : "cave_wall_left", "passable" : false, "sprites" : ["cave_wall_left"]},
+    { "id" : "cave_wall_right", "passable" : false, "sprites" : ["cave_wall_right"]},
+    { "id" : "cave_wall_single", "passable" : false, "sprites" : ["cave_wall_single"]},
+
+    { "id" : "cave_wall_bottom", "passable" : false, "sprites" : ["cave_wall_bottom"]},
+    { "id" : "cave_wall_bottom_left", "passable" : false, "sprites" : ["cave_wall_bottom_left"]},
+    { "id" : "cave_wall_bottom_right", "passable" : false, "sprites" : ["cave_wall_bottom_right"]},
+    { "id" : "cave_wall_bottom_single", "passable" : false, "sprites" : ["cave_wall_bottom_single"]},
     { "id" : "cave_floor", "group" : "grass", "passable" : true, "sprites" : ["cave_floor1", "cave_floor2", "cave_floor3", "cave_floor4", "cave_floor5"]},
 
     { "id" : "grass", "group" : "grass", "passable" : true, "sprites" : ["grass1", "grass2"]},

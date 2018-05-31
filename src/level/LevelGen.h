@@ -35,7 +35,12 @@ class LevelGen {
 
   Perlin2D heightPerlin;
   Perlin2D woodPerlin;
+  Perlin2D cavePerlin;
 
+  float isCave(int x, int y) {
+    return getCavePerlin(x, y) > 0.3f;
+  }
+  float getCavePerlin(int x, int y);
   float getHeight(int x, int y);
   float getVegetation(int x, int y);
   std::mt19937 gen;
