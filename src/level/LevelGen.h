@@ -58,6 +58,8 @@ class LevelGen {
 
   void generate_mine();
 
+  void placeOrcCamp(int w, int h);
+
   void makeStalagmite(int x, int y);
 
   enum TileCompare {

@@ -3,6 +3,7 @@
 #include "World.h"
 
 #include <set>
+#include <Character.h>
 
 #include "stb_perlin.h"
 
@@ -148,6 +149,14 @@ class Area {
 public:
   int x1, y1, x2, y2;
   Area(int x1, int y1, int x2, int y2) : x1(x1), y1(y1), x2(x2), y2(y2) {}
+
+  void foreach(std::function<void(int, int)> F) {
+    for (int x = x1; x < x2; x++) {
+      for (int y = y1; y < y2; y++) {
+        F(x, y);
+      }
+    }
+  }
 
   bool contains(int x, int y) {
     return x >= x1 && x <= x2 && y >= y1 && y <= y2;
@@ -658,16 +667,6 @@ void LevelGen::generate_mine() {
     }
   }
 
-  for (int x = 0; x < w; ++x) {
-    for (int y = 0; y < h; ++y) {
-      if (x == DoorX && y == DoorY) continue;
-      if (level->get(x, y).name() != "cave_floor")
-        continue;
-      if (!level->get(x, y + 1).empty())
-        continue;
-      build(x, y, "cave_wall_top");
-    }
-  }
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -678,10 +677,26 @@ void LevelGen::generate_mine() {
         continue;
       if (level->get(x, y - 1).name() != "cave_floor")
         continue;
+      if (level->get(x, y + 1).name() != "cave_floor")
+        continue;
       if (chance() < 0.03f)
         makeStalagmite(x, y);
     }
   }
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      if (x == DoorX && y == DoorY) continue;
+      if (level->get(x, y).name() != "cave_floor")
+        continue;
+      if (!level->get(x, y + 1).empty())
+        continue;
+      build(x, y, "cave_wall_top");
+      build(x, y + 1, "cave_floor");
+    }
+  }
+
+  placeOrcCamp(w, h);
 
 }
 
@@ -696,5 +711,35 @@ void LevelGen::makeStalagmite(int x, int y) {
   else {
     overlay(x, y - 1, "stalagmite_top");
     build(x, y, "stalagmite_bottom");
+  }
+}
+
+void LevelGen::placeOrcCamp(int w, int h) {
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+
+      bool GoodPlace = true;
+      Area A(x - 1, y - 1, x + 2, y + 2);
+      A.foreach([&GoodPlace, this](int ix, int iy) {
+        if (!level->passable(TilePos(ix, iy)))
+          GoodPlace = false;
+      });
+      if (!GoodPlace)
+        continue;
+
+      build(x, y, "fireplace");
+
+      Faction *F = new Faction();
+
+      Character *C;
+      C = new Character(*level, Vec2(TilePos(x - 1, y)), Character::BodyType::Green);
+      C->setFaction(F);
+      C = new Character(*level, Vec2(TilePos(x + 1, y)), Character::BodyType::Green);
+      C->setFaction(F);
+      C = new Character(*level, Vec2(TilePos(x + 1, y + 1)), Character::BodyType::Green);
+      C->setFaction(F);
+      return;
+    }
   }
 }

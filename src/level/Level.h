@@ -68,6 +68,8 @@ public:
       return false;
     if (!getBuilding2(x, y).passable())
       return false;
+    if (get(x, y).empty())
+      return false;
     if (!get(x, y).passable())
       return false;
     return true;
