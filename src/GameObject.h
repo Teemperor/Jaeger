@@ -30,7 +30,7 @@ public:
 
   Vec2 getPos() const { return Pos; }
   TilePos getTilePos() const {
-    return TilePos(Pos.getX() / 16, Pos.getY() / 16);
+    return TilePos(*TheLevel, Pos.getX() / 16, Pos.getY() / 16);
   }
 
   Inventory *getInventory() {

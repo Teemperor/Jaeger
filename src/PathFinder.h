@@ -10,12 +10,16 @@ class MapSearchNode;
 class PathFinder {
   // Not thread safe due to the A-Star design which requires
   // a default constructor....
-  static Level *TheLevel;
   friend class MapSearchNode;
 
+  void findPathImpl(TilePos start, TilePos end, std::vector<TilePos> &result);
 public:
-  PathFinder(Level &level);
-  void findPath(TilePos start, TilePos end, std::vector<TilePos> &result);
+  explicit PathFinder(Level &Level);
+  void findPath(TilePos Start, TilePos End, std::vector<TilePos> &Result) {
+    if (&Start.getLevel() == &End.getLevel()) {
+      findPathImpl(Start, End, Result);
+    }
+  }
 };
 
 #endif // PATHFINDER_H

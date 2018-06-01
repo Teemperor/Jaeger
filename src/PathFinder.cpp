@@ -6,6 +6,8 @@
 
 // Definitions
 
+static thread_local Level *TheLevel = nullptr;
+
 class MapSearchNode {
 public:
   int x; // the (x,y) positions of the node
@@ -27,7 +29,7 @@ public:
   void PrintNodeInfo();
 
   bool isFree(int x, int y) {
-    return PathFinder::TheLevel->passable(TilePos(x, y));
+    return TheLevel->passable(TilePos(x, y));
   }
 };
 
@@ -112,12 +114,11 @@ bool MapSearchNode::GetSuccessors(AStarSearch<MapSearchNode> *astarsearch,
 
 float MapSearchNode::GetCost(MapSearchNode &successor) { return 1; }
 
-Level *PathFinder::TheLevel = nullptr;
+PathFinder::PathFinder(Level &Level) { }
 
-PathFinder::PathFinder(Level &level) { TheLevel = &level; }
-
-void PathFinder::findPath(TilePos start, TilePos end,
-                          std::vector<TilePos> &result) {
+void PathFinder::findPathImpl(TilePos start, TilePos end,
+                              std::vector<TilePos> &result) {
+  TheLevel = &start.getLevel();
 
   // Our sample problem defines the world as a 2d array representing a terrain
   // Each element contains an integer from 0 to 5 which indicates the cost
@@ -128,8 +129,6 @@ void PathFinder::findPath(TilePos start, TilePos end,
   // Create an instance of the search class...
 
   AStarSearch<MapSearchNode> astarsearch;
-
-  unsigned int SearchCount = 0;
 
   // Create a start state
   MapSearchNode nodeStart(start.getX(), start.getY());
@@ -161,7 +160,7 @@ void PathFinder::findPath(TilePos start, TilePos end,
       if (!node) {
         break;
       }
-      result.push_back(TilePos(node->x, node->y));
+      result.emplace_back(node->x, node->y);
       // node->PrintNodeInfo();
       steps++;
     }
