@@ -164,7 +164,7 @@ void Character::update(float dtime) {
     const float InventoryRange = 40;
     std::vector<InventoryLocation> ClosestInventories;
     for (GameObject *o : getLevel().getObjects()) {
-      if (o->getInventory() &&
+      if (o != this && o->getInventory() &&
           o->getPos().distance(getPos()) < InventoryRange) {
         ClosestInventories.push_back({o->getInventory(), o->getPos()});
       }
@@ -187,7 +187,7 @@ void Character::update(float dtime) {
   std::vector<GameObject *> ClosestEnemies;
   for (GameObject *o : getLevel().getObjects()) {
     if (auto C = dynamic_cast<Creature *>(o)) {
-      if (!C->isDead() && isEnemy(*C)) {
+      if (!C->isDead() && isEnemy(*C) && C->getPos().distance(getPos()) < 16 * 20) {
         ClosestEnemies.push_back(o);
       }
     }
