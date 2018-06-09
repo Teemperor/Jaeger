@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Tile.h"
 #include "TileMap.h"
+#include "LevelConnection.h"
 #include <TilePos.h>
 #include <gamedata/GameData.h>
 
@@ -21,6 +22,8 @@ class Level {
   // Renders the objects
   TileMap<Tile> OverlayTiles;
   World &world_;
+
+  std::vector<LevelConnection> Connections;
 
   bool updating = false;
 
@@ -58,6 +61,14 @@ public:
   GameData &getData() { return Data_; }
 
   double time = 0;
+
+  void addConnection(const LevelConnection &C) {
+    return Connections.push_back(C);
+  }
+
+  const std::vector<LevelConnection> &getConnections() const {
+    return Connections;
+  }
 
   bool passable(TilePos pos) {
     int x = pos.getX();

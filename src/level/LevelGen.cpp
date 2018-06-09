@@ -85,7 +85,7 @@ void LevelGen::make_house(TileRect A, int depth, Level::Type ConnectsTo) {
   floor(doorX, doorY, "sand_wall_lower_mid_free");
   build(doorX, doorY, "door_open");
 
-  openConnections.push_back({ConnectsTo, TilePos(*level, doorX, doorY)});
+  openConnections.emplace_back(ConnectsTo, TilePos(*level, doorX, doorY));
 
   overlay(x, y + h - 1 - depth, "brown_roof_angular_left_lower");
   overlay(x + w - 1, y + h - 1 - depth, "brown_roof_angular_right_lower");
@@ -201,10 +201,17 @@ void LevelGen::generate_overworld() {
       }
     }
   }
-  for (int i = 0; i < tree_border; i++) {
-    build(49, i, "placeholder");
-    build(50, i, "placeholder");
+  if (chance() < 0.5f) {
+    for (int i = 0; i < tree_border; i++) {
+      build(49, i, "placeholder");
+    }
+    openConnections.emplace_back(Level::Type::Overworld, TilePos(*level, 49, 3));
   }
+
+  for (int i = 0; i < tree_border; i++) {
+    build(49, h - i, "placeholder");
+  }
+  BackConnection = Connection(Level::Type::Overworld, TilePos(*level, 49, h - 3));
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -384,8 +391,8 @@ void LevelGen::generate_house() {
   }
 
   int doorY = h - 1;
-  openConnections.push_back(
-      {Level::Type::Overworld, TilePos(*level, doorX, doorY)});
+  BackConnection =
+      Connection(Level::Type::Overworld, TilePos(*level, doorX, doorY));
   level->get(doorX, doorY).setData(data.tile("planks"));
   overlay(doorX, doorY, "door_light");
 }
@@ -636,8 +643,8 @@ void LevelGen::generate_mine() {
     }
   }
 
-  openConnections.push_back(
-      {Level::Type::Overworld, TilePos(*level, DoorX, DoorY)});
+  BackConnection =
+      Connection(Level::Type::Overworld, TilePos(*level, DoorX, DoorY));
   level->get(DoorX, DoorY).setData(data.tile("cave_floor"));
   overlay(DoorX, DoorY, "door_light");
 

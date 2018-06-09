@@ -86,18 +86,34 @@ public:
   struct Connection {
     Level::Type targetType;
     TilePos pos;
+    enum class Directions {
+      Up,
+      Down,
+      Left,
+      Right
+    };
+    Directions Direction;
+    Connection(Level::Type Target, TilePos P, Directions D = Directions::Up)
+        : targetType(Target), pos(P), Direction(D) {
+    }
+    Connection() = default;
   };
 
 private:
   std::vector<Connection> openConnections;
+  Connection BackConnection;
 
 public:
-  LevelGen(unsigned seed = 44);
+  explicit LevelGen(unsigned seed = 44);
 
   Level *generate(World &world, GameData &data, Level::Type type);
 
   const std::vector<Connection> &getOpenConnections() const {
     return openConnections;
+  }
+
+  const Connection &getBackConnection() const {
+    return BackConnection;
   }
 };
 
