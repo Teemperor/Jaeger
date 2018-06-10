@@ -7,6 +7,19 @@
 
 #include "stb_perlin.h"
 
+template<typename T>
+static int countSurroundingTiles(TileMap<T> &M, const int tx, const int ty,
+                          std::function<bool(const T &)> F) {
+  int Count = 0;
+  for (int x = tx - 1; x <= tx + 1; ++x) {
+    for (int y = ty - 1; y <= ty + 1; ++y) {
+      if (F(M.get(x, y)))
+        ++Count;
+    }
+  }
+  return Count;
+}
+
 void LevelGen::make_tree(int x, int y, bool force) {
   if (!force) {
     if (!level->getBuilding(x, y).empty())
@@ -183,10 +196,27 @@ void LevelGen::generate_overworld() {
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
       float height = getHeight(x, y);
-      if (height > 0) {
-        level->get(x, y).setData(data.tile("grass"));
-      } else {
+      level->get(x, y).setData(data.tile("grass"));
+      if (height <= 0) {
         water.get(x, y) = 1;
+      }
+    }
+  }
+
+  bool Changed = true;
+  while (Changed) {
+    Changed = false;
+    for (int x = 0; x < w; ++x) {
+      for (int y = 0; y < h; ++y) {
+        if (water.get(x, y) == 0)
+          continue;
+        int SurroundingGrass = countSurroundingTiles<int>(water, x, y, [](const int &T) {
+          return T == 0;
+        });
+        if (SurroundingGrass >= 5) {
+          Changed = true;
+          water.get(x, y) = 0;
+        }
       }
     }
   }
