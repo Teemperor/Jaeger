@@ -92,6 +92,8 @@ public:
       Left,
       Right
     };
+    int TargetW = 0;
+    int TargetH = 0;
     Directions Direction;
     Connection(Level::Type Target, TilePos P, Directions D = Directions::Up)
         : targetType(Target), pos(P), Direction(D) {
@@ -106,7 +108,7 @@ private:
 public:
   explicit LevelGen(unsigned seed = 44);
 
-  Level *generate(World &world, GameData &data, Level::Type type);
+  Level *generate(World &world, GameData &data, Level::Type type, const Connection *C);
 
   const std::vector<Connection> &getOpenConnections() const {
     return openConnections;

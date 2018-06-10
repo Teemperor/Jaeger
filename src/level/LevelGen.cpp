@@ -99,6 +99,8 @@ void LevelGen::make_house(TileRect A, int depth, Level::Type ConnectsTo) {
   build(doorX, doorY, "door_open");
 
   openConnections.emplace_back(ConnectsTo, TilePos(*level, doorX, doorY));
+  openConnections.back().TargetW = w * 2;
+  openConnections.back().TargetH = h * 2;
 
   overlay(x, y + h - 1 - depth, "brown_roof_angular_left_lower");
   overlay(x + w - 1, y + h - 1 - depth, "brown_roof_angular_right_lower");
@@ -455,7 +457,7 @@ LevelGen::LevelGen(unsigned seed)
     : heightPerlin(seed, 0.07), woodPerlin(seed * 55, 0.03), cavePerlin(seed * 3, 0.07), gen(seed),
       dis(0, 1) {}
 
-Level *LevelGen::generate(World &world, GameData &data, Level::Type type) {
+Level *LevelGen::generate(World &world, GameData &data, Level::Type type, const Connection *C) {
   this->world = &world;
   this->data = &data;
 
@@ -465,7 +467,8 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type) {
     generate_overworld();
     break;
   case Level::Type::House:
-    level = new Level(world, type, 12, 15, data);
+    assert(C);
+    level = new Level(world, type, C->TargetW, C->TargetH, data);
     generate_house();
     break;
   case Level::Type::Mine:
