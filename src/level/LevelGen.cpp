@@ -732,7 +732,7 @@ void LevelGen::generate_mine() {
       if (!level->get(x, y + 1).empty())
         continue;
       build(x, y, "cave_wall_top");
-      build(x, y + 1, "cave_floor");
+      build(x, y + 1, "cave_wall_single");
     }
   }
 
