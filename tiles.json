@@ -15,7 +15,7 @@
 
     { "id" : "chest", "passable" : false, "sprites" : ["chest"], "inventory" : true},
 
-    { "id" : "corn", "group" : "corn", "passable" : true, "sprites" : ["corn1", "corn2", "corn3", "corn4"]},
+    { "id" : "corn", "group" : "corn", "passable" : true, "sprites" : ["corn1", "corn2", "corn3", "corn4"], "resource" : "corn"},
 
     { "id" : "railtracks_vertical", "passable" : true, "sprites" : ["railtracks_vertical1", "railtracks_vertical2"]},
     { "id" : "railtracks_end_bottom", "passable" : true, "sprites" : ["railtracks_end_bottom"]},
@@ -117,9 +117,9 @@
 
     { "id" : "brown_roof_angular_left_lower", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_left_lower"]},
     { "id" : "brown_roof_angular_left_mid", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_left_mid"]},
-    { "id" : "brown_roof_angular_left_upper", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_left_upper"]},
+    { "id" : "brown_roof_angular_left_upper", "group" : "building", "passable" : true, "sprites" : ["brown_roof_angular_left_upper"]},
     { "id" : "brown_roof_angular_right_lower", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_right_lower"]},
     { "id" : "brown_roof_angular_right_mid", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_right_mid"]},
-    { "id" : "brown_roof_angular_right_upper", "group" : "building", "passable" : false, "sprites" : ["brown_roof_angular_right_upper"]}
+    { "id" : "brown_roof_angular_right_upper", "group" : "building", "passable" : true, "sprites" : ["brown_roof_angular_right_upper"]}
   ]
 }

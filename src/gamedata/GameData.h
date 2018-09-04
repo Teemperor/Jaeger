@@ -5,6 +5,7 @@
 #include "ProjectileData.h"
 #include "TextureAtlas.h"
 #include "TileData.h"
+#include "ItemGroup.h"
 #include <Logger.h>
 #include <SFML/Graphics/Sprite.hpp>
 #include <cassert>
@@ -16,6 +17,7 @@ class GameData {
   std::vector<TextureAtlas *> TextureAtlas_;
   std::unordered_map<std::string, TileData *> Tiles;
   std::unordered_map<std::string, ItemData *> Items;
+  std::unordered_map<std::string, ItemGroup *> ItemGroups;
   std::unordered_map<std::string, ProjectileData *> Projectiles;
 
   void parseItemData(const std::string &path);
@@ -24,7 +26,7 @@ class GameData {
   void parseTileData(const std::string &path);
 
 public:
-  GameData(const std::string &path) { parseMetaFile(path); }
+  explicit GameData(const std::string &path) { parseMetaFile(path); }
 
   virtual ~GameData() {
     for (TextureAtlas *s : TextureAtlas_)
@@ -46,7 +48,7 @@ public:
     auto I = Tiles.find(id);
     if (I != Tiles.end())
       return I->second;
-    std::cerr << "couldn't find " << id << std::endl;
+    std::cerr << "couldn't find tile " << id << std::endl;
     return nullptr;
   }
 
@@ -54,7 +56,15 @@ public:
     auto I = Items.find(id);
     if (I != Items.end())
       return I->second;
-    std::cerr << "couldn't find " << id << std::endl;
+    std::cerr << "couldn't find item " << id << std::endl;
+    return nullptr;
+  }
+
+  ItemGroup *itemGroup(const std::string &id) {
+    auto I = ItemGroups.find(id);
+    if (I != ItemGroups.end())
+      return I->second;
+    std::cerr << "couldn't find itemgroup " << id << std::endl;
     return nullptr;
   }
 
@@ -62,7 +72,7 @@ public:
     auto I = Projectiles.find(id);
     if (I != Projectiles.end())
       return I->second;
-    std::cerr << "couldn't find " << id << std::endl;
+    std::cerr << "couldn't find projectile " << id << std::endl;
     return nullptr;
   }
 

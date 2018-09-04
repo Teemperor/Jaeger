@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <unordered_map>
+#include "ItemGroup.h"
 
 class TileData {
 
@@ -16,6 +17,9 @@ class TileData {
   int animationTime_ = -1;
 
   bool HasInventory = false;
+  bool IsResource = false;
+  std::string Resources;
+  unsigned ResourceCounter = 1;
 
   sf::Sprite noSprite;
 
@@ -31,6 +35,24 @@ public:
   const std::string &name() const { return name_; }
 
   const std::string &group() const { return group_; }
+
+  std::string getResources() const {
+    return Resources;
+  }
+
+  void setResources(const std::string &I) {
+    enableInventory();
+    Resources = I;
+    IsResource = true;
+  }
+
+  unsigned int getResourceCounter() const {
+    return ResourceCounter;
+  }
+
+  bool isResource() const {
+    return IsResource;
+  }
 
   void enableInventory() {
     HasInventory = true;

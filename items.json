@@ -2,6 +2,8 @@
   "items" : [
     { "id" : "small_health_potion", "kind" : "consumable", "effect" : "heal", "effectStr" : "3", "effectDuration" : "10"},
 
+    { "id" : "corn", "kind" : "consumable", "effect" : "heal", "effectStr" : "3", "effectDuration" : "10"},
+
     { "id" : "ninja_pants", "kind" : "pants", "sprite" : "black_pants"},
     { "id" : "leather_pants", "kind" : "pants", "sprite" : "brown_pants"},
     { "id" : "fine_pants", "kind" : "pants", "sprite" : "white_pants"},
@@ -13,5 +15,12 @@
     { "id" : "wood_spear", "kind" : "weapon", "fatigueCost" : 20, "sprite" : "wood_spear", "cooldown" : 0.8},
     { "id" : "steel_buckler", "kind" : "shield", "sprite" : "steel_buckler"},
     { "id" : "wood_buckler", "kind" : "shield", "sprite" : "wood_buckler"}
+  ],
+  "itemgroups" : [
+    { "id" : "loot_cheap1",
+      "items" : [
+        [1, "wood_spear", 3]
+      ]
+    }
   ]
 }

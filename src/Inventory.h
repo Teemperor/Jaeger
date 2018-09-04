@@ -6,6 +6,7 @@
 class Inventory {
   const static unsigned Size = 16;
   std::array<Item, Size> Slots;
+  bool CanStoreItems = true;
 
 public:
   bool add(const Item &I) {
@@ -16,6 +17,23 @@ public:
       }
     }
     return false;
+  }
+
+  void disableItemStorage() {
+    CanStoreItems = false;
+  }
+
+  bool empty() const {
+    for (auto &Slot : Slots) {
+      if (!Slot.empty()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool canStoreItems() const {
+    return CanStoreItems;
   }
 
   bool remove(const Item &I) {

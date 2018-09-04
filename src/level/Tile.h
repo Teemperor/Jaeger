@@ -29,6 +29,11 @@ public:
     }
   }
 
+  void updateResources(World &W, unsigned Seed) {
+    if (Extra && Data)
+      Extra->updateResources(W, *Data, Seed);
+  }
+
   const std::string &group() const {
     if (Data)
       return Data->group();
@@ -38,9 +43,15 @@ public:
     }
   }
 
+  bool isResource() const {
+    return Data && Data->isResource();
+  }
+
   Inventory *getInventory() {
     if (Data && Data->hasInventory()) {
       createExtraInfo().createInventory();
+      if (isResource())
+        createExtraInfo().getInventory().disableItemStorage();
       return &createExtraInfo().getInventory();
     }
     return nullptr;

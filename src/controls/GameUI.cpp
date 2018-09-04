@@ -139,6 +139,11 @@ void GameUI::handleEvent(sf::Event event) {
 
       if (KeyCode == sf::Keyboard::Space) {
         if (HasOtherInv) {
+          // We can't drop items into an inventory that can't store items.
+          if (FocusedWindow == MyWindow &&
+              !OtherWindow->getInventory()->canStoreItems()) {
+            return;
+          }
           // Inventory exchange mode
           auto I = FocusedWindow->getSelectedItem();
           if (!I.empty() && getUnfocusedWindow()->getInventory()->add(I)) {

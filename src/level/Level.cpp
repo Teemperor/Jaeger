@@ -91,4 +91,16 @@ void Level::update(float dtime) {
       [](const GameObject *O1, const GameObject *O2) {
     return O1->getPos().getY() < O2->getPos().getY();
   });
+
+  ResourceUpdateCounter += dtime;
+  if (ResourceUpdateCounter >= ResourceUpdateTime) {
+    ResourceUpdateCounter -= ResourceUpdateTime;
+
+    for (Tile &T : BuildingTiles)
+      T.updateResources(world_, static_cast<unsigned int>(time));
+    for (Tile &T : BuildingTiles2)
+      T.updateResources(world_, static_cast<unsigned int>(time));
+    for (Tile &T : OverlayTiles)
+      T.updateResources(world_, static_cast<unsigned int>(time));
+  }
 }

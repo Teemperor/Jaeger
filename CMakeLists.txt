@@ -93,7 +93,14 @@ set(SOURCE_FILES
     src/level/TileRect.h
     src/ItemBag.cpp
     src/ItemBag.h
-    src/controls/InventoryWindow.cpp src/controls/InventoryWindow.h src/controls/StatusBar.cpp src/controls/StatusBar.h src/level/LevelConnection.cpp src/level/LevelConnection.h)
+    src/controls/InventoryWindow.cpp
+    src/controls/InventoryWindow.h
+    src/controls/StatusBar.cpp
+    src/controls/StatusBar.h
+    src/level/LevelConnection.cpp
+    src/level/LevelConnection.h
+    src/gamedata/ItemGroup.cpp
+    src/gamedata/ItemGroup.h src/utils/WeightedRandomChooser.cpp src/utils/WeightedRandomChooser.h)
 add_library(argos_core ${SOURCE_FILES})
 target_link_libraries(argos_core ${SFML_LIBRARIES})
 

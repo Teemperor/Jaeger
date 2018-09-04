@@ -4,14 +4,19 @@
 #include <TilePos.h>
 #include <Inventory.h>
 
+class TileData;
+
 class TileExtraInfo {
   bool teleports = false;
   TilePos teleportTarget;
   Inventory Inv;
   bool HasInventory = false;
+  unsigned ResourceCounterLeft = 0;
 
 public:
   TileExtraInfo();
+
+  void updateResources(World &W, TileData &D, unsigned Seed);
 
   void createInventory() {
     HasInventory = true;

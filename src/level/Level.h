@@ -33,6 +33,9 @@ class Level {
     ~UpdateGuard() { flag = false; }
   };
 
+  const float ResourceUpdateTime = 10.0f;
+  float ResourceUpdateCounter = ResourceUpdateTime;
+
 public:
   enum class Type { Overworld, Mine, House };
 

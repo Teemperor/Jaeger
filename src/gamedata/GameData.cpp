@@ -91,6 +91,23 @@ void GameData::parseItemData(const std::string &path) {
     } else {
       Items[id]->setIcon(getSprite("icon_" + id));
     }
+
+    // Wrapper item group
+    ItemGroups[id] = new ItemGroup(this);
+    ItemGroups[id]->add(1, id, 1);
+  }
+
+
+  for (auto group : data["itemgroups"]) {
+    std::string id = group["id"];
+
+    ItemGroup *G = ItemGroups[id] = new ItemGroup(this);
+    bool AddedItems = false;
+    for (auto item : group["items"]) {
+      G->add(item[0], item[1], item[2]);
+      AddedItems = true;
+    }
+    assert(AddedItems);
   }
 }
 
@@ -155,6 +172,9 @@ void GameData::parseTileData(const std::string &path) {
 
     if (tile.find("inventory") != tile.end() && tile["inventory"]) {
       Tiles[id]->enableInventory();
+    }
+    if (tile.find("resource") != tile.end()) {
+      Tiles[id]->setResources(tile["resource"]);
     }
 
     if (tile.find("sprites") != tile.end()) {

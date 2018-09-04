@@ -31,6 +31,10 @@ public:
     Factions.push_back(F);
   }
 
+  GameData &getGameData() {
+    return Data;
+  }
+
   void addLevel(Level *level) { levels_.push_back(level); }
 
   std::vector<Level *> &getLevels() { return levels_; }
