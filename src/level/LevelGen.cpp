@@ -184,7 +184,7 @@ public:
 };
 } // namespace
 
-void LevelGen::generate_overworld() {
+void LevelGen::generateOverworld() {
   const int w = level->getWidth();
   const int h = level->getHeight();
   GameData &data = level->getData();
@@ -351,7 +351,7 @@ void LevelGen::generate_overworld() {
   }
 }
 
-void LevelGen::generate_house() {
+void LevelGen::generateHouse() {
   const int w = level->getWidth();
   const int h = level->getHeight();
   GameData &data = level->getData();
@@ -394,7 +394,7 @@ void LevelGen::generate_house() {
         build(x, 2, "shelf");
     }
   }
-  make_chest(doorX + 2, h - 3);
+  makeChest(doorX + 2, h - 3);
 
   for (int y = 1; y < h - 2; ++y) {
     overlay(0, y, "sand_walltop_vertical");
@@ -464,16 +464,16 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type, const 
   switch (type) {
   case Level::Type::Overworld:
     level = new Level(world, type, 200, 200, data);
-    generate_overworld();
+      generateOverworld();
     break;
   case Level::Type::House:
     assert(C);
     level = new Level(world, type, C->TargetW, C->TargetH, data);
-    generate_house();
+      generateHouse();
     break;
   case Level::Type::Mine:
     level = new Level(world, type, 100, 100, data);
-    generate_mine();
+      generateMine();
     break;
   default:
     assert(false && "Not implemented level type for generation!");
@@ -483,7 +483,7 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type, const 
   return level;
 }
 
-bool LevelGen::generate_settlement(TileRect Area, int limit) {
+bool LevelGen::generateSettlement(TileRect Area, int limit) {
   if (!isFree(Area))
     return false;
 
@@ -533,7 +533,7 @@ bool LevelGen::generate_settlement(TileRect Area, int limit) {
       else if (O.second == 1)
         New = New.moveY(Area.getH() + 1);
 
-      if (generate_settlement(New, limit))
+      if (generateSettlement(New, limit))
         break;
     }
   }
@@ -550,7 +550,7 @@ void LevelGen::generateSettlements() {
     int w = 7;
     int h = 7;
 
-    if (generate_settlement(TileRect(x, y, w, h))) {
+    if (generateSettlement(TileRect(x, y, w, h))) {
       --Count;
     }
   }
@@ -591,7 +591,7 @@ void LevelGen::makeMine(int x, int y) {
   build(x, y + 1, "railtracks_end_bottom");
 }
 
-void LevelGen::generate_mine() {
+void LevelGen::generateMine() {
   const int w = level->getWidth();
   const int h = level->getHeight();
   GameData &data = level->getData();
@@ -740,7 +740,7 @@ void LevelGen::generate_mine() {
 
 }
 
-void LevelGen::make_chest(int x, int y) {
+void LevelGen::makeChest(int x, int y) {
   build(x, y, "chest");
   level->getBuilding(x, y).getInventory()->add(Item(*data->item("small_health_potion"), *world));
 }

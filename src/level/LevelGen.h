@@ -14,7 +14,7 @@ class LevelGen {
   Level *level;
   World *world;
 
-  void make_chest(int x, int y);
+  void makeChest(int x, int y);
 
   void makeTree(int x, int y, bool force = false);
   void makeBush(int x, int y, float random);
@@ -58,13 +58,13 @@ class LevelGen {
     return dis(gen);
   }
 
-  void generate_overworld();
+  void generateOverworld();
 
-  bool generate_settlement(TileRect Area, int limit = 3);
+  bool generateSettlement(TileRect Area, int limit = 3);
 
-  void generate_house();
+  void generateHouse();
 
-  void generate_mine();
+  void generateMine();
 
   void placeOrcCamp(int w, int h);
 
