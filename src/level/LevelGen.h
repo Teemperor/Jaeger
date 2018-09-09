@@ -59,11 +59,16 @@ class LevelGen {
     float Result = getCavePerlin(x, y);
     // Depending on the distance from the center, the tile is less likely
     // to be a cave tile (further away are less cave tiles).
-    int rx = x - level->getWidth() / 2;
-    int ry = y - level->getHeight() / 2;
-    float dx = std::abs(rx) / static_cast<float>(level->getWidth() / 2);
-    float dy = std::abs(ry) / static_cast<float>(level->getHeight() / 2);
-    Result *= 1 - std::sqrt(dx * dx + dy * dy);
+    auto midX = level->getWidth() / 2;
+    auto midY = level->getHeight() / 2;
+    int rx = x - midX;
+    int ry = y - midY;
+    float dx = std::abs(rx) / static_cast<float>(midX);
+    float dy = std::abs(ry) / static_cast<float>(midY);
+    auto distance = std::sqrt(dx * dx + dy * dy);
+    if (distance < 0.1f)
+      return true;
+    Result *= 1 - distance;
     return Result > 0.2f;
   }
   float getCavePerlin(int x, int y);

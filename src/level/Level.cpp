@@ -15,6 +15,8 @@ bool Level::getTeleportTarget(TilePos p, TilePos &out) {
   int y = p.getY();
   if (this->getOverlay(x, y).getTeleportTarget(out))
     return true;
+  if (this->getBuilding2(x, y).getTeleportTarget(out))
+    return true;
   if (this->getBuilding(x, y).getTeleportTarget(out))
     return true;
   if (this->get(x, y).getTeleportTarget(out))

@@ -966,6 +966,20 @@ void LevelGen::generateMine() {
     }
   }
 
+  for (int i = 0; i < 10; ++i) {
+    int tx = chanceInt(w);
+    int ty = chanceInt(h);
+    if (level->get(tx, ty).group() != "cave_floor")
+      continue;
+    if (!level->passable(TilePos(tx, ty)))
+      continue;
+    build(tx, ty, "stairs_stone");
+    openConnections.emplace_back(Level::Type::Mine, TilePos(*level, tx, ty));
+    openConnections.back().TargetW = w / 2;
+    openConnections.back().TargetH = h / 2;
+    break;
+  }
+
   makeMineResources();
   makeMineFloorClutter();
   placeOrcCamp(w, h);

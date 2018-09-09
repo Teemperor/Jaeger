@@ -39,7 +39,6 @@ public:
   }
 
   const TilePos &getTeleportTarget() const {
-    assert(teleports);
     return teleportTarget;
   }
 };

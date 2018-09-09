@@ -29,6 +29,8 @@
     { "id" : "wood_stack", "passable" : false},
     { "id" : "wood_stump_axe", "passable" : false},
 
+    { "id" : "stairs_stone", "passable" : true},
+
     { "id" : "wood_bench_top", "passable" : true},
     { "id" : "anvil", "passable" : false},
 

@@ -94,6 +94,8 @@
     { "id" : "gold_vein" , "tile" : [43, 53] },
     { "id" : "adamant_vein" , "tile" : [43, 54] },
 
+    { "id" : "stairs_stone" , "tile" : [30, 18] },
+
     { "id" : "bones_skull" , "tile" : [28, 43] },
     { "id" : "bones_single" , "tile" : [29, 43] },
     { "id" : "bones_skull_and_single" , "tile" : [30, 43] },
