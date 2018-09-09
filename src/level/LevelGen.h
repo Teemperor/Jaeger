@@ -76,6 +76,7 @@ class LevelGen {
     return dis(gen);
   }
 
+  void generateWaterAndLand();
   void formatWaterTiles();
   void placeVegetation();
   void placeTreeBorder();

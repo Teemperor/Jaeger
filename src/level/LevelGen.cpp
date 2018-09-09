@@ -164,34 +164,81 @@ float LevelGen::getCavePerlin(int x, int y) {
 
 float LevelGen::getVegetation(int x, int y) { return woodPerlin.get(x, y); }
 
+void LevelGen::generateWaterAndLand() {
+
+  const int w = level->getWidth();
+  const int h = level->getHeight();
+  GameData &data = level->getData();
+
+  TileMap<int> water(w, h, 0);
+
+  for (int x = 0; x < w; ++x) {
+      for (int y = 0; y < h; ++y) {
+          float height = getHeight(x, y);
+          level->get(x, y).setData(data.tile("grass"));
+          if (height <= 0) {
+              water.get(x, y) = 1;
+            }
+        }
+    }
+
+  bool Changed = true;
+  while (Changed) {
+      Changed = false;
+      for (int x = 0; x < w; ++x) {
+          for (int y = 0; y < h; ++y) {
+              if (water.get(x, y) == 0)
+                continue;
+              int SurroundingGrass = countSurroundingTiles<int>(
+                                       water, x, y, [](const int &T) { return T == 0; });
+              if (SurroundingGrass >= 5) {
+                  Changed = true;
+                  water.get(x, y) = 0;
+                }
+            }
+        }
+    }
+
+  for (int x = 0; x < w; ++x) {
+      for (int y = 0; y < h; ++y) {
+          if (water.get(x, y)) {
+              if (chance() > 0.01f)
+                level->get(x, y).setData(data.tile("water_c"));
+              else
+                floor(x, y, "water_rock");
+            }
+        }
+    }
+}
+
 void LevelGen::formatWaterTiles() {
   int w = level->getWidth();
   int h = level->getHeight();
 
   for (int x = 0; x < w; ++x) {
-    for (int y = 0; y < h; ++y) {
-      if (level->get(x, y).group() == "water") {
-        if (hasSurrounding(
-                x, y, "water",
-                {CMP_A, CMP_D, CMP_A, CMP_S, CMP_S, CMP_A, CMP_S, CMP_A}))
-          floor(x, y, "water_outer_up");
-        if (hasSurrounding(
-                x, y, "water",
-                {CMP_A, CMP_S, CMP_A, CMP_S, CMP_S, CMP_A, CMP_D, CMP_A}))
-          floor(x, y, "water_outer_down");
-        if (hasSurrounding(
-                x, y, "water",
-                {CMP_A, CMP_S, CMP_A, CMP_D, CMP_S, CMP_A, CMP_S, CMP_A}))
-          floor(x, y, "water_outer_left");
-        if (hasSurrounding(
-                x, y, "water",
-                {CMP_A, CMP_S, CMP_A, CMP_S, CMP_D, CMP_A, CMP_S, CMP_A}))
-          floor(x, y, "water_outer_right");
+      for (int y = 0; y < h; ++y) {
+          if (level->get(x, y).group() == "water") {
+              if (hasSurrounding(
+                    x, y, "water",
+              {CMP_A, CMP_D, CMP_A, CMP_S, CMP_S, CMP_A, CMP_S, CMP_A}))
+                floor(x, y, "water_outer_up");
+              if (hasSurrounding(
+                    x, y, "water",
+              {CMP_A, CMP_S, CMP_A, CMP_S, CMP_S, CMP_A, CMP_D, CMP_A}))
+                floor(x, y, "water_outer_down");
+              if (hasSurrounding(
+                    x, y, "water",
+              {CMP_A, CMP_S, CMP_A, CMP_D, CMP_S, CMP_A, CMP_S, CMP_A}))
+                floor(x, y, "water_outer_left");
+              if (hasSurrounding(
+                    x, y, "water",
+              {CMP_A, CMP_S, CMP_A, CMP_S, CMP_D, CMP_A, CMP_S, CMP_A}))
+                floor(x, y, "water_outer_right");
 
-        if (hasSurrounding(
-                x, y, "water",
-                {CMP_A, CMP_D, CMP_A, CMP_D, CMP_S, CMP_A, CMP_S, CMP_A}))
-          floor(x, y, "water_outer_up_left");
+              if (hasSurrounding(
+                    x, y, "water",
+              {CMP_A, CMP_D, CMP_A, CMP_D, CMP_S, CMP_A, CMP_S, CMP_A}))
+                floor(x, y, "water_outer_up_left");
         if (hasSurrounding(
                 x, y, "water",
                 {CMP_A, CMP_D, CMP_A, CMP_S, CMP_D, CMP_A, CMP_S, CMP_A}))
@@ -305,51 +352,9 @@ namespace {
 } // namespace
 
 void LevelGen::generateOverworld() {
-  const int w = level->getWidth();
-  const int h = level->getHeight();
-  GameData &data = level->getData();
 
-  std::vector<Area> areas;
+  generateWaterAndLand();
 
-  TileMap<int> water(w, h, 0);
-
-  for (int x = 0; x < w; ++x) {
-    for (int y = 0; y < h; ++y) {
-      float height = getHeight(x, y);
-      level->get(x, y).setData(data.tile("grass"));
-      if (height <= 0) {
-        water.get(x, y) = 1;
-      }
-    }
-  }
-
-  bool Changed = true;
-  while (Changed) {
-    Changed = false;
-    for (int x = 0; x < w; ++x) {
-      for (int y = 0; y < h; ++y) {
-        if (water.get(x, y) == 0)
-          continue;
-        int SurroundingGrass = countSurroundingTiles<int>(
-            water, x, y, [](const int &T) { return T == 0; });
-        if (SurroundingGrass >= 5) {
-          Changed = true;
-          water.get(x, y) = 0;
-        }
-      }
-    }
-  }
-
-  for (int x = 0; x < w; ++x) {
-    for (int y = 0; y < h; ++y) {
-      if (water.get(x, y)) {
-        if (chance() > 0.01f)
-          level->get(x, y).setData(data.tile("water_c"));
-        else
-          floor(x, y, "water_rock");
-      }
-    }
-  }
   if (chance() < 0.5f) {
     for (int i = 0; i < tree_border; i++) {
       build(49, i, "placeholder");
@@ -358,6 +363,7 @@ void LevelGen::generateOverworld() {
                                  TilePos(*level, 49, 3));
   }
 
+  int h = level->getHeight();
   for (int i = 0; i < tree_border; i++) {
     build(49, h - i, "placeholder");
   }
