@@ -15,6 +15,7 @@ class LevelGen {
   World *world;
 
   float Elevation = 0.3f;
+  const int tree_border = 8;
 
   void makeChest(int x, int y);
 
@@ -75,6 +76,9 @@ class LevelGen {
     return dis(gen);
   }
 
+  void formatWaterTiles();
+  void placeVegetation();
+  void placeTreeBorder();
   void generateOverworld();
 
   bool generateSettlementPiece(TileRect Area, int iteration = 0);

@@ -164,92 +164,9 @@ float LevelGen::getCavePerlin(int x, int y) {
 
 float LevelGen::getVegetation(int x, int y) { return woodPerlin.get(x, y); }
 
-namespace {
-class Area {
-public:
-  int x1, y1, x2, y2;
-  Area(int x1, int y1, int x2, int y2) : x1(x1), y1(y1), x2(x2), y2(y2) {}
-
-  void foreach (std::function<void(int, int)> F) {
-    for (int x = x1; x < x2; x++) {
-      for (int y = y1; y < y2; y++) {
-        F(x, y);
-      }
-    }
-  }
-
-  bool contains(int x, int y) {
-    return x >= x1 && x <= x2 && y >= y1 && y <= y2;
-  }
-
-  bool overlaps(Area &a) {
-    return (this->x1 < a.x2 && this->x2 > a.x1 && this->y1 > a.y2 &&
-            this->y2 < a.y1);
-  }
-};
-} // namespace
-
-void LevelGen::generateOverworld() {
-  const int w = level->getWidth();
-  const int h = level->getHeight();
-  GameData &data = level->getData();
-
-  const int tree_border = 8;
-
-  std::vector<Area> areas;
-
-  TileMap<int> water(w, h, 0);
-
-  for (int x = 0; x < w; ++x) {
-    for (int y = 0; y < h; ++y) {
-      float height = getHeight(x, y);
-      level->get(x, y).setData(data.tile("grass"));
-      if (height <= 0) {
-        water.get(x, y) = 1;
-      }
-    }
-  }
-
-  bool Changed = true;
-  while (Changed) {
-    Changed = false;
-    for (int x = 0; x < w; ++x) {
-      for (int y = 0; y < h; ++y) {
-        if (water.get(x, y) == 0)
-          continue;
-        int SurroundingGrass = countSurroundingTiles<int>(
-            water, x, y, [](const int &T) { return T == 0; });
-        if (SurroundingGrass >= 5) {
-          Changed = true;
-          water.get(x, y) = 0;
-        }
-      }
-    }
-  }
-
-  for (int x = 0; x < w; ++x) {
-    for (int y = 0; y < h; ++y) {
-      if (water.get(x, y)) {
-        if (chance() > 0.01f)
-          level->get(x, y).setData(data.tile("water_c"));
-        else
-          floor(x, y, "water_rock");
-      }
-    }
-  }
-  if (chance() < 0.5f) {
-    for (int i = 0; i < tree_border; i++) {
-      build(49, i, "placeholder");
-    }
-    openConnections.emplace_back(Level::Type::Overworld,
-                                 TilePos(*level, 49, 3));
-  }
-
-  for (int i = 0; i < tree_border; i++) {
-    build(49, h - i, "placeholder");
-  }
-  BackConnection =
-      Connection(Level::Type::Overworld, TilePos(*level, 49, h - 3));
+void LevelGen::formatWaterTiles() {
+  int w = level->getWidth();
+  int h = level->getHeight();
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -307,11 +224,11 @@ void LevelGen::generateOverworld() {
       }
     }
   }
+}
 
-  generateSettlements();
-
-  makeMine(50, 50);
-
+void LevelGen::placeVegetation() {
+  auto w = level->getWidth();
+  auto h = level->getHeight();
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
       float vegetation = getVegetation(x, y);
@@ -326,11 +243,16 @@ void LevelGen::generateOverworld() {
         }
       } else {
         if (height > -0.1f && vegetation > 0 && chance() > 0.8f) {
-          level->getBuilding(x, y).setData(data.tile("lilypad"));
+          level->getBuilding(x, y).setData(data->tile("lilypad"));
         }
       }
     }
   }
+}
+
+void LevelGen::placeTreeBorder() {
+  auto w = level->getWidth();
+  auto h = level->getHeight();
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -355,6 +277,101 @@ void LevelGen::generateOverworld() {
       }
     }
   }
+}
+
+namespace {
+  class Area {
+  public:
+    int x1, y1, x2, y2;
+  Area(int x1, int y1, int x2, int y2) : x1(x1), y1(y1), x2(x2), y2(y2) {}
+
+  void foreach (std::function<void(int, int)> F) {
+    for (int x = x1; x < x2; x++) {
+      for (int y = y1; y < y2; y++) {
+        F(x, y);
+      }
+    }
+  }
+
+  bool contains(int x, int y) {
+    return x >= x1 && x <= x2 && y >= y1 && y <= y2;
+  }
+
+  bool overlaps(Area &a) {
+    return (this->x1 < a.x2 && this->x2 > a.x1 && this->y1 > a.y2 &&
+            this->y2 < a.y1);
+  }
+};
+} // namespace
+
+void LevelGen::generateOverworld() {
+  const int w = level->getWidth();
+  const int h = level->getHeight();
+  GameData &data = level->getData();
+
+  std::vector<Area> areas;
+
+  TileMap<int> water(w, h, 0);
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      float height = getHeight(x, y);
+      level->get(x, y).setData(data.tile("grass"));
+      if (height <= 0) {
+        water.get(x, y) = 1;
+      }
+    }
+  }
+
+  bool Changed = true;
+  while (Changed) {
+    Changed = false;
+    for (int x = 0; x < w; ++x) {
+      for (int y = 0; y < h; ++y) {
+        if (water.get(x, y) == 0)
+          continue;
+        int SurroundingGrass = countSurroundingTiles<int>(
+            water, x, y, [](const int &T) { return T == 0; });
+        if (SurroundingGrass >= 5) {
+          Changed = true;
+          water.get(x, y) = 0;
+        }
+      }
+    }
+  }
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      if (water.get(x, y)) {
+        if (chance() > 0.01f)
+          level->get(x, y).setData(data.tile("water_c"));
+        else
+          floor(x, y, "water_rock");
+      }
+    }
+  }
+  if (chance() < 0.5f) {
+    for (int i = 0; i < tree_border; i++) {
+      build(49, i, "placeholder");
+    }
+    openConnections.emplace_back(Level::Type::Overworld,
+                                 TilePos(*level, 49, 3));
+  }
+
+  for (int i = 0; i < tree_border; i++) {
+    build(49, h - i, "placeholder");
+  }
+  BackConnection =
+      Connection(Level::Type::Overworld, TilePos(*level, 49, h - 3));
+
+  formatWaterTiles();
+
+  generateSettlements();
+
+  makeMine(50, 50);
+
+  placeTreeBorder();
+  placeVegetation();
 }
 
 void LevelGen::generateHouse() {
