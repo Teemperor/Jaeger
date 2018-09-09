@@ -89,6 +89,8 @@ class LevelGen {
 
   bool makeCamp();
 
+  void connectWalkways(int x, int y, int dx, int dy);
+  void connectWalkways4(int x, int y);
   bool generateSettlementPiece(TileRect Area, int iteration = 0);
 
   void generateHouse();

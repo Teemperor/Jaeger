@@ -290,7 +290,8 @@ void LevelGen::placeVegetation() {
         }
       } else {
         if (height > -0.1f && vegetation > 0 && chance() > 0.8f) {
-          level->getBuilding(x, y).setData(data->tile("lilypad"));
+          if (level->get(x, y).group() == "water")
+            level->getBuilding(x, y).setData(data->tile("lilypad"));
         }
       }
     }
@@ -372,6 +373,8 @@ void LevelGen::generateOverworld() {
 
   formatWaterTiles();
 
+  placeTreeBorder();
+
   generateSettlements();
 
   for (int i = 0; i < chance() * 35; ++i) {
@@ -384,7 +387,6 @@ void LevelGen::generateOverworld() {
       camps++;
   }
 
-  placeTreeBorder();
   placeVegetation();
 }
 
@@ -421,6 +423,7 @@ bool LevelGen::makeCamp() {
 
   return true;
 }
+
 
 void LevelGen::generateHouse() {
   const int w = level->getWidth();
@@ -558,6 +561,55 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type,
   return level;
 }
 
+static bool isWalkway(const Tile &t) {
+  if (!t.passable())
+    return false;
+  return t.name() == "grass_stones" || t.group() == "stone" || t.group() == "earth";
+}
+
+static bool isWalkwaySurrounded(Level &l, int x, int y, int ignore_x, int ignore_y) {
+  for (int ix = -1; ix <= 1; ++ix)
+    for (int iy = -1; iy <= 1; ++iy)
+      if (ix != ignore_x && iy != ignore_y)
+        if (isWalkway(l.getBuilding(x + ix, y + iy)))
+        return true;
+  return false;
+}
+
+
+void LevelGen::connectWalkways(int x, int y, int dx, int dy) {
+  int rx = x;
+  int ry = y;
+  int goalDistance;
+  bool foundGoal = false;
+  for (goalDistance = 0; goalDistance < 15; ++goalDistance) {
+    rx += dx;
+    ry += dy;
+
+    if (!level->passable(TilePos(rx, ry)))
+      break;
+
+    if (isWalkwaySurrounded(*level, rx, ry, -dx, -dy)) {
+      foundGoal = true;
+      break;
+    }
+  }
+
+  for (int i = 0; foundGoal && i <= goalDistance; ++i) {
+    x += dx;
+    y += dy;
+
+    build(x, y, "grass_stones");
+  }
+}
+
+void LevelGen::connectWalkways4(int x, int y) {
+  connectWalkways(x, y, -1, 0);
+  connectWalkways(x, y, 1, 0);
+  connectWalkways(x, y, 0, 1);
+  connectWalkways(x, y, 0, -1);
+}
+
 bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
   if (!isFree(Area))
     return false;
@@ -587,6 +639,8 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
              TilePos(UsedArea.getX() + UsedArea.getW(),
                      UsedArea.getY() + UsedArea.getH()),
              "grass_stones");
+    connectWalkways4(UsedArea.getX(), UsedArea.getLowerY());
+    connectWalkways4(UsedArea.getRightX(), UsedArea.getLowerY());
   } else if (iteration > 4) {
     auto UsedArea = Area.resize(-1, -1);
     makeFloor(UsedArea, "earth");
