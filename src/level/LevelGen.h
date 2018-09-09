@@ -72,6 +72,11 @@ class LevelGen {
   std::mt19937 gen;
   std::uniform_real_distribution<float> dis;
 
+  template<typename T>
+  T chanceInt(T limit) {
+    return static_cast<T>(limit * chance());
+  }
+
   float chance() {
     return dis(gen);
   }

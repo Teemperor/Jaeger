@@ -374,7 +374,9 @@ void LevelGen::generateOverworld() {
 
   generateSettlements();
 
-  makeMine(50, 50);
+  for (int i = 0; i < chance() * 5; ++i) {
+    makeMine(chanceInt(level->getWidth()), chanceInt(level->getHeight()));
+  }
 
   placeTreeBorder();
   placeVegetation();
@@ -505,7 +507,8 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type,
     generateHouse();
     break;
   case Level::Type::Mine:
-    level = new Level(world, type, 100, 100, data);
+    level = new Level(world, type, 50 + chanceInt(100),
+                      50 + chanceInt(100), data);
     generateMine();
     break;
   }
@@ -557,8 +560,8 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
     if (chance() < 0.2f)
       continue;
     for (int Try = 0; Try < 5; ++Try) {
-      int NewW = static_cast<int>(chance() * 2 + 4);
-      int NewH = static_cast<int>(chance() * 2 + 5);
+      int NewW = static_cast<int>(chanceInt(2) + 4);
+      int NewH = static_cast<int>(chanceInt(2) + 5);
       TileRect New = Area;
       New.setW(NewW);
       New.setH(NewH);
@@ -585,10 +588,10 @@ void LevelGen::generateSettlements() {
   for (int i = 0; i < 4000; i++) {
     if (Count == 0)
       break;
-    int x = static_cast<int>(chance() * level->getWidth());
-    int y = static_cast<int>(chance() * level->getHeight());
-    int w = 7 + static_cast<int>(chance() * 4);
-    int h = 7 + static_cast<int>(chance() * 4);
+    int x = chanceInt(level->getWidth());
+    int y = chanceInt(level->getHeight());
+    int w = 7 + chanceInt(4);
+    int h = 7 + chanceInt(4);
 
     if (generateSettlementPiece(TileRect(x, y, w, h))) {
       --Count;
@@ -648,8 +651,8 @@ void LevelGen::decorateMarketplace(TileRect A) {
 
   unsigned placed = 0;
   for (int i = 0; i < 1000 && placed < 5; ++i) {
-    if (makeStall(static_cast<int>(A.getX() + chance() * A.getW()),
-                  static_cast<int>(A.getY() + chance() * A.getH())))
+    if (makeStall(A.getX() + chanceInt(A.getW()),
+                  A.getY() + chanceInt(A.getH())))
       ++placed;
 
   }
