@@ -23,7 +23,11 @@
     { "id" : "stone_b", "passable" : true, "sprites" : ["stone_b"]},
     { "id" : "stone_br", "passable" : true, "sprites" : ["stone_br"]},
 
-    { "id" : "chest", "passable" : false, "sprites" : ["chest"], "inventory" : true},
+    { "id" : "chest", "passable" : false, "inventory" : true},
+    { "id" : "wood_chest", "passable" : false, "inventory" : true},
+
+    { "id" : "wood_stack", "passable" : false},
+    { "id" : "wood_stump_axe", "passable" : false},
 
     { "id" : "corn", "group" : "corn", "passable" : true, "sprites" : ["corn1", "corn2", "corn3", "corn4"], "resource" : "corn"},
 
@@ -65,6 +69,11 @@
     { "id" : "stall_cover_left_red", "passable" : true},
     { "id" : "stall_cover_mid_red", "passable" : true},
     { "id" : "stall_cover_right_red", "passable" : true},
+
+    { "id" : "tent_lower_left_green", "passable" : false},
+    { "id" : "tent_lower_right_green", "passable" : false},
+    { "id" : "tent_upper_left_green", "passable" : false},
+    { "id" : "tent_upper_right_green", "passable" : false},
 
     { "id" : "clock", "animation" : 450, "passable" : false, "sprites" : ["clock_mid", "clock_left", "clock_mid", "clock_right"]},
 

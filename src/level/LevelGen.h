@@ -87,6 +87,8 @@ class LevelGen {
   void placeTreeBorder();
   void generateOverworld();
 
+  bool makeCamp();
+
   bool generateSettlementPiece(TileRect Area, int iteration = 0);
 
   void generateHouse();

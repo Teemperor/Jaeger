@@ -378,8 +378,48 @@ void LevelGen::generateOverworld() {
     makeMine(chanceInt(level->getWidth()), chanceInt(level->getHeight()));
   }
 
+  int camps = 0;
+  for (int i = 0; i < chance() * 25 && camps < 3; ++i) {
+    if (makeCamp())
+      camps++;
+  }
+
   placeTreeBorder();
   placeVegetation();
+}
+
+bool LevelGen::makeCamp() {
+  TileRect A(chanceInt(level->getWidth()), chanceInt(level->getHeight()), 4, 4);
+  if (!isFree(A))
+    return false;
+  int x = A.getX();
+  int y = A.getY();
+
+  build2(x, y, "tent_upper_left_green");
+  build2(x + 1, y, "tent_upper_right_green");
+  build2(x, y + 1, "tent_lower_left_green");
+  build2(x + 1, y + 1, "tent_lower_right_green");
+
+  if (chance() < 0.3f)
+    build2(x + 1, y + 3, "fireplace");
+  else if (chance() < 0.5f)
+    build2(x, y + 3, "fireplace");
+
+  if (chance() < 0.3f)
+    build2(x, y + 3, "wood_stump_axe");
+
+  if (chance() < 0.3f) {
+    build2(x + 2, y + 1, "wood_chest");
+  } else if (chance() < 0.5f) {
+    build2(x + 2, y + 1, "wood_stack");
+  }
+
+  build(x, y + 1, "earth_tl");
+  build(x, y + 2, "earth_bl");
+  build(x + 1, y + 1, "earth_tr");
+  build(x + 1, y + 2, "earth_br");
+
+  return true;
 }
 
 void LevelGen::generateHouse() {

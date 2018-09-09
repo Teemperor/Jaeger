@@ -36,7 +36,7 @@ int main() {
 
   Faction playerFaction;
 
-  Character *player1 = new Character(level, Vec2(10 * 16, 10 * 16));
+  Character *player1 = new Character(level, Vec2(40 * 16, 150 * 16));
   player1->setFaction(&playerFaction);
   //Character *player2 = new Character(level, Vec2(44 * 16, 52 * 16));
   //player2->setFaction(&playerFaction);

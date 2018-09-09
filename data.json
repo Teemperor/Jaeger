@@ -93,6 +93,17 @@
     { "id" : "stall_cover_left_green" , "tile" : [11, 1] },
     { "id" : "stall_cover_right_green" , "tile" : [11, 2] },
 
+    { "id" : "tent_lower_left_green" , "tile" : [46, 11] },
+    { "id" : "tent_lower_right_green" , "tile" : [47, 11] },
+    { "id" : "tent_upper_left_green" , "tile" : [46, 10] },
+    { "id" : "tent_upper_right_green" , "tile" : [47, 10] },
+
+    { "id" : "wood_chest" , "tile" : [38, 10] },
+
+    { "id" : "wood_stack" , "tile" : [53, 22] },
+    { "id" : "wood_stump_axe" , "tile" : [53, 21] },
+
+
     { "id" : "stall_table_mid1" , "tile" : [10, 4] },
     { "id" : "stall_table_mid2" , "tile" : [11, 4] },
     { "id" : "stall_table_mid3" , "tile" : [12, 4] },
