@@ -143,7 +143,7 @@ float LevelGen::getHeight(int x, int y) {
 
   result -= 0.1f; */
 
-  result += 0.3f;
+  result += Elevation;
   if (result > 1)
     return 1;
   return result;
@@ -457,7 +457,9 @@ bool LevelGen::hasSurrounding(
 
 LevelGen::LevelGen(unsigned seed)
     : heightPerlin(seed, 0.07), woodPerlin(seed * 55, 0.03), cavePerlin(seed * 3, 0.07), gen(seed),
-      dis(0, 1) {}
+      dis(0, 1) {
+  Elevation = chance() * 3;
+}
 
 Level *LevelGen::generate(World &world, GameData &data, Level::Type type, const Connection *C) {
   this->world = &world;
@@ -492,10 +494,17 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int limit) {
   if (limit <= 0)
     return false;
 
-  auto UsedArea = Area.resize(-1, -1);
-  if (Area.biggerThan(3, 4))
+  if (Area.biggerThan(3, 4) && !Area.biggerThan(6, 6)) {
+    auto UsedArea = Area.resize(-1, -1);
     makeHouse(UsedArea, 2);
-  else {
+    makeLine(TilePos(UsedArea.getX(), UsedArea.getY() + UsedArea.getH()),
+             TilePos(UsedArea.getX() + UsedArea.getW(), UsedArea.getY() + UsedArea.getH()),
+             "grass_stones");
+    //makeQuadLines(Area.moveX(-1).moveY(-1), "grass_stones");
+  } else if (chance() < 0.9f) {
+    makeFloor(Area, "stone");
+  } else {
+    auto UsedArea = Area.resize(-1, -1);
     makeFloor(UsedArea, "earth");
 
     UsedArea = UsedArea.resize(0, -1);
@@ -516,7 +525,7 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int limit) {
   };
 
   for (auto O : Offsets) {
-    if (chance() < 0.6f)
+    if (chance() < 0.4f)
       continue;
     for (int Try = 0; Try < 5; ++Try) {
       int NewW = static_cast<int>(chance() * 4 + 3);
@@ -549,8 +558,8 @@ void LevelGen::generateSettlements() {
       break;
     int x = static_cast<int>(chance() * level->getWidth());
     int y = static_cast<int>(chance() * level->getHeight());
-    int w = 7;
-    int h = 7;
+    int w = 7 + chance() * 4;
+    int h = 7 + chance() * 4;
 
     if (generateSettlementPiece(TileRect(x, y, w, h))) {
       --Count;
@@ -581,6 +590,23 @@ void LevelGen::makeFloor(TileRect A, std::string Prefix) {
     }
   }
 }
+
+void LevelGen::makeLine(TilePos Start, TilePos End, std::string T) {
+  if (Start.getX() == End.getX()) {
+    for (int y = std::min(Start.getY(), End.getY());
+        y <= std::max(Start.getY(), End.getY()); ++y) {
+      build(Start.getX(), y, T);
+    }
+  } else if (Start.getY() == End.getY()) {
+    for (int x = std::min(Start.getX(), End.getX());
+         x <= std::max(Start.getX(), End.getX()); ++x) {
+      build(x, Start.getY(), T);
+    }
+  } else {
+    assert(false && "Neither same x nor y coords for makeLine");
+  }
+}
+
 
 void LevelGen::makeMine(int x, int y) {
   TileRect Area(x - 1, y - 3, 3, 9);

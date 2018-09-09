@@ -96,6 +96,16 @@
     { "id" : "earth_br" , "tile" : [9, 11] },
 
 
+    { "id" : "stone_tl" , "tile" : [7, 15] },
+    { "id" : "stone_t" ,  "tile" : [8, 15] },
+    { "id" : "stone_tr" , "tile" : [9, 15] },
+    { "id" : "stone_l" ,  "tile" : [7, 16] },
+    { "id" : "stone_c" ,  "tile" : [8, 16] },
+    { "id" : "stone_r" ,  "tile" : [9, 16] },
+    { "id" : "stone_bl" , "tile" : [7, 17] },
+    { "id" : "stone_b" ,  "tile" : [8, 17] },
+    { "id" : "stone_br" , "tile" : [9, 17] },
+
     { "id" : "stalagmite_small1" , "tile" : [29, 42] },
     { "id" : "stalagmite_small2" , "tile" : [30, 42] },
     { "id" : "stalagmite_bottom1" , "tile" : [33, 42] },

@@ -14,10 +14,25 @@ class LevelGen {
   Level *level;
   World *world;
 
+  float Elevation = 0.3f;
+
   void makeChest(int x, int y);
 
   void makeTree(int x, int y, bool force = false);
   void makeBush(int x, int y, float random);
+
+  void makeQuadLines(TileRect A, std::string T) {
+    makeLine(TilePos(A.getX(), A.getY()),
+             TilePos(A.getX(), A.getY() + A.getH()), T);
+    makeLine(TilePos(A.getX() + A.getW(), A.getY()),
+             TilePos(A.getX() + A.getW(), A.getY() + A.getH()), T);
+
+    makeLine(TilePos(A.getX(), A.getY()),
+             TilePos(A.getX() + A.getW(), A.getY()), T);
+    makeLine(TilePos(A.getX(), A.getY() + A.getH()),
+             TilePos(A.getX() + A.getW(), A.getY() + A.getH()), T);
+  }
+  void makeLine(TilePos Start, TilePos End, std::string T);
 
   void makeFloor(TileRect A, std::string Prefix);
 
