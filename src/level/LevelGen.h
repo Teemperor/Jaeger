@@ -93,6 +93,8 @@ class LevelGen {
 
   void generateHouse();
 
+  void makeMineResources();
+  void makeMineFloorClutter();
   void generateMine();
 
   void placeOrcCamp(int w, int h);

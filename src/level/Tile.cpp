@@ -23,6 +23,8 @@ bool Tile::getTeleportTarget(TilePos &out) const {
 void Tile::render(Level &level, sf::RenderTarget &target, int x, int y) {
   if (empty())
     return;
+  if (isResource() && (!getInventory() || getInventory()->empty()))
+    return;
 
   sf::Sprite sprite = Data->sprite(level.timeMillis(), x, y);
 

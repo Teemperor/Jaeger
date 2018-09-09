@@ -33,7 +33,7 @@ class Level {
     ~UpdateGuard() { flag = false; }
   };
 
-  const float ResourceUpdateTime = 10.0f;
+  const float ResourceUpdateTime = 1.0f;
   float ResourceUpdateCounter = ResourceUpdateTime;
 
 public:

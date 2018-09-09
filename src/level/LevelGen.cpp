@@ -374,7 +374,7 @@ void LevelGen::generateOverworld() {
 
   generateSettlements();
 
-  for (int i = 0; i < chance() * 5; ++i) {
+  for (int i = 0; i < chance() * 35; ++i) {
     makeMine(chanceInt(level->getWidth()), chanceInt(level->getHeight()));
   }
 
@@ -727,6 +727,40 @@ void LevelGen::makeLine(TilePos Start, TilePos End, std::string T) {
   }
 }
 
+void LevelGen::makeMineResources() {
+  const int w = level->getWidth();
+  const int h = level->getHeight();
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      if (level->get(x, y).empty())
+        continue;
+      if (!level->getBuilding(x, y).empty())
+        continue;
+      if (!level->getBuilding2(x, y).empty())
+        continue;
+      if (chance() < 0.02f)
+        build(x, y, "human_remains");
+    }
+  }
+}
+
+void LevelGen::makeMineFloorClutter() {
+  const int w = level->getWidth();
+  const int h = level->getHeight();
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y) {
+      if (level->get(x, y).name() != "cave_floor")
+        continue;
+      if (!level->getBuilding(x, y).empty())
+        continue;
+      if (!level->getBuilding2(x, y).empty())
+        continue;
+      if (chance() < 0.02f)
+        build(x, y, "human_remains");
+    }
+  }
+}
+
 void LevelGen::makeMine(int x, int y) {
   TileRect Area(x - 1, y - 3, 3, 9);
   if (!isFree(Area))
@@ -880,6 +914,8 @@ void LevelGen::generateMine() {
     }
   }
 
+  makeMineResources();
+  makeMineFloorClutter();
   placeOrcCamp(w, h);
 }
 

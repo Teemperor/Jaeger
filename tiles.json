@@ -55,7 +55,7 @@
     { "id" : "cave_wall_bottom_left", "passable" : false, "sprites" : ["cave_wall_bottom_left"]},
     { "id" : "cave_wall_bottom_right", "passable" : false, "sprites" : ["cave_wall_bottom_right"]},
     { "id" : "cave_wall_bottom_single", "passable" : false, "sprites" : ["cave_wall_bottom_single"]},
-    { "id" : "cave_floor", "group" : "grass", "passable" : true, "sprites" : ["cave_floor1", "cave_floor2", "cave_floor3", "cave_floor4", "cave_floor5"]},
+    { "id" : "cave_floor", "passable" : true, "sprites" : ["cave_floor1", "cave_floor2", "cave_floor3", "cave_floor4", "cave_floor5"]},
 
     { "id" : "grass", "group" : "grass", "passable" : true, "sprites" : ["grass1", "grass2"]},
     { "id" : "fireplace", "animation" : 250, "passable" : false, "sprites" : ["fireplace1", "fireplace2"]},
@@ -80,6 +80,8 @@
     { "id" : "tent_lower_right_green", "passable" : false},
     { "id" : "tent_upper_left_green", "passable" : false},
     { "id" : "tent_upper_right_green", "passable" : false},
+
+    { "id" : "human_remains", "passable" : true, "sprites" : ["bones_skull", "bones_single", "bones_skull_and_single", "skeleton"], "inventory" : true},
 
     { "id" : "clock", "animation" : 450, "passable" : false, "sprites" : ["clock_mid", "clock_left", "clock_mid", "clock_right"]},
 

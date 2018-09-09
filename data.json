@@ -85,6 +85,12 @@
 
     { "id" : "small_frames1" , "tile" : [17, 53] },
 
+    { "id" : "bones_skull" , "tile" : [28, 43] },
+    { "id" : "bones_single" , "tile" : [29, 43] },
+    { "id" : "bones_skull_and_single" , "tile" : [30, 43] },
+    { "id" : "skeleton" , "tile" : [31, 43] },
+
+
     { "id" : "stall_cover_mid_red" , "tile" : [10, 0] },
     { "id" : "stall_cover_left_red" , "tile" : [10, 1] },
     { "id" : "stall_cover_right_red" , "tile" : [10, 2] },

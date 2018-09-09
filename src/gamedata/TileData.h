@@ -19,7 +19,7 @@ class TileData {
   bool HasInventory = false;
   bool IsResource = false;
   std::string Resources;
-  unsigned ResourceCounter = 1;
+  unsigned ResourceCounter = 60 * 5;
 
   sf::Sprite noSprite;
 

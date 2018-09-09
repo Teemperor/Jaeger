@@ -51,8 +51,11 @@ public:
   Inventory *getInventory() {
     if (Data && Data->hasInventory()) {
       createExtraInfo().createInventory();
-      if (isResource())
+      if (isResource()) {
         createExtraInfo().getInventory().disableItemStorage();
+        if (createExtraInfo().getInventory().empty())
+          return nullptr;
+      }
       return &createExtraInfo().getInventory();
     }
     return nullptr;
