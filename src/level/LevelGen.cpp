@@ -527,7 +527,7 @@ bool LevelGen::hasSurrounding(
 LevelGen::LevelGen(unsigned seed)
     : heightPerlin(seed, 0.07), woodPerlin(seed * 55, 0.03),
       cavePerlin(seed * 3, 0.07), gen(seed), dis(0, 1) {
-  Elevation = chance() * 3;
+  Elevation = 0.3f + chance() * 0.2f;
 }
 
 Level *LevelGen::generate(World &world, GameData &data, Level::Type type,
