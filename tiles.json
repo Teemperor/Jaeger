@@ -62,9 +62,9 @@
     { "id" : "stall_cover_mid_green", "passable" : false},
     { "id" : "stall_cover_right_green", "passable" : false},
 
-    { "id" : "stall_cover_left_red", "passable" : false},
-    { "id" : "stall_cover_mid_red", "passable" : false},
-    { "id" : "stall_cover_right_red", "passable" : false},
+    { "id" : "stall_cover_left_red", "passable" : true},
+    { "id" : "stall_cover_mid_red", "passable" : true},
+    { "id" : "stall_cover_right_red", "passable" : true},
 
     { "id" : "clock", "animation" : 450, "passable" : false, "sprites" : ["clock_mid", "clock_left", "clock_mid", "clock_right"]},
 

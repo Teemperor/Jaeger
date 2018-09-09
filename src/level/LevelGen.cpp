@@ -470,6 +470,7 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type,
   this->world = &world;
   this->data = &data;
 
+  level = nullptr;
   switch (type) {
   case Level::Type::Overworld:
     level = new Level(world, type, 200, 200, data);
@@ -484,9 +485,8 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type,
     level = new Level(world, type, 100, 100, data);
     generateMine();
     break;
-  default:
-    assert(false && "Not implemented level type for generation!");
   }
+  assert(level && "Not implemented level type for generation!");
   world.addLevel(level);
 
   return level;
@@ -509,7 +509,6 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
              TilePos(UsedArea.getX() + UsedArea.getW(),
                      UsedArea.getY() + UsedArea.getH()),
              "grass_stones");
-    // makeQuadLines(Area.moveX(-1).moveY(-1), "grass_stones");
   } else if (iteration > 4) {
     auto UsedArea = Area.resize(-1, -1);
     makeFloor(UsedArea, "earth");
@@ -613,9 +612,9 @@ bool LevelGen::makeStall(int x, int y) {
   if (chance() < 0.5f)
     color = "red";
 
-  build(x, y - 1, "stall_cover_left_" + color);
-  build(x + 1, y - 1, "stall_cover_mid_" + color);
-  build(x + 2, y - 1, "stall_cover_right_" + color);
+  overlay(x, y - 1, "stall_cover_left_" + color);
+  overlay(x + 1, y - 1, "stall_cover_mid_" + color);
+  overlay(x + 2, y - 1, "stall_cover_right_" + color);
   return true;
 }
 

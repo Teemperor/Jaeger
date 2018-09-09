@@ -98,6 +98,8 @@ class LevelGen {
   bool isFree(TileRect T) {
     for (int x = T.getX(); x <= T.getRightX(); ++x) {
       for (int y = T.getY(); y <= T.getLowerY(); ++y) {
+        if (!level->getBuilding2(x, y).empty())
+          return false;
         if (!level->getBuilding(x, y).empty())
           return false;
         if (!level->get(x, y).passable())
