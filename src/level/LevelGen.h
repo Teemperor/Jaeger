@@ -16,17 +16,17 @@ class LevelGen {
 
   void make_chest(int x, int y);
 
-  void make_tree(int x, int y, bool force = false);
-  void make_bush(int x, int y, float random);
+  void makeTree(int x, int y, bool force = false);
+  void makeBush(int x, int y, float random);
 
-  void make_floor(TileRect A, std::string Prefix);
+  void makeFloor(TileRect A, std::string Prefix);
 
-  void make_house(TileRect A, int depth,
-                  Level::Type ConnectsTo = Level::Type::House);
+  void makeHouse(TileRect A, int depth,
+                 Level::Type ConnectsTo = Level::Type::House);
 
-  void make_mine(int x, int y);
+  void makeMine(int x, int y);
 
-  void generate_settlements();
+  void generateSettlements();
 
   void floor(int x, int y, std::string tileName);
   void build(int x, int y, std::string tileName);

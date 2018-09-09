@@ -20,7 +20,7 @@ static int countSurroundingTiles(TileMap<T> &M, const int tx, const int ty,
   return Count;
 }
 
-void LevelGen::make_tree(int x, int y, bool force) {
+void LevelGen::makeTree(int x, int y, bool force) {
   if (!force) {
     if (!level->getBuilding(x, y).empty())
       return;
@@ -47,7 +47,7 @@ void LevelGen::make_tree(int x, int y, bool force) {
   }
 }
 
-void LevelGen::make_bush(int x, int y, float random) {
+void LevelGen::makeBush(int x, int y, float random) {
   std::string tileName = "small_bush";
   if (random > 0.8f)
     tileName = "flower";
@@ -56,7 +56,7 @@ void LevelGen::make_bush(int x, int y, float random) {
   level->getBuilding(x, y).setData(data->tile(tileName));
 }
 
-void LevelGen::make_house(TileRect A, int depth, Level::Type ConnectsTo) {
+void LevelGen::makeHouse(TileRect A, int depth, Level::Type ConnectsTo) {
   int x = A.getX();
   int y = A.getY();
   int w = A.getW();
@@ -302,9 +302,9 @@ void LevelGen::generate_overworld() {
     }
   }
 
-  generate_settlements();
+  generateSettlements();
 
-  make_mine(50, 50);
+  makeMine(50, 50);
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -312,11 +312,11 @@ void LevelGen::generate_overworld() {
       float height = getHeight(x, y);
       if (height > 0) {
         if (vegetation > 0.2f && chance() > 0.75f) {
-          make_tree(x, y);
+          makeTree(x, y);
         } else if (vegetation > 0 && chance() > 0.8f) {
           // make_bush(x, y);
         } else if (chance() > 0.8f) {
-          make_bush(x, y, chance());
+          makeBush(x, y, chance());
         }
       } else {
         if (height > -0.1f && vegetation > 0 && chance() > 0.8f) {
@@ -343,7 +343,7 @@ void LevelGen::generate_overworld() {
             (tree_border - coord) / static_cast<float>(tree_border);
         if (height >= 0) {
           if (chance() < tree_chance) {
-            make_tree(x, y);
+            makeTree(x, y);
           }
         }
       }
@@ -492,9 +492,9 @@ bool LevelGen::generate_settlement(TileRect Area, int limit) {
 
   auto UsedArea = Area.resize(-1, -1);
   if (Area.biggerThan(3, 4))
-    make_house(UsedArea, 2);
+    makeHouse(UsedArea, 2);
   else {
-    make_floor(UsedArea, "earth");
+    makeFloor(UsedArea, "earth");
 
     UsedArea = UsedArea.resize(0, -1);
     for (int x = UsedArea.getX(); x <= UsedArea.getRightX(); ++x) {
@@ -540,7 +540,7 @@ bool LevelGen::generate_settlement(TileRect Area, int limit) {
   return true;
 }
 
-void LevelGen::generate_settlements() {
+void LevelGen::generateSettlements() {
   int Count = 15;
   for (int i = 0; i < 4000; i++) {
     if (Count == 0)
@@ -556,7 +556,7 @@ void LevelGen::generate_settlements() {
   }
 }
 
-void LevelGen::make_floor(TileRect A, std::string Prefix) {
+void LevelGen::makeFloor(TileRect A, std::string Prefix) {
   Prefix += "_";
 
   build(A.getX(), A.getY(), Prefix + "tl");
@@ -580,12 +580,12 @@ void LevelGen::make_floor(TileRect A, std::string Prefix) {
   }
 }
 
-void LevelGen::make_mine(int x, int y) {
+void LevelGen::makeMine(int x, int y) {
   TileRect Area(x - 1, y - 3, 3, 9);
   if (!isFree(Area))
     return;
-  make_floor(Area.resize(-1, -4).moveY(1), "earth");
-  make_house(Area.resize(0, -6), 2, Level::Type::Mine);
+  makeFloor(Area.resize(-1, -4).moveY(1), "earth");
+  makeHouse(Area.resize(0, -6), 2, Level::Type::Mine);
   build(x, y, "railtracks_vertical");
   build(x, y + 1, "railtracks_vertical");
   build(x, y + 1, "railtracks_end_bottom");
