@@ -625,8 +625,8 @@ void LevelGen::decorateMarketplace(TileRect A) {
 
   unsigned placed = 0;
   for (int i = 0; i < 1000 && placed < 5; ++i) {
-    if (makeStall(A.getX() + chance() * A.getW(),
-                  A.getY() + chance() * A.getH()))
+    if (makeStall(static_cast<int>(A.getX() + chance() * A.getW()),
+                  static_cast<int>(A.getY() + chance() * A.getH())))
       ++placed;
 
   }
@@ -811,7 +811,7 @@ void LevelGen::makeChest(int x, int y) {
 }
 
 void LevelGen::makeStalagmite(int x, int y) {
-  if (chance() < 0.4)
+  if (chance() < 0.4f)
     build(x, y, "stalagmite_small");
   else {
     overlay(x, y - 1, "stalagmite_top");
