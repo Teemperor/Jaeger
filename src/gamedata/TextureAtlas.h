@@ -13,7 +13,7 @@ class TextureAtlas {
   std::unordered_map<std::string, sf::Sprite> Sprites;
 
 public:
-  TextureAtlas(const std::string &basePath) {
+  explicit TextureAtlas(const std::string &basePath) {
     texture.loadFromFile(basePath + ".png");
     texture.setSmooth(false);
     texture.setRepeated(true);

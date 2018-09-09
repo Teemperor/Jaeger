@@ -16,8 +16,9 @@ class Tile {
   TileExtraInfo &createExtraInfo();
 
 public:
-  Tile() {}
-  Tile(TileData *Data) : Data(Data) {
+  Tile() = default;
+
+  explicit Tile(TileData *Data) : Data(Data) {
   }
 
   const std::string &name() const {
@@ -30,8 +31,8 @@ public:
   }
 
   void updateResources(World &W, unsigned Seed) {
-    if (Extra && Data)
-      Extra->updateResources(W, *Data, Seed);
+    if (isResource())
+      createExtraInfo().updateResources(W, *Data, Seed);
   }
 
   const std::string &group() const {
