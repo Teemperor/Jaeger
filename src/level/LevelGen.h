@@ -60,7 +60,7 @@ class LevelGen {
 
   void generateOverworld();
 
-  bool generateSettlement(TileRect Area, int limit = 3);
+  bool generateSettlementPiece(TileRect Area, int limit = 6);
 
   void generateHouse();
 

@@ -24,6 +24,8 @@ void LevelGen::makeTree(int x, int y, bool force) {
   if (!force) {
     if (!level->getBuilding(x, y).empty())
       return;
+    if (!level->getBuilding2(x, y).empty())
+      return;
   }
   std::string isDark;
   if (chance() > 0.5f)
@@ -483,7 +485,7 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type, const 
   return level;
 }
 
-bool LevelGen::generateSettlement(TileRect Area, int limit) {
+bool LevelGen::generateSettlementPiece(TileRect Area, int limit) {
   if (!isFree(Area))
     return false;
 
@@ -533,7 +535,7 @@ bool LevelGen::generateSettlement(TileRect Area, int limit) {
       else if (O.second == 1)
         New = New.moveY(Area.getH() + 1);
 
-      if (generateSettlement(New, limit))
+      if (generateSettlementPiece(New, limit))
         break;
     }
   }
@@ -541,7 +543,7 @@ bool LevelGen::generateSettlement(TileRect Area, int limit) {
 }
 
 void LevelGen::generateSettlements() {
-  int Count = 15;
+  int Count = 3;
   for (int i = 0; i < 4000; i++) {
     if (Count == 0)
       break;
@@ -550,7 +552,7 @@ void LevelGen::generateSettlements() {
     int w = 7;
     int h = 7;
 
-    if (generateSettlement(TileRect(x, y, w, h))) {
+    if (generateSettlementPiece(TileRect(x, y, w, h))) {
       --Count;
     }
   }
@@ -585,7 +587,7 @@ void LevelGen::makeMine(int x, int y) {
   if (!isFree(Area))
     return;
   makeFloor(Area.resize(-1, -4).moveY(1), "earth");
-  makeHouse(Area.resize(0, -6), 2, Level::Type::Mine);
+  makeHouse(Area.resize(0, -6), 1, Level::Type::Mine);
   build(x, y, "railtracks_vertical");
   build(x, y + 1, "railtracks_vertical");
   build(x, y + 1, "railtracks_end_bottom");
