@@ -594,7 +594,8 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
     UsedArea = UsedArea.resize(0, -1);
     for (int x = UsedArea.getX(); x <= UsedArea.getRightX(); ++x) {
       for (int y = UsedArea.getY(); y <= UsedArea.getLowerY(); ++y) {
-        build2(x, y, "corn");
+        if (chance() < 0.9f)
+          build2(x, y, "corn");
       }
     }
   }
