@@ -732,14 +732,12 @@ void LevelGen::makeMineResources() {
   const int h = level->getHeight();
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
-      if (level->get(x, y).empty())
-        continue;
-      if (!level->getBuilding(x, y).empty())
+      if (level->getBuilding(x, y).name() != "cave_wall_bottom")
         continue;
       if (!level->getBuilding2(x, y).empty())
         continue;
-      if (chance() < 0.02f)
-        build(x, y, "human_remains");
+      if (chance() < 0.3f)
+        build2(x, y, "coal_vein");
     }
   }
 }

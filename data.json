@@ -85,6 +85,15 @@
 
     { "id" : "small_frames1" , "tile" : [17, 53] },
 
+    { "id" : "coal_vein" , "tile" : [42, 51] },
+    { "id" : "sand_vein" , "tile" : [42, 52] },
+    { "id" : "purle_vein" , "tile" : [42, 53] },
+    { "id" : "copper_vein" , "tile" : [42, 54] },
+    { "id" : "white_vein" , "tile" : [43, 51] },
+    { "id" : "iron_vein" , "tile" : [43, 52] },
+    { "id" : "gold_vein" , "tile" : [43, 53] },
+    { "id" : "adamant_vein" , "tile" : [43, 54] },
+
     { "id" : "bones_skull" , "tile" : [28, 43] },
     { "id" : "bones_single" , "tile" : [29, 43] },
     { "id" : "bones_skull_and_single" , "tile" : [30, 43] },

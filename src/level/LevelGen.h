@@ -147,7 +147,7 @@ private:
   Connection BackConnection;
 
 public:
-  explicit LevelGen(unsigned seed = 44);
+  explicit LevelGen(unsigned seed);
 
   Level *generate(World &world, GameData &data, Level::Type type, const Connection *C);
 

@@ -26,7 +26,8 @@ static void fillOpenConnections(LevelGen &gen, World &world, GameData &D, unsign
 World *WorldGen::generate(GameData &d) {
   World *world = new World(d);
 
-  LevelGen gen;
+  std::random_device rd;
+  LevelGen gen(rd());
   gen.generate(*world, d, Level::Type::Overworld, nullptr);
   fillOpenConnections(gen, *world, d, 55);
 
