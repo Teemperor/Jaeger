@@ -29,6 +29,12 @@
     { "id" : "wood_stack", "passable" : false},
     { "id" : "wood_stump_axe", "passable" : false},
 
+    { "id" : "wood_bench_top", "passable" : true},
+    { "id" : "anvil", "passable" : false},
+
+    { "id" : "wood_fence_piece", "passable" : false},
+    { "id" : "wood_fence_gate_open", "passable" : true},
+
     { "id" : "corn", "group" : "corn", "passable" : true, "sprites" : ["corn1", "corn2", "corn3", "corn4"], "resource" : "corn"},
 
     { "id" : "railtracks_vertical", "passable" : true, "sprites" : ["railtracks_vertical1", "railtracks_vertical2"]},
@@ -62,9 +68,9 @@
     { "id" : "stall_table_right", "passable" : false, "sprites" : ["stall_table_right1", "stall_table_right2", "stall_table_right3", "stall_table_right4"]},
     { "id" : "stall_table_mid", "passable" : false, "sprites" : ["stall_table_mid1", "stall_table_mid2", "stall_table_mid3", "stall_table_mid4"]},
 
-    { "id" : "stall_cover_left_green", "passable" : false},
-    { "id" : "stall_cover_mid_green", "passable" : false},
-    { "id" : "stall_cover_right_green", "passable" : false},
+    { "id" : "stall_cover_left_green", "passable" : true},
+    { "id" : "stall_cover_mid_green", "passable" : true},
+    { "id" : "stall_cover_right_green", "passable" : true},
 
     { "id" : "stall_cover_left_red", "passable" : true},
     { "id" : "stall_cover_mid_red", "passable" : true},

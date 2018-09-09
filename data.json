@@ -100,9 +100,14 @@
 
     { "id" : "wood_chest" , "tile" : [38, 10] },
 
+    { "id" : "wood_bench_top" , "tile" : [18, 4] },
+    { "id" : "anvil" , "tile" : [15, 0] },
+
     { "id" : "wood_stack" , "tile" : [53, 22] },
     { "id" : "wood_stump_axe" , "tile" : [53, 21] },
 
+    { "id" : "wood_fence_gate_open" , "tile" : [45, 23] },
+    { "id" : "wood_fence_piece" , "tile" : [47, 23] },
 
     { "id" : "stall_table_mid1" , "tile" : [10, 4] },
     { "id" : "stall_table_mid2" , "tile" : [11, 4] },

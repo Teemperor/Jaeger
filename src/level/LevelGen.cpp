@@ -568,9 +568,21 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
   if (iteration == 0) {
     makeFloor(Area, "stone");
     decorateMarketplace(Area);
-  } else if (iteration < 4 && Area.biggerThan(3, 4) && !Area.biggerThan(6, 6)) {
+  } else if (iteration < 4 && Area.biggerThan(3, 5) && !Area.biggerThan(6, 7)) {
     auto UsedArea = Area.resize(-1, -1);
-    makeHouse(UsedArea, 2);
+    auto HouseArea = UsedArea.resize(0, -1);
+    makeHouse(HouseArea, 2);
+    int DoorX = UsedArea.getX() + (UsedArea.getW() - 1) / 2;
+    int GardenY = UsedArea.getLowerY() - 1;
+
+    if (chance() < 0.3f) {
+        makeLine(TilePos(UsedArea.getX(), GardenY),
+                 TilePos(UsedArea.getX() + HouseArea.getW() - 1,
+                         GardenY), "wood_fence_piece");
+      build2(DoorX, GardenY, "wood_fence_gate_open");
+    } else if (chance() < 0.4f)
+      build(DoorX + 1, GardenY, "wood_bench_top");
+    build(DoorX, GardenY, "grass_stones");
     makeLine(TilePos(UsedArea.getX(), UsedArea.getY() + UsedArea.getH()),
              TilePos(UsedArea.getX() + UsedArea.getW(),
                      UsedArea.getY() + UsedArea.getH()),
@@ -601,7 +613,7 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
       continue;
     for (int Try = 0; Try < 5; ++Try) {
       int NewW = static_cast<int>(chanceInt(2) + 4);
-      int NewH = static_cast<int>(chanceInt(2) + 5);
+      int NewH = static_cast<int>(chanceInt(2) + 7);
       TileRect New = Area;
       New.setW(NewW);
       New.setH(NewH);
