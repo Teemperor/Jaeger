@@ -1,6 +1,6 @@
 cmake-build-*
 .idea
-CMakeLists.txt.user
+CMakeLists.txt.user*
 *.autosave
 build
 travis-build

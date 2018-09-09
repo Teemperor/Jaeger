@@ -8,7 +8,6 @@
 #include <gamedata/GameData.h>
 #include <iostream>
 #include <level/Level.h>
-#include <level/LevelGen.h>
 #include <level/WorldGen.h>
 #include <stdlib.h>
 #include <unordered_map>
@@ -37,7 +36,7 @@ int main() {
 
   Faction playerFaction;
 
-  Character *player1 = new Character(level, Vec2(49 * 16, 51 * 16));
+  Character *player1 = new Character(level, Vec2(10 * 16, 10 * 16));
   player1->setFaction(&playerFaction);
   //Character *player2 = new Character(level, Vec2(44 * 16, 52 * 16));
   //player2->setFaction(&playerFaction);

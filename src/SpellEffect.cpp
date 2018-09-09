@@ -22,16 +22,16 @@ static std::vector<SpellEffect> List;
 const std::vector<SpellEffect> &SpellEffects::getList() {
   if (List.empty()) {
     List = {SpellEffect("damage", "Damage",
-                        [](Creature *Caster, Creature *Target,
+                        [](Creature *, Creature *Target,
                            SpellEffect::StrengthUnit u) { Target->damage(u); },
                         1, 100),
             SpellEffect("heal", "Heal",
-                        [](Creature *Caster, Creature *Target,
+                        [](Creature *, Creature *Target,
                            SpellEffect::StrengthUnit u) { Target->damage(-u); },
                         1, 100),
             SpellEffect("switchPos", "Switch Positions",
                         [](Creature *Caster, Creature *Target,
-                           SpellEffect::StrengthUnit u) {
+                           SpellEffect::StrengthUnit) {
                           auto pos = Target->getPos();
                           Target->setPos(Caster->getPos());
                           Caster->setPos(pos);
@@ -47,4 +47,5 @@ const SpellEffect & ::SpellEffects::getByID(const std::string &ID) {
   }
   std::cerr << "Couldn't find effect with ID '" << ID << "'\n";
   assert(false);
+  return getList().front();
 }

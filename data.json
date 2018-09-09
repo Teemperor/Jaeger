@@ -85,6 +85,30 @@
 
     { "id" : "small_frames1" , "tile" : [17, 53] },
 
+    { "id" : "stall_cover_mid_red" , "tile" : [10, 0] },
+    { "id" : "stall_cover_left_red" , "tile" : [10, 1] },
+    { "id" : "stall_cover_right_red" , "tile" : [10, 2] },
+
+    { "id" : "stall_cover_mid_green" , "tile" : [11, 0] },
+    { "id" : "stall_cover_left_green" , "tile" : [11, 1] },
+    { "id" : "stall_cover_right_green" , "tile" : [11, 2] },
+
+    { "id" : "stall_table_mid1" , "tile" : [10, 4] },
+    { "id" : "stall_table_mid2" , "tile" : [11, 4] },
+    { "id" : "stall_table_mid3" , "tile" : [12, 4] },
+    { "id" : "stall_table_mid4" , "tile" : [13, 4] },
+
+    { "id" : "stall_table_left1" , "tile" : [10, 5] },
+    { "id" : "stall_table_left2" , "tile" : [11, 5] },
+    { "id" : "stall_table_left3" , "tile" : [12, 5] },
+    { "id" : "stall_table_left4" , "tile" : [13, 5] },
+
+    { "id" : "stall_table_right1" , "tile" : [10, 6] },
+    { "id" : "stall_table_right2" , "tile" : [11, 6] },
+    { "id" : "stall_table_right3" , "tile" : [12, 6] },
+    { "id" : "stall_table_right4" , "tile" : [13, 6] },
+
+
     { "id" : "earth_tl" , "tile" : [7, 9] },
     { "id" : "earth_t" ,  "tile" : [8, 9] },
     { "id" : "earth_tr" , "tile" : [9, 9] },

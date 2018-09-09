@@ -54,6 +54,18 @@
 
     { "id" : "grass_stones", "group" : "grass", "passable" : true, "sprites" : ["grass_stones1", "grass_stones2", "grass_stones3"]},
 
+    { "id" : "stall_table_left", "passable" : false, "sprites" : ["stall_table_left1", "stall_table_left2", "stall_table_left3", "stall_table_left4"]},
+    { "id" : "stall_table_right", "passable" : false, "sprites" : ["stall_table_right1", "stall_table_right2", "stall_table_right3", "stall_table_right4"]},
+    { "id" : "stall_table_mid", "passable" : false, "sprites" : ["stall_table_mid1", "stall_table_mid2", "stall_table_mid3", "stall_table_mid4"]},
+
+    { "id" : "stall_cover_left_green", "passable" : false},
+    { "id" : "stall_cover_mid_green", "passable" : false},
+    { "id" : "stall_cover_right_green", "passable" : false},
+
+    { "id" : "stall_cover_left_red", "passable" : false},
+    { "id" : "stall_cover_mid_red", "passable" : false},
+    { "id" : "stall_cover_right_red", "passable" : false},
+
     { "id" : "clock", "animation" : 450, "passable" : false, "sprites" : ["clock_mid", "clock_left", "clock_mid", "clock_right"]},
 
     { "id" : "water_c", "group" : "water", "passable" : false, "animation" : 700, "sprites" : ["water_c1", "water_c2"]},

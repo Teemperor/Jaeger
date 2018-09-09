@@ -2,14 +2,14 @@
 
 #include "World.h"
 
-#include <set>
 #include <Character.h>
+#include <set>
 
 #include "stb_perlin.h"
 
-template<typename T>
+template <typename T>
 static int countSurroundingTiles(TileMap<T> &M, const int tx, const int ty,
-                          std::function<bool(const T &)> F) {
+                                 std::function<bool(const T &)> F) {
   int Count = 0;
   for (int x = tx - 1; x <= tx + 1; ++x) {
     for (int y = ty - 1; y <= ty + 1; ++y) {
@@ -25,6 +25,8 @@ void LevelGen::makeTree(int x, int y, bool force) {
     if (!level->getBuilding(x, y).empty())
       return;
     if (!level->getBuilding2(x, y).empty())
+      return;
+    if (level->get(x, y).group() != "grass")
       return;
   }
   std::string isDark;
@@ -54,6 +56,8 @@ void LevelGen::makeBush(int x, int y, float random) {
   if (random > 0.8f)
     tileName = "flower";
   if (!level->getBuilding(x, y).empty())
+    return;
+  if (level->get(x, y).group() != "grass")
     return;
   level->getBuilding(x, y).setData(data->tile(tileName));
 }
@@ -158,7 +162,6 @@ float LevelGen::getCavePerlin(int x, int y) {
   return result;
 }
 
-
 float LevelGen::getVegetation(int x, int y) { return woodPerlin.get(x, y); }
 
 namespace {
@@ -167,7 +170,7 @@ public:
   int x1, y1, x2, y2;
   Area(int x1, int y1, int x2, int y2) : x1(x1), y1(y1), x2(x2), y2(y2) {}
 
-  void foreach(std::function<void(int, int)> F) {
+  void foreach (std::function<void(int, int)> F) {
     for (int x = x1; x < x2; x++) {
       for (int y = y1; y < y2; y++) {
         F(x, y);
@@ -214,9 +217,8 @@ void LevelGen::generateOverworld() {
       for (int y = 0; y < h; ++y) {
         if (water.get(x, y) == 0)
           continue;
-        int SurroundingGrass = countSurroundingTiles<int>(water, x, y, [](const int &T) {
-          return T == 0;
-        });
+        int SurroundingGrass = countSurroundingTiles<int>(
+            water, x, y, [](const int &T) { return T == 0; });
         if (SurroundingGrass >= 5) {
           Changed = true;
           water.get(x, y) = 0;
@@ -239,13 +241,15 @@ void LevelGen::generateOverworld() {
     for (int i = 0; i < tree_border; i++) {
       build(49, i, "placeholder");
     }
-    openConnections.emplace_back(Level::Type::Overworld, TilePos(*level, 49, 3));
+    openConnections.emplace_back(Level::Type::Overworld,
+                                 TilePos(*level, 49, 3));
   }
 
   for (int i = 0; i < tree_border; i++) {
     build(49, h - i, "placeholder");
   }
-  BackConnection = Connection(Level::Type::Overworld, TilePos(*level, 49, h - 3));
+  BackConnection =
+      Connection(Level::Type::Overworld, TilePos(*level, 49, h - 3));
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
@@ -456,28 +460,29 @@ bool LevelGen::hasSurrounding(
 }
 
 LevelGen::LevelGen(unsigned seed)
-    : heightPerlin(seed, 0.07), woodPerlin(seed * 55, 0.03), cavePerlin(seed * 3, 0.07), gen(seed),
-      dis(0, 1) {
+    : heightPerlin(seed, 0.07), woodPerlin(seed * 55, 0.03),
+      cavePerlin(seed * 3, 0.07), gen(seed), dis(0, 1) {
   Elevation = chance() * 3;
 }
 
-Level *LevelGen::generate(World &world, GameData &data, Level::Type type, const Connection *C) {
+Level *LevelGen::generate(World &world, GameData &data, Level::Type type,
+                          const Connection *C) {
   this->world = &world;
   this->data = &data;
 
   switch (type) {
   case Level::Type::Overworld:
     level = new Level(world, type, 200, 200, data);
-      generateOverworld();
+    generateOverworld();
     break;
   case Level::Type::House:
     assert(C);
     level = new Level(world, type, C->TargetW, C->TargetH, data);
-      generateHouse();
+    generateHouse();
     break;
   case Level::Type::Mine:
     level = new Level(world, type, 100, 100, data);
-      generateMine();
+    generateMine();
     break;
   default:
     assert(false && "Not implemented level type for generation!");
@@ -487,23 +492,25 @@ Level *LevelGen::generate(World &world, GameData &data, Level::Type type, const 
   return level;
 }
 
-bool LevelGen::generateSettlementPiece(TileRect Area, int limit) {
+bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
   if (!isFree(Area))
     return false;
 
-  if (limit <= 0)
+  if (iteration >= 6)
     return false;
 
-  if (Area.biggerThan(3, 4) && !Area.biggerThan(6, 6)) {
+  if (iteration == 0) {
+    makeFloor(Area, "stone");
+    decorateMarketplace(Area);
+  } else if (iteration < 4 && Area.biggerThan(3, 4) && !Area.biggerThan(6, 6)) {
     auto UsedArea = Area.resize(-1, -1);
     makeHouse(UsedArea, 2);
     makeLine(TilePos(UsedArea.getX(), UsedArea.getY() + UsedArea.getH()),
-             TilePos(UsedArea.getX() + UsedArea.getW(), UsedArea.getY() + UsedArea.getH()),
+             TilePos(UsedArea.getX() + UsedArea.getW(),
+                     UsedArea.getY() + UsedArea.getH()),
              "grass_stones");
-    //makeQuadLines(Area.moveX(-1).moveY(-1), "grass_stones");
-  } else if (chance() < 0.9f) {
-    makeFloor(Area, "stone");
-  } else {
+    // makeQuadLines(Area.moveX(-1).moveY(-1), "grass_stones");
+  } else if (iteration > 4) {
     auto UsedArea = Area.resize(-1, -1);
     makeFloor(UsedArea, "earth");
 
@@ -515,7 +522,7 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int limit) {
     }
   }
 
-  --limit;
+  iteration++;
 
   std::vector<std::pair<int, int>> Offsets = {
       std::make_pair(-1, 0),
@@ -525,11 +532,11 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int limit) {
   };
 
   for (auto O : Offsets) {
-    if (chance() < 0.4f)
+    if (chance() < 0.2f)
       continue;
     for (int Try = 0; Try < 5; ++Try) {
-      int NewW = static_cast<int>(chance() * 4 + 3);
-      int NewH = static_cast<int>(chance() * 4 + 3);
+      int NewW = static_cast<int>(chance() * 2 + 4);
+      int NewH = static_cast<int>(chance() * 2 + 5);
       TileRect New = Area;
       New.setW(NewW);
       New.setH(NewH);
@@ -544,7 +551,7 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int limit) {
       else if (O.second == 1)
         New = New.moveY(Area.getH() + 1);
 
-      if (generateSettlementPiece(New, limit))
+      if (generateSettlementPiece(New, iteration))
         break;
     }
   }
@@ -558,8 +565,8 @@ void LevelGen::generateSettlements() {
       break;
     int x = static_cast<int>(chance() * level->getWidth());
     int y = static_cast<int>(chance() * level->getHeight());
-    int w = 7 + chance() * 4;
-    int h = 7 + chance() * 4;
+    int w = 7 + static_cast<int>(chance() * 4);
+    int h = 7 + static_cast<int>(chance() * 4);
 
     if (generateSettlementPiece(TileRect(x, y, w, h))) {
       --Count;
@@ -591,10 +598,45 @@ void LevelGen::makeFloor(TileRect A, std::string Prefix) {
   }
 }
 
+bool LevelGen::makeStall(int x, int y) {
+  for (int ix = x; ix < x + 3; ++ix)
+    for (int iy = y - 1; iy < y + 4; ++iy) {
+      if (!level->getBuilding(ix, iy).empty())
+        return false;
+    }
+
+  build(x, y, "stall_table_left");
+  build(x + 1, y, "stall_table_mid");
+  build(x + 2, y, "stall_table_right");
+
+  std::string color = "green";
+  if (chance() < 0.5f)
+    color = "red";
+
+  build(x, y - 1, "stall_cover_left_" + color);
+  build(x + 1, y - 1, "stall_cover_mid_" + color);
+  build(x + 2, y - 1, "stall_cover_right_" + color);
+  return true;
+}
+
+void LevelGen::decorateMarketplace(TileRect A) {
+  A = A.moveX(1);
+  A = A.moveY(2);
+  A = A.resize(-2, -2);
+
+  unsigned placed = 0;
+  for (int i = 0; i < 1000 && placed < 5; ++i) {
+    if (makeStall(A.getX() + chance() * A.getW(),
+                  A.getY() + chance() * A.getH()))
+      ++placed;
+
+  }
+}
+
 void LevelGen::makeLine(TilePos Start, TilePos End, std::string T) {
   if (Start.getX() == End.getX()) {
     for (int y = std::min(Start.getY(), End.getY());
-        y <= std::max(Start.getY(), End.getY()); ++y) {
+         y <= std::max(Start.getY(), End.getY()); ++y) {
       build(Start.getX(), y, T);
     }
   } else if (Start.getY() == End.getY()) {
@@ -606,7 +648,6 @@ void LevelGen::makeLine(TilePos Start, TilePos End, std::string T) {
     assert(false && "Neither same x nor y coords for makeLine");
   }
 }
-
 
 void LevelGen::makeMine(int x, int y) {
   TileRect Area(x - 1, y - 3, 3, 9);
@@ -640,7 +681,6 @@ void LevelGen::generateMine() {
   }
   --DoorY;
 
-
   std::set<TilePos> Checked = {TilePos(StartX, StartY)};
   std::vector<TilePos> ToCheck = {TilePos(StartX, StartY)};
 
@@ -657,14 +697,9 @@ void LevelGen::generateMine() {
       continue;
 
     std::vector<TilePos> ToAdd = {
-        TilePos(x, y + 1),
-        TilePos(x, y - 1),
-        TilePos(x + 1, y),
-        TilePos(x - 1, y),
-        TilePos(x + 1, y + 1),
-        TilePos(x - 1, y + 1),
-        TilePos(x + 1, y - 1),
-        TilePos(x - 1, y - 1),
+        TilePos(x, y + 1),     TilePos(x, y - 1),     TilePos(x + 1, y),
+        TilePos(x - 1, y),     TilePos(x + 1, y + 1), TilePos(x - 1, y + 1),
+        TilePos(x + 1, y - 1), TilePos(x - 1, y - 1),
     };
     for (TilePos T : ToAdd) {
       if (x < 0 || y < 0 || x >= w || y >= h)
@@ -684,10 +719,10 @@ void LevelGen::generateMine() {
         continue;
       floor(x, y, "cave_floor");
 
-      bool LeftFloor = level->get(x - 1, y).name() == "cave_floor"
-                      && level->getBuilding(x - 1, y).empty();
-      bool RightFloor = level->get(x + 1, y).name() == "cave_floor"
-                        && level->getBuilding(x + 1, y).empty();
+      bool LeftFloor = level->get(x - 1, y).name() == "cave_floor" &&
+                       level->getBuilding(x - 1, y).empty();
+      bool RightFloor = level->get(x + 1, y).name() == "cave_floor" &&
+                        level->getBuilding(x + 1, y).empty();
       std::string Suffix;
       if (LeftFloor && RightFloor)
         Suffix = "_single";
@@ -711,7 +746,8 @@ void LevelGen::generateMine() {
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
-      if (x == DoorX && y == DoorY) continue;
+      if (x == DoorX && y == DoorY)
+        continue;
       if (!level->get(x, y).empty())
         continue;
       if (!level->get(x, y + 1).empty())
@@ -724,7 +760,8 @@ void LevelGen::generateMine() {
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
-      if (x == DoorX && y == DoorY) continue;
+      if (x == DoorX && y == DoorY)
+        continue;
       if (!level->get(x, y).empty())
         continue;
       if (!level->get(x, y + 1).empty())
@@ -735,12 +772,12 @@ void LevelGen::generateMine() {
     }
   }
 
-
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
       if (TilePos(x, y).distance(TilePos(DoorX, DoorY)) < 6)
         continue;
-      if (x == DoorX && y == DoorY) continue;
+      if (x == DoorX && y == DoorY)
+        continue;
       if (level->get(x, y).name() != "cave_floor")
         continue;
       if (level->get(x, y - 1).name() != "cave_floor")
@@ -754,7 +791,8 @@ void LevelGen::generateMine() {
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
-      if (x == DoorX && y == DoorY) continue;
+      if (x == DoorX && y == DoorY)
+        continue;
       if (level->get(x, y).name() != "cave_floor")
         continue;
       if (!level->get(x, y + 1).empty())
@@ -765,12 +803,12 @@ void LevelGen::generateMine() {
   }
 
   placeOrcCamp(w, h);
-
 }
 
 void LevelGen::makeChest(int x, int y) {
   build(x, y, "chest");
-  level->getBuilding(x, y).getInventory()->add(Item(*data->item("small_health_potion"), *world));
+  level->getBuilding(x, y).getInventory()->add(
+      Item(*data->item("small_health_potion"), *world));
 }
 
 void LevelGen::makeStalagmite(int x, int y) {
@@ -789,7 +827,7 @@ void LevelGen::placeOrcCamp(int w, int h) {
 
       bool GoodPlace = true;
       Area A(x - 1, y - 1, x + 2, y + 2);
-      A.foreach([&GoodPlace, this](int ix, int iy) {
+      A.foreach ([&GoodPlace, this](int ix, int iy) {
         if (!level->passable(TilePos(ix, iy)))
           GoodPlace = false;
       });
@@ -801,11 +839,14 @@ void LevelGen::placeOrcCamp(int w, int h) {
       Faction *F = new Faction();
 
       Character *C;
-      C = new Character(*level, Vec2(TilePos(x - 1, y)), Character::BodyType::Green);
+      C = new Character(*level, Vec2(TilePos(x - 1, y)),
+                        Character::BodyType::Green);
       C->setFaction(F);
-      C = new Character(*level, Vec2(TilePos(x + 1, y)), Character::BodyType::Green);
+      C = new Character(*level, Vec2(TilePos(x + 1, y)),
+                        Character::BodyType::Green);
       C->setFaction(F);
-      C = new Character(*level, Vec2(TilePos(x + 1, y + 1)), Character::BodyType::Green);
+      C = new Character(*level, Vec2(TilePos(x + 1, y + 1)),
+                        Character::BodyType::Green);
       C->setFaction(F);
       return;
     }

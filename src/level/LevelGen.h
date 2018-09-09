@@ -35,6 +35,8 @@ class LevelGen {
   void makeLine(TilePos Start, TilePos End, std::string T);
 
   void makeFloor(TileRect A, std::string Prefix);
+  bool makeStall(int x, int y);
+  void decorateMarketplace(TileRect A);
 
   void makeHouse(TileRect A, int depth,
                  Level::Type ConnectsTo = Level::Type::House);
@@ -75,7 +77,7 @@ class LevelGen {
 
   void generateOverworld();
 
-  bool generateSettlementPiece(TileRect Area, int limit = 6);
+  bool generateSettlementPiece(TileRect Area, int iteration = 0);
 
   void generateHouse();
 
