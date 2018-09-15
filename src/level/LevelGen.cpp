@@ -377,7 +377,7 @@ void LevelGen::generateOverworld() {
 
   generateSettlements();
 
-  for (int i = 0; i < chance() * 35; ++i) {
+  for (int i = 0; i < 100 + chance() * 35; ++i) {
     makeMine(chanceInt(level->getWidth()), chanceInt(level->getHeight()));
   }
 

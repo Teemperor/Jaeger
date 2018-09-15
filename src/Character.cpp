@@ -160,6 +160,10 @@ void Character::update(float dtime) {
   }
   setWalking(false);
 
+  if (!isControlled()) {
+    MyAI.act(*this, dtime);
+  }
+
   if (isControlled()) {
     const float InventoryRange = 40;
     std::vector<InventoryLocation> ClosestInventories;
@@ -182,19 +186,6 @@ void Character::update(float dtime) {
     getControls()->setPossibleInventoryTargets(ClosestInventories);
   }
 
-
-
-  std::vector<GameObject *> ClosestEnemies;
-  for (GameObject *o : getLevel().getObjects()) {
-    if (auto C = dynamic_cast<Creature *>(o)) {
-      if (!C->isDead() && isEnemy(*C) && C->getPos().distance(getPos()) < 16 * 20) {
-        ClosestEnemies.push_back(o);
-        WalkPath.clear();
-      }
-    }
-  }
-  std::sort(ClosestEnemies.begin(), ClosestEnemies.end(), closest_object(this));
-
   if (isControlled()) {
     bool walking = std::abs(getXInput()) > 0.1f || std::abs(getYInput()) > 0.1f;
     if (walking)
@@ -204,25 +195,15 @@ void Character::update(float dtime) {
     setWalking(walking);
 
     std::vector<GameObject *> PossibleTargets;
+    auto ClosestEnemies = getClosestEnemies(Equipped[ItemData::Weapon].getRange());
     for (auto &e : ClosestEnemies) {
-      if (e->getPos().distance(getPos()) <
-          Equipped[ItemData::Weapon].getRange()) {
-        PossibleTargets.push_back(e);
-      }
+      PossibleTargets.push_back(e);
     }
 
     getControls()->setPossibleTargets(PossibleTargets);
 
     if (getControls()->isShooting() && getControls()->getTarget()) {
       tryShootAt(*getControls()->getTarget());
-    }
-  } else {
-    for (auto &e : ClosestEnemies) {
-      AIAttack(*dynamic_cast<Creature *>(e), *e, dtime);
-      break;
-    }
-    if (ClosestEnemies.empty()) {
-      followPath(dtime);
     }
   }
 
@@ -243,27 +224,18 @@ void Character::unequipItem(const Item &I) {
   }
 }
 
-void Character::AIAttack(Creature &C, GameObject &o, float dtime) {
-  Item &weapon = Equipped[ItemData::Weapon];
-
-  if (&o.getLevel() == &getLevel() && getPos().distance(o.getPos()) < weapon.getRange()) {
-    tryShootAt(o);
-    WalkPath.clear();
-  } else {
-    if (WalkPath.empty()) {
-      PathFinder finder(getLevel());
-      finder.findPath(getTilePos(), o.getTilePos(), WalkPath);
+std::vector<Creature *> Character::getClosestEnemies(float distance) {
+  std::vector<Creature *> ClosestEnemies;
+  for (GameObject *o : getLevel().getObjects()) {
+    if (auto C = dynamic_cast<Creature *>(o)) {
+      if (!C->isDead() && isEnemy(*C) && C->getPos().distance(getPos()) < distance) {
+        ClosestEnemies.push_back(C);
+      }
     }
-    followPath(dtime);
   }
-}
 
-void Character::followPath(float dtime) {
-  if (!WalkPath.empty()) {
-    if (Vec2(WalkPath.back()).distance(getPos()) < 5)
-      WalkPath.pop_back();
-    walkToward(WalkPath.back(), dtime);
-  }
+  std::sort(ClosestEnemies.begin(), ClosestEnemies.end(), closest_object(this));
+  return ClosestEnemies;
 }
 
 void Character::walkToward(Vec2 pos, float dtime, bool backwards) {

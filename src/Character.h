@@ -6,14 +6,16 @@
 #include "Inventory.h"
 #include "Item.h"
 #include "TilePos.h"
+#include <ai/AITask.h>
 
 #include <GameObject.h>
 
 #include <gamedata/GameData.h>
 
 class Character : public Controlable, public Creature {
-
 public:
+  friend class AITask;
+
   enum class BodyType { Pale, Normal, Tanned, Green };
 
   Character(Level &level, Vec2 pos, BodyType type = BodyType::Normal);
@@ -62,17 +64,18 @@ public:
     }
   }
 
+  std::vector<Creature *> getClosestEnemies(float distance);
+
+  const Item &getEquipped(ItemData::Kind Kind) {
+    return Equipped.at(Kind);
+  }
+
   void useItem(Item &item);
 
+  void walkToward(Vec2 pos, float dtime, bool backwards = false);
+  bool tryShootAt(GameObject &o);
 private:
   std::vector<Item> Equipped;
-
-  std::vector<TilePos> WalkPath;
-
-  void AIAttack(Creature &C, GameObject &o, float dtime);
-  void followPath(float dtime);
-
-  void walkToward(Vec2 pos, float dtime, bool backwards = false);
 
   void damage(int dmg) override;
 
@@ -89,8 +92,6 @@ private:
     setInventory(&Inv);
   }
 
-  bool tryShootAt(GameObject &o);
-
   void setWalking(bool v);
   static constexpr float WalkSpeed = 45;
   BodyType TheBodyType = BodyType::Pale;
@@ -100,6 +101,7 @@ private:
   bool OldWalkingValue = false;
   double WalkingStartTime = 0;
   Inventory Inv;
+  CharacterAI MyAI;
 };
 
 #endif // CHARACTER_H
