@@ -6,7 +6,7 @@
 #include <PathFinder.h>
 
 AITask *AITask::finish(const char *Reason) {
-  std::cerr << "Finishing Task:" << Reason << std::endl;
+  //std::cerr << "Finishing Task:" << Reason << std::endl;
   Done = true;
   return nullptr;
 }
@@ -22,10 +22,6 @@ class WalkTask : public AITask {
   TilePos Target;
 public:
   WalkTask(TilePos Target) : Target(Target) {
-    std::cerr << "Creating WalkTask" << std::endl;
-  }
-  ~WalkTask() override {
-    std::cerr << "Destroying WalkTask" << std::endl;
   }
 
   AITask *act(Character &C, float DTime) override {
@@ -53,10 +49,6 @@ class CombatTask : public AITask {
   Creature *Target;
 public:
   CombatTask(Creature *Target) : Target(Target) {
-    std::cerr << "Creating CombatTask" << std::endl;
-  }
-  ~CombatTask() override {
-    std::cerr << "Destroying CombatTask" << std::endl;
   }
 
   AITask *act(Character &C, float DTime) override {
@@ -82,7 +74,6 @@ class HuntTask : public AITask {
   bool InCombat = false;
 public:
   HuntTask(Creature *Target) : Target(Target) {
-    std::cerr << "Creating HuntTask" << std::endl;
   }
   AITask *act(Character &C, float DTime) override {
     if (C.isDead())
