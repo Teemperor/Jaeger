@@ -70,6 +70,7 @@ private:
   std::vector<TilePos> WalkPath;
 
   void AIAttack(Creature &C, GameObject &o, float dtime);
+  void followPath(float dtime);
 
   void walkToward(Vec2 pos, float dtime, bool backwards = false);
 

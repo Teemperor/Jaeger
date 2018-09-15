@@ -106,3 +106,24 @@ void Level::update(float dtime) {
       T.updateResources(world_, static_cast<unsigned int>(time));
   }
 }
+
+void Level::calculateConnections() {
+  Connections.clear();
+  foreachTilePos([this](int x, int y) {
+    TilePos out;
+    const TilePos in(*this, x, y);
+    if (getTeleportTarget(in, out)) {
+      Connections.push_back(LevelConnection(in, out, &out.getLevel()));
+    }
+    return false; // never stop.
+  });
+}
+
+void Level::foreachTilePos(std::function<bool(int, int)> lambda) {
+  for (int x = 0; x < getWidth(); ++x) {
+    for (int y = 0; y < getHeight(); ++y) {
+      if (lambda(x, y))
+        return;
+    }
+  }
+}

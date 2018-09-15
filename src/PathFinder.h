@@ -15,11 +15,7 @@ class PathFinder {
   void findPathImpl(TilePos start, TilePos end, std::vector<TilePos> &result);
 public:
   explicit PathFinder(Level &Level);
-  void findPath(TilePos Start, TilePos End, std::vector<TilePos> &Result) {
-    if (&Start.getLevel() == &End.getLevel()) {
-      findPathImpl(Start, End, Result);
-    }
-  }
+  void findPath(TilePos Start, TilePos End, std::vector<TilePos> &Result);
 };
 
 #endif // PATHFINDER_H

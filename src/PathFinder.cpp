@@ -180,3 +180,17 @@ void PathFinder::findPathImpl(TilePos start, TilePos end,
   //
   astarsearch.EnsureMemoryFreed();
 }
+
+void
+PathFinder::findPath(TilePos Start, TilePos End, std::vector<TilePos> &Result) {
+  if (&Start.getLevel() == &End.getLevel()) {
+    findPathImpl(Start, End, Result);
+    return;
+  }
+  for (auto &c : Start.getLevel().getConnections()) {
+    if (c.getTargetLevel() == &End.getLevel()) {
+      findPath(Start, c.getSourcePos(), Result);
+      return;
+    }
+  }
+}

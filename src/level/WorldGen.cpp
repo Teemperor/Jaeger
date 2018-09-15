@@ -31,5 +31,8 @@ World *WorldGen::generate(GameData &d) {
   gen.generate(*world, d, Level::Type::Overworld, nullptr);
   fillOpenConnections(gen, *world, d, 55);
 
+  for (auto &l : world->getLevels())
+    l->calculateConnections();
+
   return world;
 }

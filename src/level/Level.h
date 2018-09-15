@@ -65,6 +65,8 @@ public:
 
   double time = 0;
 
+  void calculateConnections();
+
   void addConnection(const LevelConnection &C) {
     return Connections.push_back(C);
   }
@@ -110,6 +112,8 @@ public:
   int getWidth() const { return FloorTiles.width(); }
 
   int getHeight() const { return FloorTiles.height(); }
+
+  void foreachTilePos(std::function<bool(int, int)> lambda);
 
   Tile &get(int x, int y) { return FloorTiles.get(x, y); }
   Tile &getBuilding(int x, int y) { return BuildingTiles.get(x, y); }

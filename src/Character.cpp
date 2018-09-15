@@ -189,6 +189,7 @@ void Character::update(float dtime) {
     if (auto C = dynamic_cast<Creature *>(o)) {
       if (!C->isDead() && isEnemy(*C) && C->getPos().distance(getPos()) < 16 * 20) {
         ClosestEnemies.push_back(o);
+        WalkPath.clear();
       }
     }
   }
@@ -220,6 +221,9 @@ void Character::update(float dtime) {
       AIAttack(*dynamic_cast<Creature *>(e), *e, dtime);
       break;
     }
+    if (ClosestEnemies.empty()) {
+      followPath(dtime);
+    }
   }
 
   Creature::update(dtime);
@@ -242,18 +246,23 @@ void Character::unequipItem(const Item &I) {
 void Character::AIAttack(Creature &C, GameObject &o, float dtime) {
   Item &weapon = Equipped[ItemData::Weapon];
 
-  if (getPos().distance(o.getPos()) < weapon.getRange()) {
+  if (&o.getLevel() == &getLevel() && getPos().distance(o.getPos()) < weapon.getRange()) {
     tryShootAt(o);
     WalkPath.clear();
   } else {
     if (WalkPath.empty()) {
       PathFinder finder(getLevel());
       finder.findPath(getTilePos(), o.getTilePos(), WalkPath);
-    } else {
-      if (Vec2(WalkPath.back()).distance(getPos()) < 5)
-        WalkPath.pop_back();
-      walkToward(WalkPath.back(), dtime);
     }
+    followPath(dtime);
+  }
+}
+
+void Character::followPath(float dtime) {
+  if (!WalkPath.empty()) {
+    if (Vec2(WalkPath.back()).distance(getPos()) < 5)
+      WalkPath.pop_back();
+    walkToward(WalkPath.back(), dtime);
   }
 }
 
@@ -314,3 +323,4 @@ void Character::useItem(Item &I) {
     Inv.remove(I);
   }
 }
+
