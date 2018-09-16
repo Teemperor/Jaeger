@@ -1,6 +1,8 @@
 #include "SpellEffect.h"
 #include "Creature.h"
 #include <iostream>
+#include <level/Level.h>
+#include <level/World.h>
 
 SpellEffect::SpellEffect(
     std::string ID, std::string Name,
@@ -32,9 +34,8 @@ const std::vector<SpellEffect> &SpellEffects::getList() {
             SpellEffect("switchPos", "Switch Positions",
                         [](Creature *Caster, Creature *Target,
                            SpellEffect::StrengthUnit) {
-                          auto pos = Target->getPos();
-                          Target->setPos(Caster->getPos());
-                          Caster->setPos(pos);
+                          Target->getLevel().getWorld().queryTeleport(Target, Caster->getTilePos());
+                          Caster->getLevel().getWorld().queryTeleport(Caster, Target->getTilePos());
                         },
                         1, 100)};
   }

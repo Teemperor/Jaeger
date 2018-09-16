@@ -34,7 +34,7 @@ int main() {
 
   Level &level = *world->getLevels().at(0);
 
-  Faction playerFaction;
+  Faction playerFaction(true);
 
   Character *player1 = new Character(level, Vec2(60 * 16, 170 * 16),
                                CharacterAI::Behavior::Bandit);

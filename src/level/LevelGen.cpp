@@ -496,8 +496,7 @@ void LevelGen::generateHouse() {
     }
   }
 
-  auto F = new Faction();
-
+  auto F = new Faction(true);
 
   int doorY = h - 1;
   BackConnection =
@@ -1030,7 +1029,7 @@ void LevelGen::placeOrcCamp(int w, int h) {
 
       build(x, y, "fireplace");
 
-      auto F = new Faction();
+      auto F = new Faction(false);
 
       Character *C;
       C = new Character(*level, Vec2(TilePos(x - 1, y)),

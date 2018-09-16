@@ -1,3 +1,3 @@
 #include "Faction.h"
 
-Faction::Faction() {}
+Faction::Faction(bool Friendly) : FriendlyByDefault(Friendly) {}
