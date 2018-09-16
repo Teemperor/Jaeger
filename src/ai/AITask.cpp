@@ -142,10 +142,12 @@ AITask *FarmerTask::act(Character &C, float DTime) {
         return false;
       }, 20);
       if (nextCorn.valid()) {
-        if (nextCorn.distance(C.getTilePos()) <= 2) {
+        if (Vec2(nextCorn).distance(C.getTilePos()) <= 10) {
           Inventory *Inv = C.getLevel().getBuilding2(nextCorn.getX(), nextCorn.getY()).getInventory();
-          if (Inv)
+          if (Inv) {
             C.getPrivateInventory().takeAll(*Inv);
+            return new WaitTask(3);
+          }
         } else
           return new WalkTask(nextCorn);
       } else
