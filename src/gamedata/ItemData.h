@@ -29,6 +29,7 @@ private:
   std::string projectileName_;
   const ProjectileData *projectileData_ = nullptr;
   Kind kind_;
+  std::string id_;
 
   int FatigueCost = 1;
 
@@ -42,6 +43,14 @@ public:
   void init(GameData &data);
 
   Kind kind() { return kind_; }
+
+  void setID(std::string ID) {
+    id_ = ID;
+  }
+
+  const std::string &getID() const {
+    return id_;
+  }
 
   void setUseEffect(const SpellEffect *E, RandomRange S, RandomRange D) {
     UseEffect = E;

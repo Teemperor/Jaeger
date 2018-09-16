@@ -36,7 +36,8 @@ int main() {
 
   Faction playerFaction;
 
-  Character *player1 = new Character(level, Vec2(60 * 16, 170 * 16));
+  Character *player1 = new Character(level, Vec2(60 * 16, 170 * 16),
+                               CharacterAI::Behavior::Bandit);
   player1->setFaction(&playerFaction);
   //Character *player2 = new Character(level, Vec2(44 * 16, 52 * 16));
   //player2->setFaction(&playerFaction);
@@ -44,7 +45,8 @@ int main() {
   for (int i = 0; i < 0; i++) {
     Vec2 pos = Vec2(200 + rand() % 700, 200 + rand() % 700);
     if (level.passable(pos))
-      new Character(level, Vec2(TilePos(pos)));
+      new Character(level, Vec2(TilePos(pos)),
+                    CharacterAI::Behavior::Bandit);
     else {
       --i;
       continue;

@@ -38,6 +38,10 @@ public:
     return Data->getFatigueCost();
   }
 
+  const std::string &getID() const {
+    return Data->getID();
+  }
+
   const sf::Sprite &sprite() { return Data->sprite(); }
   const sf::Sprite &icon() { return Data->icon(); }
 

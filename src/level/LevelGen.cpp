@@ -496,11 +496,19 @@ void LevelGen::generateHouse() {
     }
   }
 
+  auto F = new Faction();
+
+
   int doorY = h - 1;
   BackConnection =
       Connection(Level::Type::Overworld, TilePos(*level, doorX, doorY));
   level->get(doorX, doorY).setData(data.tile("planks"));
   overlay(doorX, doorY, "door_light");
+
+  Character *C;
+  C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
+                    CharacterAI::Behavior::Farmer, Character::BodyType::Tanned);
+  C->setFaction(F);
 }
 
 bool LevelGen::hasSurrounding(
@@ -1016,18 +1024,21 @@ void LevelGen::placeOrcCamp(int w, int h) {
 
       build(x, y, "fireplace");
 
-      Faction *F = new Faction();
+      auto F = new Faction();
 
       Character *C;
       C = new Character(*level, Vec2(TilePos(x - 1, y)),
-                        Character::BodyType::Green);
+                        CharacterAI::Behavior::Bandit, Character::BodyType::Green);
       C->setFaction(F);
       C = new Character(*level, Vec2(TilePos(x + 1, y)),
+                        CharacterAI::Behavior::Bandit,
                         Character::BodyType::Green);
       C->setFaction(F);
       C = new Character(*level, Vec2(TilePos(x + 1, y + 1)),
+                        CharacterAI::Behavior::Bandit,
                         Character::BodyType::Green);
       C->setFaction(F);
+      world->addFaction(F);
       return;
     }
   }

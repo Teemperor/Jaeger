@@ -31,6 +31,7 @@ void GameData::parseItemData(const std::string &path) {
     }
 
     Items[id] = new ItemData(kind);
+    Items[id]->setID(id);
 
     if (kind == ItemData::Weapon)
       Items[id]->setFatigueCost(item["fatigueCost"]);

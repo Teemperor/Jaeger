@@ -2,36 +2,43 @@
 
 #include "Character.h"
 
-#include <iostream>
 #include <PathFinder.h>
+#include <iostream>
 
 AITask *AITask::finish(const char *Reason) {
-  //std::cerr << "Finishing Task:" << Reason << std::endl;
+  // std::cerr << "Finishing Task:" << Reason << std::endl;
   Done = true;
   return nullptr;
 }
 
-AITask::AITask() {
-}
+AITask::AITask() = default;
 
-AITask::~AITask() {
-}
+AITask::~AITask() = default;
 
 class WalkTask : public AITask {
   std::vector<TilePos> WalkPath;
   TilePos Target;
-public:
-  WalkTask(TilePos Target) : Target(Target) {
+  Level *LastLevel = nullptr;
+
+  bool inTargetLevel(Character &C) {
+    return &C.getLevel() == &Target.getLevel();
   }
+public:
+  explicit WalkTask(TilePos Target) : Target(Target) {}
 
   AITask *act(Character &C, float DTime) override;
 };
 
 AITask *WalkTask::act(Character &C, float DTime) {
+  if (&C.getLevel() != LastLevel) {
+    LastLevel = &C.getLevel();
+    WalkPath.clear();
+  }
+
   if (WalkPath.empty()) {
-      PathFinder finder(C.getLevel());
-      finder.findPath(C.getTilePos(), Target, WalkPath);
-    }
+    PathFinder finder(C.getLevel());
+    finder.findPath(C.getTilePos(), Target, WalkPath);
+  }
 
   if (WalkPath.empty())
     return finish("Couldn't find a path");
@@ -39,25 +46,27 @@ AITask *WalkTask::act(Character &C, float DTime) {
   if (Vec2(WalkPath.back()).distance(C.getPos()) < 5.0f)
     WalkPath.pop_back();
 
-  if (WalkPath.empty())
-    return finish("Finished path");
+  if (WalkPath.empty()) {
+    if (!inTargetLevel(C))
+      return finish("Finished path");
+  } else
+    C.walkToward(WalkPath.back(), DTime);
 
-  C.walkToward(WalkPath.back(), DTime);
 
   return nullptr;
 }
 
 class CombatTask : public AITask {
   Creature *Target;
+
 public:
-  CombatTask(Creature *Target) : Target(Target) {
-  }
+  explicit CombatTask(Creature *Target) : Target(Target) {}
 
   AITask *act(Character &C, float DTime) override;
 };
 
 AITask *CombatTask::act(Character &C, float DTime) {
-  if (C.isDead())
+  if (Target->isDead())
     return finish("Target dead");
 
   const Item &weapon = C.getEquipped(ItemData::Weapon);
@@ -76,18 +85,20 @@ class HuntTask : public AITask {
   Creature *Target;
   float WeaponRange = 0;
   bool InCombat = false;
+
 public:
-  HuntTask(Creature *Target) : Target(Target) {
-  }
+  explicit HuntTask(Creature *Target) : Target(Target) {}
   AITask *act(Character &C, float DTime) override;
 
   bool actInactive(Character &C) override {
+    if (Target->isDead())
+      return true;
     return !InCombat && C.getPos().distance(Target->getPos()) < WeaponRange;
   }
 };
 
 AITask *HuntTask::act(Character &C, float DTime) {
-  if (C.isDead())
+  if (Target->isDead())
     return finish("Target is dead");
 
   InCombat = false;
@@ -96,35 +107,105 @@ AITask *HuntTask::act(Character &C, float DTime) {
   WeaponRange = weapon.getRange();
 
   if (C.getPos().distance(Target->getPos()) > WeaponRange) {
-      return new WalkTask(Target->getTilePos());
+    return new WalkTask(Target->getTilePos());
   } else {
     InCombat = true;
     return new CombatTask(Target);
   }
 }
 
-
-class MainTask : public AITask {
+class DefenseTask : public AITask {
+  bool First = true;
+  TilePos Start;
 public:
   AITask *act(Character &C, float DTime) override;
 };
 
-AITask *MainTask::act(Character &C, float DTime) {
+AITask *DefenseTask::act(Character &C, float DTime) {
+  if (First) {
+    Start = C.getTilePos();
+    First = false;
+  }
+
   auto ClosestEnemies = C.getClosestEnemies(16 * 20);
   if (!ClosestEnemies.empty()) {
-      return new HuntTask(ClosestEnemies.front());
-    }
-  return nullptr;
+    return new HuntTask(ClosestEnemies.front());
+  }
+  return new WalkTask(Start);
 }
 
+class FarmerTask : public AITask {
+  bool First = true;
+  TilePos House;
+  TilePos BeforeHouse;
+public:
+  AITask *act(Character &C, float DTime) override;
+};
+
+static TilePos getFrontOfHouse(TilePos p) {
+  auto &L = p.getLevel();
+  for (auto C : L.getConnections()) {
+    if (C.getTargetLevel()->getType() == Level::Type::Overworld) {
+      return C.getTargetPos();
+    }
+  }
+  return TilePos();
+}
+
+bool sameLevel(TilePos a, TilePos b) {
+  return &a.getLevel() == &b.getLevel();
+}
+
+AITask *FarmerTask::act(Character &C, float DTime) {
+  if (First) {
+    House = C.getTilePos();
+    BeforeHouse = getFrontOfHouse(C.getTilePos()).modY(1);
+    First = false;
+  }
+
+  if (sameLevel(House, C.getTilePos())) {
+    return new WalkTask(BeforeHouse);
+  } else if (sameLevel(BeforeHouse, C.getTilePos())) {
+    if (C.getPrivateInventory().full()) {
+      return new WalkTask(House);
+    } else {
+      TilePos nextCorn = C.getLevel().searchClosestMatchingTile(C.getTilePos(),
+      [&C](int x, int y) {
+        Tile &T = C.getLevel().getBuilding2(x, y);
+        if (T.name() == "corn") {
+          if (T.getInventory() && !T.getInventory()->empty())
+            return true;
+        }
+        return false;
+      }, 20);
+      if (nextCorn.valid()) {
+        if (nextCorn.distance(C.getTilePos()) <= 2) {
+          Inventory *Inv = C.getLevel().getBuilding2(nextCorn.getX(), nextCorn.getY()).getInventory();
+          if (Inv)
+            C.getPrivateInventory().takeAll(*Inv);
+        } else
+          return new WalkTask(nextCorn);
+      } else
+        return new WalkTask(House);
+    }
+  }
+  return nullptr;
+}
 
 void CharacterAI::popBack() {
   delete Tasks.back();
   Tasks.pop_back();
 }
 
-CharacterAI::CharacterAI() {
-  Tasks.push_back(new MainTask());
+CharacterAI::CharacterAI(Behavior b) {
+  switch(b) {
+    case Behavior::Farmer:
+      Tasks.push_back(new FarmerTask());
+      break;
+    case Behavior::Bandit:
+      Tasks.push_back(new DefenseTask());
+      break;
+  }
 }
 
 void CharacterAI::act(Character &C, float DTime) {

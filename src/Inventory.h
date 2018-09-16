@@ -23,9 +23,22 @@ public:
     CanStoreItems = false;
   }
 
+  unsigned emptySpaces() const;
+
+  void takeAll(Inventory &Other);
+
   bool empty() const {
     for (auto &Slot : Slots) {
       if (!Slot.empty()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool full() const {
+    for (auto &Slot : Slots) {
+      if (Slot.empty()) {
         return false;
       }
     }

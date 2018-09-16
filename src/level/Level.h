@@ -115,6 +115,10 @@ public:
 
   void foreachTilePos(std::function<bool(int, int)> lambda);
 
+  TilePos searchClosestMatchingTile(TilePos Start,
+                                    std::function<bool(int, int)> lambda,
+                                    int MaxDistance);
+
   Tile &get(int x, int y) { return FloorTiles.get(x, y); }
   Tile &getBuilding(int x, int y) { return BuildingTiles.get(x, y); }
   Tile &getBuilding2(int x, int y) { return BuildingTiles2.get(x, y); }

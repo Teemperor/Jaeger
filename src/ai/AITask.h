@@ -25,7 +25,11 @@ class CharacterAI {
   std::vector<AITask *> Tasks;
   void popBack();
 public:
-  CharacterAI();
+  enum class Behavior {
+    Farmer,
+    Bandit
+  };
+  CharacterAI(Behavior b);
 
   void act(Character &C, float DTime);
 };

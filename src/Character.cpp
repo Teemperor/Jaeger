@@ -5,7 +5,8 @@
 
 #include <combat/Projectile.h>
 
-Character::Character(Level &level, Vec2 pos, BodyType type) : Creature(level) {
+Character::Character(Level &level, Vec2 pos, CharacterAI::Behavior behavior,
+                     BodyType type) : Creature(level), MyAI(behavior) {
   setBodyType(type);
   BubbleSprite = getGameData().getSprite("speech_bubble_exclamation");
   Shadow = getGameData().getSprite("shadow");

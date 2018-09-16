@@ -71,6 +71,10 @@ public:
     assert(TheLevel);
     return *TheLevel;
   }
+
+  bool valid() const {
+    return hasLevel();
+  }
 };
 
 #endif // TILEPOS_H

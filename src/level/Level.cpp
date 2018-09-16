@@ -127,3 +127,31 @@ void Level::foreachTilePos(std::function<bool(int, int)> lambda) {
     }
   }
 }
+
+TilePos Level::searchClosestMatchingTile(TilePos Start,
+                                         std::function<bool(int, int)> lambda,
+int MaxDistance) {
+
+  for (int d = 1; d < MaxDistance; ++d) {
+    int x = Start.getX() - d;
+    x = std::max(0, x);
+
+    int EndX = Start.getX() + d;
+    EndX = std::min(getWidth() - 1, EndX);
+
+    for (; x <= EndX; ++x) {
+
+      int y = Start.getY() - d;
+      y = std::max(0, y);
+
+      int EndY = Start.getY() + d;
+      EndY = std::min(getHeight() - 1, EndY);
+
+      for (; y <= EndY; ++y) {
+        if (lambda(x, y))
+          return TilePos(*this, x, y);
+      }
+    }
+  }
+  return TilePos();
+}

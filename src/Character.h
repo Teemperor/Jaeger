@@ -18,7 +18,7 @@ public:
 
   enum class BodyType { Pale, Normal, Tanned, Green };
 
-  Character(Level &level, Vec2 pos, BodyType type = BodyType::Normal);
+  Character(Level &level, Vec2 pos, CharacterAI::Behavior behavior, BodyType type = BodyType::Normal);
 
   void setBodyType(BodyType t);
 
