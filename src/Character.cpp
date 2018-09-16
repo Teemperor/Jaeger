@@ -17,19 +17,17 @@ Character::Character(Level &level, Vec2 pos, CharacterAI::Behavior behavior,
   setPos(pos);
   Equipped.resize(ItemData::KindLimit);
 
-  auto &W = level.getWorld();
-  auto &ID = level.getData();
-  addItem(Item(*ID.item("leather_pants"), W));
-  addItem(Item(*ID.item("leather_armor"), W));
-  addItem(Item(*ID.item("steel_buckler"), W));
-  addItem(Item(*ID.item("red_steel_helmet"), W));
+  addItem("leather_pants");
+  addItem("leather_armor");
+  addItem("steel_buckler");
+  addItem("red_steel_helmet");
   if (rand() % 2)
-    addItem(Item(*ID.item("wood_bow"), W));
+    addItem("wood_bow");
   else
-    addItem(Item(*ID.item("magic_staff"), W));
+    addItem("magic_staff");
 
-  addItem(Item(*ID.item("steel_buckler"), W));
-  addItem(Item(*ID.item("small_health_potion"), W));
+  addItem("steel_buckler");
+  addItem("small_health_potion");
 }
 
 void Character::setBodyType(Character::BodyType t) {
@@ -295,5 +293,9 @@ void Character::useItem(Item &I) {
     addEffect(AppliedSpellEffect(I.getEffect(this)));
     Inv.remove(I);
   }
+}
+
+void Character::addItem(const std::string &Name) {
+  addItem(Item(*getLevel().getData().item(Name), getLevel().getWorld()));
 }
 

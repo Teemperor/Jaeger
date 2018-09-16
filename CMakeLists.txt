@@ -105,7 +105,7 @@ set(SOURCE_FILES
     src/utils/WeightedRandomChooser.h
     src/ai/AITask.h
     src/ai/AITask.cpp
-)
+    src/ai/FarmerTask.cpp src/ai/FarmerTask.h src/ai/WaitTask.cpp src/ai/WaitTask.h src/ai/CombatTask.cpp src/ai/CombatTask.h src/ai/WalkTask.cpp src/ai/WalkTask.h src/ai/ListTask.cpp src/ai/ListTask.h)
 
 add_library(argos_core ${SOURCE_FILES})
 target_link_libraries(argos_core ${SFML_LIBRARIES})

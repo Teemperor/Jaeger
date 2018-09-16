@@ -1,6 +1,9 @@
 #include "AITask.h"
 
 #include "Character.h"
+#include "WalkTask.h"
+#include "WaitTask.h"
+#include "ListTask.h"
 
 #include <PathFinder.h>
 #include <iostream>
@@ -15,87 +18,6 @@ AITask::AITask() = default;
 
 AITask::~AITask() = default;
 
-class WaitTask : public AITask {
-
-  float TimeLeft;
-public:
-  explicit WaitTask(float Time) : TimeLeft(Time) {}
-
-  AITask *act(Character &C, float DTime) override;
-};
-
-AITask *WaitTask::act(Character &C, float DTime) {
-  TimeLeft -= DTime;
-  if (TimeLeft < 0)
-    return finish("Wait time left");
-  return nullptr;
-}
-
-class ListTask : public AITask {
-
-  std::vector<AITask *> TasksLeft;
-public:
-  explicit ListTask(std::initializer_list<AITask *> Tasks) {
-    for (auto &T : Tasks)
-      TasksLeft.push_back(T);
-    std::reverse(TasksLeft.begin(), TasksLeft.end());
-  }
-  virtual ~ListTask() {
-    for (auto &A : TasksLeft)
-      delete A;
-  }
-
-  AITask *act(Character &C, float DTime) override;
-};
-
-AITask *ListTask::act(Character &C, float DTime) {
-  if (TasksLeft.empty())
-    return finish("No more tasks");
-  AITask *Result = TasksLeft.back();
-  TasksLeft.pop_back();
-  return Result;
-}
-
-class WalkTask : public AITask {
-  std::vector<TilePos> WalkPath;
-  TilePos Target;
-  Level *LastLevel = nullptr;
-
-  bool inTargetLevel(Character &C) {
-    return &C.getLevel() == &Target.getLevel();
-  }
-public:
-  explicit WalkTask(TilePos Target) : Target(Target) {}
-
-  AITask *act(Character &C, float DTime) override;
-};
-
-AITask *WalkTask::act(Character &C, float DTime) {
-  if (&C.getLevel() != LastLevel) {
-    LastLevel = &C.getLevel();
-    WalkPath.clear();
-  }
-
-  if (WalkPath.empty()) {
-    PathFinder finder(C.getLevel());
-    finder.findPath(C.getTilePos(), Target, WalkPath);
-  }
-
-  if (WalkPath.empty())
-    return finish("Couldn't find a path");
-
-  if (Vec2(WalkPath.back()).distance(C.getPos()) < 5.0f)
-    WalkPath.pop_back();
-
-  if (WalkPath.empty()) {
-    if (!inTargetLevel(C))
-      return finish("Finished path");
-  } else
-    C.walkToward(WalkPath.back(), DTime);
-
-
-  return nullptr;
-}
 
 class CombatTask : public AITask {
   Creature *Target;

@@ -41,6 +41,8 @@ public:
     c->setControlledCharacter(this);
   }
 
+  void addItem(const std::string &Name);
+
   void addItem(const Item &I) {
     if (Inv.add(I)) {
       if (I.kind() != ItemData::Consumable &&
