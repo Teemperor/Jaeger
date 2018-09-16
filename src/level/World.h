@@ -24,7 +24,7 @@ public:
   uint64_t getFreshItemID() { return ++ItemId; }
 
   void queryTeleport(GameObject *o, TilePos target) {
-    ToTeleport.push_back(std::make_pair(o, target));
+    ToTeleport.emplace_back(o, target);
   }
 
   void addFaction(Faction *F) {
