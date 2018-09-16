@@ -208,7 +208,7 @@ void Character::update(float dtime) {
 
   Creature::update(dtime);
 
-  Talking = !isControlled();
+  //Talking = !isControlled();
   if (OldWalkingValue != Walking) {
     WalkingStartTime = getLevel().getTime();
     OldWalkingValue = Walking;
