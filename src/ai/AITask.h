@@ -27,6 +27,7 @@ class CharacterAI {
 public:
   enum class Behavior {
     Farmer,
+    VillageGuard,
     Bandit
   };
   CharacterAI(Behavior b);

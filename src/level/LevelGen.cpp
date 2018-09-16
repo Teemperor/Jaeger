@@ -505,9 +505,15 @@ void LevelGen::generateHouse() {
   level->get(doorX, doorY).setData(data.tile("planks"));
   overlay(doorX, doorY, "door_light");
 
+  CharacterAI::Behavior behavior;
+  if (chance() < 0.5)
+    behavior = CharacterAI::Behavior::Farmer;
+  else
+    behavior = CharacterAI::Behavior::VillageGuard;
+
   Character *C;
   C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
-                    CharacterAI::Behavior::Farmer, Character::BodyType::Tanned);
+                    behavior, Character::BodyType::Tanned);
   C->setFaction(F);
 }
 

@@ -15,6 +15,47 @@ AITask::AITask() = default;
 
 AITask::~AITask() = default;
 
+class WaitTask : public AITask {
+
+  float TimeLeft;
+public:
+  explicit WaitTask(float Time) : TimeLeft(Time) {}
+
+  AITask *act(Character &C, float DTime) override;
+};
+
+AITask *WaitTask::act(Character &C, float DTime) {
+  TimeLeft -= DTime;
+  if (TimeLeft < 0)
+    return finish("Wait time left");
+  return nullptr;
+}
+
+class ListTask : public AITask {
+
+  std::vector<AITask *> TasksLeft;
+public:
+  explicit ListTask(std::initializer_list<AITask *> Tasks) {
+    for (auto &T : Tasks)
+      TasksLeft.push_back(T);
+    std::reverse(TasksLeft.begin(), TasksLeft.end());
+  }
+  virtual ~ListTask() {
+    for (auto &A : TasksLeft)
+      delete A;
+  }
+
+  AITask *act(Character &C, float DTime) override;
+};
+
+AITask *ListTask::act(Character &C, float DTime) {
+  if (TasksLeft.empty())
+    return finish("No more tasks");
+  AITask *Result = TasksLeft.back();
+  TasksLeft.pop_back();
+  return Result;
+}
+
 class WalkTask : public AITask {
   std::vector<TilePos> WalkPath;
   TilePos Target;
@@ -192,6 +233,45 @@ AITask *FarmerTask::act(Character &C, float DTime) {
   return nullptr;
 }
 
+class VillageGuardTask : public AITask {
+  bool First = true;
+  TilePos House;
+  TilePos BeforeHouse;
+
+  std::random_device rd;
+  std::mt19937 gen;
+  std::normal_distribution<> PosDis;
+
+public:
+  VillageGuardTask() : rd(), gen(rd()), PosDis(0, 20) {
+  }
+  AITask *act(Character &C, float DTime) override;
+};
+
+AITask *VillageGuardTask::act(Character &C, float DTime) {
+  if (First) {
+    House = C.getTilePos();
+    BeforeHouse = getFrontOfHouse(C.getTilePos()).modY(1);
+    First = false;
+  }
+
+  if (sameLevel(House, C.getTilePos())) {
+    return new WalkTask(BeforeHouse);
+  } else if (sameLevel(BeforeHouse, C.getTilePos())) {
+    int dx = (int)PosDis(gen);
+    int dy = (int)PosDis(gen);
+
+    TilePos Target(BeforeHouse.getLevel(),
+                                BeforeHouse.getX() + dx,
+                                BeforeHouse.getY() + dy);
+    TilePos Out;
+    if (C.getLevel().getTeleportTarget(Target, Out))
+      return nullptr;
+    return new ListTask({new WalkTask(Target), new WaitTask(5)});
+  }
+  return nullptr;
+}
+
 void CharacterAI::popBack() {
   delete Tasks.back();
   Tasks.pop_back();
@@ -201,6 +281,9 @@ CharacterAI::CharacterAI(Behavior b) {
   switch(b) {
     case Behavior::Farmer:
       Tasks.push_back(new FarmerTask());
+      break;
+    case Behavior::VillageGuard:
+      Tasks.push_back(new VillageGuardTask());
       break;
     case Behavior::Bandit:
       Tasks.push_back(new DefenseTask());
