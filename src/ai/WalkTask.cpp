@@ -25,6 +25,5 @@ AITask *WalkTask::act(Character &C, float DTime) {
   } else
     C.walkToward(WalkPath.back(), DTime);
 
-
   return nullptr;
 }

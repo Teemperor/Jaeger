@@ -141,6 +141,7 @@
     { "id" : "stall_table_right3" , "tile" : [12, 6] },
     { "id" : "stall_table_right4" , "tile" : [13, 6] },
 
+    { "id" : "open_barrel" , "tile" : [26, 0] },
 
     { "id" : "earth_tl" , "tile" : [7, 9] },
     { "id" : "earth_t" ,  "tile" : [8, 9] },

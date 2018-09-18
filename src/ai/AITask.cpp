@@ -4,6 +4,7 @@
 #include "WalkTask.h"
 #include "WaitTask.h"
 #include "ListTask.h"
+#include "FarmerTask.h"
 
 #include <PathFinder.h>
 #include <iostream>
@@ -97,66 +98,6 @@ AITask *DefenseTask::act(Character &C, float DTime) {
   return new WalkTask(Start);
 }
 
-class FarmerTask : public AITask {
-  bool First = true;
-  TilePos House;
-  TilePos BeforeHouse;
-public:
-  AITask *act(Character &C, float DTime) override;
-};
-
-static TilePos getFrontOfHouse(TilePos p) {
-  auto &L = p.getLevel();
-  for (auto C : L.getConnections()) {
-    if (C.getTargetLevel()->getType() == Level::Type::Overworld) {
-      return C.getTargetPos();
-    }
-  }
-  return TilePos();
-}
-
-bool sameLevel(TilePos a, TilePos b) {
-  return &a.getLevel() == &b.getLevel();
-}
-
-AITask *FarmerTask::act(Character &C, float DTime) {
-  if (First) {
-    House = C.getTilePos();
-    BeforeHouse = getFrontOfHouse(C.getTilePos()).modY(1);
-    First = false;
-  }
-
-  if (sameLevel(House, C.getTilePos())) {
-    return new WalkTask(BeforeHouse);
-  } else if (sameLevel(BeforeHouse, C.getTilePos())) {
-    if (C.getPrivateInventory().full()) {
-      return new WalkTask(House);
-    } else {
-      TilePos nextCorn = C.getLevel().searchClosestMatchingTile(C.getTilePos(),
-      [&C](int x, int y) {
-        Tile &T = C.getLevel().getBuilding2(x, y);
-        if (T.name() == "corn") {
-          if (T.getInventory() && !T.getInventory()->empty())
-            return true;
-        }
-        return false;
-      }, 20);
-      if (nextCorn.valid()) {
-        if (Vec2(nextCorn).distance(C.getTilePos()) <= 10) {
-          Inventory *Inv = C.getLevel().getBuilding2(nextCorn.getX(), nextCorn.getY()).getInventory();
-          if (Inv) {
-            C.getPrivateInventory().takeAll(*Inv);
-            return new WaitTask(3);
-          }
-        } else
-          return new WalkTask(nextCorn);
-      } else
-        return new WalkTask(House);
-    }
-  }
-  return nullptr;
-}
-
 class VillageGuardTask : public AITask {
   bool First = true;
   TilePos House;
@@ -171,6 +112,20 @@ public:
   }
   AITask *act(Character &C, float DTime) override;
 };
+
+static bool sameLevel(TilePos a, TilePos b) {
+  return &a.getLevel() == &b.getLevel();
+}
+
+static TilePos getFrontOfHouse(TilePos p) {
+  auto &L = p.getLevel();
+  for (auto C : L.getConnections()) {
+    if (C.getTargetLevel()->getType() == Level::Type::Overworld) {
+      return C.getTargetPos();
+    }
+  }
+  return TilePos();
+}
 
 AITask *VillageGuardTask::act(Character &C, float DTime) {
   if (First) {

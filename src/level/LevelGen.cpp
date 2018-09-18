@@ -470,14 +470,22 @@ void LevelGen::generateHouse() {
   }
   makeChest(doorX + 2, h - 3);
 
+  build(w - 2, 3, "open_barrel");
+
   for (int y = 1; y < h - 2; ++y) {
     overlay(0, y, "sand_walltop_vertical");
     overlay(w - 1, y, "sand_walltop_vertical");
 
-    if (chance() > 0.8f)
-      build(w - 2, y, "torch_wall_right");
+    if (y <= 2)
+      continue;
+
     if (chance() > 0.7f)
-      build(1, y, "torch_wall_left");
+      build(w - 2, y, "open_barrel");
+    else if (chance() > 0.7f)
+      overlay(w - 2, y, "torch_wall_right");
+
+    if (chance() > 0.9f)
+      overlay(1, y, "torch_wall_left");
   }
   overlay(0, 0, "sand_walltop_leftup");
   overlay(w - 1, 0, "sand_walltop_rightup");
