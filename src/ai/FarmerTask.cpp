@@ -85,7 +85,7 @@ AITask *FarmerTask::actOutside(Character &C) {
         Inventory *Inv = C.getLevel().getBuilding2(nextCorn.getX(), nextCorn.getY()).getInventory();
         if (Inv) {
           C.getPrivateInventory().takeAll(*Inv);
-          return new WaitTask(0.3f);
+          return new WaitTask(1);
         }
       } else
         return new WalkTask(nextCorn);

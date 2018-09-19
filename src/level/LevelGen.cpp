@@ -519,7 +519,7 @@ void LevelGen::generateHouse() {
     behavior = CharacterAI::Behavior::VillageGuard;
 
   Character *C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
-                    behavior, Character::BodyType::Tanned);
+                    behavior, Character::BodyType::Pale);
   makeHair(*C);
   C->setFaction(F);
   switch(behavior) {
@@ -1069,9 +1069,25 @@ void LevelGen::placeOrcCamp(int w, int h) {
 
 void LevelGen::makeHair(Character &C) {
   const std::vector<std::string> Styles = {
-    "short_hair1_brown"
+    "short_hair1_",
+    "short_hair2_",
+    "short_hair3_",
+    "beard1_",
+    "beard2_",
+    "beard3_",
+    "beard4_",
+    "beard5_",
+    "beard6_",
   };
-  C.setHair(Styles.at(chanceInt(Styles.size())));
+  const std::vector<std::string> Color = {
+    "brown",
+    "red",
+    "yellow",
+    "black",
+  };
+  std::string Style = Styles.at(chanceInt(Styles.size()))
+                      + Color.at(chanceInt(Color.size()));
+  C.setHair(Style);
 }
 
 void LevelGen::equipGuard(Character &C) {
