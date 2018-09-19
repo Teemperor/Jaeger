@@ -518,10 +518,20 @@ void LevelGen::generateHouse() {
   else
     behavior = CharacterAI::Behavior::VillageGuard;
 
-  Character *C;
-  C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
+  Character *C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
                     behavior, Character::BodyType::Tanned);
+  makeHair(*C);
   C->setFaction(F);
+  switch(behavior) {
+  case CharacterAI::Behavior::Farmer:
+    equipFarmer(*C);
+    break;
+  case CharacterAI::Behavior::VillageGuard:
+    equipGuard(*C);
+    break;
+  default:
+    break;
+  }
 }
 
 bool LevelGen::hasSurrounding(
@@ -1055,4 +1065,31 @@ void LevelGen::placeOrcCamp(int w, int h) {
       return;
     }
   }
+}
+
+void LevelGen::makeHair(Character &C) {
+  const std::vector<std::string> Styles = {
+    "short_hair1_brown"
+  };
+  C.setHair(Styles.at(chanceInt(Styles.size())));
+}
+
+void LevelGen::equipGuard(Character &C) {
+  C.addItem("leather_pants");
+  C.addItem("leather_armor");
+  C.addItem("steel_buckler");
+  C.addItem("red_steel_helmet");
+  if (rand() % 2)
+    C.addItem("wood_bow");
+  else
+    C.addItem("magic_staff");
+
+  C.addItem("steel_buckler");
+  C.addItem("small_health_potion");
+}
+
+void LevelGen::equipFarmer(Character &C) {
+  C.addItem("leather_pants");
+  C.addItem("leather_armor");
+
 }

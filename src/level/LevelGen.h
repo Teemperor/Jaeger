@@ -6,6 +6,7 @@
 
 #include <Perlin2D.h>
 #include <random>
+#include <Character.h>
 
 class World;
 
@@ -21,6 +22,11 @@ class LevelGen {
 
   void makeTree(int x, int y, bool force = false);
   void makeBush(int x, int y, float random);
+
+  void makeHair(Character &C);
+  void equipGuard(Character &C);
+  void equipFarmer(Character &C);
+
 
   void makeQuadLines(TileRect A, std::string T) {
     makeLine(TilePos(A.getX(), A.getY()),

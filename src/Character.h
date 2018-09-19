@@ -20,6 +20,7 @@ public:
 
   Character(Level &level, Vec2 pos, CharacterAI::Behavior behavior, BodyType type = BodyType::Normal);
 
+  void setHair(const std::string &Name);
   void setBodyType(BodyType t);
 
   void render(sf::RenderTarget &target) override;
@@ -97,7 +98,7 @@ private:
   void setWalking(bool v);
   static constexpr float WalkSpeed = 45;
   BodyType TheBodyType = BodyType::Pale;
-  sf::Sprite Sprite, TalkingSprite, BubbleSprite, Shadow, Gravestone, Selection;
+  sf::Sprite Sprite, HairSprite, TalkingSprite, BubbleSprite, Shadow, Gravestone, Selection;
   bool Talking = false;
   bool Walking = false;
   bool OldWalkingValue = false;

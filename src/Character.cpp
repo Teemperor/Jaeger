@@ -16,18 +16,6 @@ Character::Character(Level &level, Vec2 pos, CharacterAI::Behavior behavior,
       getGameData().getSprite("gravestone" + std::to_string(rand() % 9 + 1));
   setPos(pos);
   Equipped.resize(ItemData::KindLimit);
-
-  addItem("leather_pants");
-  addItem("leather_armor");
-  addItem("steel_buckler");
-  addItem("red_steel_helmet");
-  if (rand() % 2)
-    addItem("wood_bow");
-  else
-    addItem("magic_staff");
-
-  addItem("steel_buckler");
-  addItem("small_health_potion");
 }
 
 void Character::setBodyType(Character::BodyType t) {
@@ -112,6 +100,9 @@ void Character::render(sf::RenderTarget &target) {
     f.setPosition(this->getPos().getX() - 8,
                   this->getPos().getY() - 16 - offset);
     target.draw(f);
+    HairSprite.setPosition(this->getPos().getX() - 8,
+                           this->getPos().getY() - 16 - offset);
+    target.draw(HairSprite);
   }
   for (unsigned layer = 0; layer < Equipped.size(); layer++) {
     Item &i = Equipped.at(layer);
@@ -297,5 +288,9 @@ void Character::useItem(Item &I) {
 
 void Character::addItem(const std::string &Name) {
   addItem(Item(*getLevel().getData().item(Name), getLevel().getWorld()));
+}
+
+void Character::setHair(const std::string &Name) {
+  HairSprite = getLevel().getData().getSprite(Name);
 }
 
