@@ -8,6 +8,15 @@
     { "id" : "leather_pants", "kind" : "pants", "sprite" : "brown_pants"},
     { "id" : "fine_pants", "kind" : "pants", "sprite" : "white_pants"},
     { "id" : "desert_pants", "kind" : "pants", "sprite" : "sand_pants"},
+
+    { "id" : "shoulder_bag_brown", "kind" : "armor", "sprite" : "shoulder_bag_brown"},
+    { "id" : "shirt1_brown", "kind" : "armor", "sprite" : "shirt1_brown"},
+    { "id" : "shirt2_brown", "kind" : "armor", "sprite" : "shirt2_brown"},
+    { "id" : "shirt3_brown", "kind" : "armor", "sprite" : "shirt3_brown"},
+    { "id" : "apron_brown", "kind" : "armor", "sprite" : "apron_brown"},
+    { "id" : "shirt_quad_color_brown", "kind" : "armor", "sprite" : "shirt_quad_color_brown"},
+    { "id" : "short_top_brown", "kind" : "armor", "sprite" : "short_top_brown"},
+
     { "id" : "leather_armor", "kind" : "armor", "sprite" : "leather_armor"},
     { "id" : "red_steel_helmet", "kind" : "helmet", "sprite" : "red_steel_helmet"},
     { "id" : "wood_bow", "kind" : "weapon", "fatigueCost" : 20, "sprite" : "wood_bow", "cooldown" : 0.8, "projectile" : "wood_arrow"},

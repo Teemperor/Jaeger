@@ -1106,6 +1106,12 @@ void LevelGen::equipGuard(Character &C) {
 
 void LevelGen::equipFarmer(Character &C) {
   C.addItem("leather_pants");
-  C.addItem("leather_armor");
+  std::vector<std::string> Tops = {
+    "shoulder_bag",
+    "shirt1_brown",
+    "shirt2_brown",
+    "shirt3_brown"
+  };
+  C.addItem();
 
 }

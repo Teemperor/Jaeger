@@ -132,25 +132,33 @@ TilePos Level::searchClosestMatchingTile(TilePos Start,
                                          std::function<bool(int, int)> lambda,
 int MaxDistance) {
 
-  for (int d = 1; d < MaxDistance; ++d) {
-    int x = Start.getX() - d;
-    x = std::max(0, x);
+  for (int d = 0; d < MaxDistance; ++d) {
+    int StartX = Start.getX() - d;
+    StartX = std::max(0, StartX);
 
     int EndX = Start.getX() + d;
     EndX = std::min(getWidth() - 1, EndX);
 
-    for (; x <= EndX; ++x) {
+    int StartY = Start.getY() - d;
+    StartY = std::max(0, StartY);
 
-      int y = Start.getY() - d;
-      y = std::max(0, y);
+    int EndY = Start.getY() + d;
+    EndY = std::min(getHeight() - 1, EndY);
 
-      int EndY = Start.getY() + d;
-      EndY = std::min(getHeight() - 1, EndY);
+    for (int x = StartX; x <= EndX; ++x) {
+      if (lambda(x, StartY))
+        return TilePos(*this, x, StartY);
 
-      for (; y <= EndY; ++y) {
-        if (lambda(x, y))
-          return TilePos(*this, x, y);
-      }
+      if (lambda(x, EndY))
+        return TilePos(*this, x, EndY);
+    }
+
+    for (int y = StartY; y <= EndY; ++y) {
+      if (lambda(StartX, y))
+        return TilePos(*this, StartX, y);
+
+      if (lambda(EndX, y))
+        return TilePos(*this, EndX, y);
     }
   }
   return TilePos();

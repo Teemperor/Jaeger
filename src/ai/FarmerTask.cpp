@@ -79,7 +79,7 @@ AITask *FarmerTask::actOutside(Character &C) {
                                                                   return true;
                                                               }
                                                               return false;
-                                                            }, 20);
+                                                            }, 30);
     if (nextCorn.valid()) {
       if (Vec2(nextCorn).distance(C.getTilePos()) <= 10) {
         Inventory *Inv = C.getLevel().getBuilding2(nextCorn.getX(), nextCorn.getY()).getInventory();

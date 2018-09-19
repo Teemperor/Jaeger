@@ -100,12 +100,17 @@ void Character::render(sf::RenderTarget &target) {
     f.setPosition(this->getPos().getX() - 8,
                   this->getPos().getY() - 16 - offset);
     target.draw(f);
-    HairSprite.setPosition(this->getPos().getX() - 8,
-                           this->getPos().getY() - 16 - offset);
-    target.draw(HairSprite);
   }
   for (unsigned layer = 0; layer < Equipped.size(); layer++) {
     Item &i = Equipped.at(layer);
+
+    // Render the (facial) hair directly before the helmet is drawn.
+    if (layer == ItemData::Kind::Helmet) {
+      HairSprite.setPosition(this->getPos().getX() - 8,
+                             this->getPos().getY() - 16 - offset);
+      target.draw(HairSprite);
+    }
+
     if (!i.empty()) {
       sf::Sprite f = i.sprite();
       f.setPosition(this->getPos().getX() - 8,

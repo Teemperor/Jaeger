@@ -358,6 +358,18 @@
     { "id" : "long_hair7_black" , "tile" :  [26, 37]},
 
 
+    { "id" : "shoulder_bag_brown" , "tile" :  [10, 37] },
+    { "id" : "shirt1_brown" , "tile" :  [10, 36] },
+    { "id" : "shirt2_brown" , "tile" :  [11, 36] },
+    { "id" : "shirt3_brown" , "tile" :  [11, 38] },
+    { "id" : "apron_brown" , "tile" :  [13, 36] },
+    { "id" : "shirt_quad_color_brown" , "tile" :  [12, 38] },
+    { "id" : "short_top_brown" , "tile" :  [12, 37] },
+
+    { "id" : "top_female_brown" , "tile" :  [12, 36] },
+    { "id" : "short_top_female_brown" , "tile" :  [13, 37] },
+    { "id" : "dress_brown" , "tile" :  [10, 38] },
+
 
     { "id" : "wood_buckler" , "offset" :  [561, 529] },
     { "id" : "steel_buckler" , "offset" :  [577, 544] },
