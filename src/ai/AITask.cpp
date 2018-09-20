@@ -64,3 +64,9 @@ void CharacterAI::act(Character &C, float DTime) {
     }
   }
 }
+
+void CharacterAI::debugDraw(Character &C, sf::RenderTarget &target) {
+  if (!Tasks.empty()) {
+    Tasks.back()->debugDraw(C, target);
+  }
+}

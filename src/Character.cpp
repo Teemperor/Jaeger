@@ -41,24 +41,7 @@ void Character::setBodyType(Character::BodyType t) {
 }
 
 void Character::render(sf::RenderTarget &target) {
-
-///////////////////////////////
-// Debug mode for PATHS
-#if false
-  if (!isDead()) {
-    std::vector<sf::Vertex> line;
-    for (int i = 0; i < (int)walkPath_.size() - 1; i++) {
-      Vec2 currentPos = walkPath_[i];
-      Vec2 nextPos = walkPath_[i + 1];
-      line.push_back(sf::Vertex(
-          sf::Vector2f(currentPos.getX(), currentPos.getY()), sf::Color::Red));
-      line.push_back(sf::Vertex(sf::Vector2f(nextPos.getX(), nextPos.getY()),
-                                sf::Color::Red));
-    }
-    target.draw(line.data(), line.size(), sf::Lines);
-  }
-#endif
-  ///////////////////////////////
+  MyAI.debugDraw(*this, target);
 
   bool shouldUseTalkingSprite = false;
   bool shouldHaveSpeechBubble = false;

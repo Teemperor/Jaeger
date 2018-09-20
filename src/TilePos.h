@@ -68,6 +68,14 @@ public:
     return std::tie(X, Y, TheLevel) < std::tie(o.X, o.Y, o.TheLevel);
   }
 
+  bool operator==(const TilePos &o) const {
+    return std::tie(X, Y, TheLevel) == std::tie(o.X, o.Y, o.TheLevel);
+  }
+
+  bool operator!=(const TilePos &o) const {
+    return std::tie(X, Y, TheLevel) != std::tie(o.X, o.Y, o.TheLevel);
+  }
+
   bool hasLevel() const { return TheLevel != nullptr; }
 
   Level &getLevel() const {

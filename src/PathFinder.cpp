@@ -4,9 +4,11 @@
 #include <cmath>
 #include <level/Level.h>
 
-// Definitions
-
-static thread_local Level *TheLevel = nullptr;
+struct SearchInfo {
+  Level *TheLevel = nullptr;
+  bool Adjacent = false;
+};
+static thread_local SearchInfo CurrentSearchInfo;
 
 class MapSearchNode {
 public:
@@ -44,17 +46,11 @@ public:
     astarsearch->AddSuccessor(NewNode);
   }
 
-  bool isFree(int x, int y) { return TheLevel->passable(TilePos(x, y)); }
+  bool isFree(int x, int y) { return CurrentSearchInfo.TheLevel->passable(TilePos(x, y)); }
 };
 
 bool MapSearchNode::IsSameState(MapSearchNode &rhs) {
-
-  // same state in a maze search is simply when (x,y) are the same
-  if ((x == rhs.x) && (y == rhs.y)) {
-    return true;
-  } else {
-    return false;
-  }
+  return (x == rhs.x) && (y == rhs.y);
 }
 
 void MapSearchNode::PrintNodeInfo() {
@@ -72,12 +68,12 @@ float MapSearchNode::GoalDistanceEstimate(MapSearchNode &nodeGoal) {
 }
 
 bool MapSearchNode::IsGoal(MapSearchNode &nodeGoal) {
-
-  if ((x == nodeGoal.x) && (y == nodeGoal.y)) {
-    return true;
+  if (CurrentSearchInfo.Adjacent) {
+    int dx = x - nodeGoal.x;
+    int dy = y - nodeGoal.y;
+    return std::abs(dx) <= 1 xor std::abs(dy) <= 1;
   }
-
-  return false;
+  return (x == nodeGoal.x) && (y == nodeGoal.y);
 }
 
 // This generates the successors to the given Node. It uses a helper function
@@ -120,9 +116,10 @@ float MapSearchNode::GetCost(MapSearchNode &successor) { return 1; }
 
 PathFinder::PathFinder(Level &Level) {}
 
-void PathFinder::findPathImpl(TilePos start, TilePos end,
+void PathFinder::findPathImpl(TilePos start, TilePos end, bool Adjacent,
                               std::vector<TilePos> &result) {
-  TheLevel = &start.getLevel();
+  CurrentSearchInfo.TheLevel = &start.getLevel();
+  CurrentSearchInfo.Adjacent = false; // Adjacent;
 
   // Our sample problem defines the world as a 2d array representing a terrain
   // Each element contains an integer from 0 to 5 which indicates the cost
@@ -164,7 +161,7 @@ void PathFinder::findPathImpl(TilePos start, TilePos end,
       if (!node) {
         break;
       }
-      result.emplace_back(node->x, node->y);
+      result.emplace_back(*CurrentSearchInfo.TheLevel, node->x, node->y);
       // node->PrintNodeInfo();
       steps++;
     }
@@ -185,15 +182,18 @@ void PathFinder::findPathImpl(TilePos start, TilePos end,
   astarsearch.EnsureMemoryFreed();
 }
 
-void PathFinder::findPath(TilePos Start, TilePos End,
+void PathFinder::findPath(TilePos Start, TilePos End, bool Adjacent,
                           std::vector<TilePos> &Result) {
   if (&Start.getLevel() == &End.getLevel()) {
-    findPathImpl(Start, End, Result);
+    findPathImpl(Start, End, Adjacent, Result);
+    if (Adjacent && !Result.empty()) {
+      assert(End != Result.back() && "Not adjacent, but on the target?");
+    }
     return;
   }
   for (auto &c : Start.getLevel().getConnections()) {
     if (c.getTargetLevel() == &End.getLevel()) {
-      findPath(Start, c.getSourcePos(), Result);
+      findPath(Start, c.getSourcePos(), false, Result);
       return;
     }
   }

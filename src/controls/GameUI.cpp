@@ -147,6 +147,7 @@ void GameUI::handleEvent(sf::Event event) {
           if (!I.empty() && getUnfocusedWindow()->getInventory()->add(I)) {
             bool RemoveResult = FocusedWindow->getInventory()->remove(I);
             assert(RemoveResult);
+            (void)RemoveResult;
             controls.getControlledCharacter()->updateEquipped();
           }
         } else {

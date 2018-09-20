@@ -12,11 +12,11 @@ class PathFinder {
   // a default constructor....
   friend class MapSearchNode;
 
-  void findPathImpl(TilePos start, TilePos end, std::vector<TilePos> &result);
+  void findPathImpl(TilePos start, TilePos end, bool Adjacent, std::vector<TilePos> &result);
 
 public:
   explicit PathFinder(Level &Level);
-  void findPath(TilePos Start, TilePos End, std::vector<TilePos> &Result);
+  void findPath(TilePos Start, TilePos End, bool Adjacent, std::vector<TilePos> &Result);
 };
 
 #endif // PATHFINDER_H

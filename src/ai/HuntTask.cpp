@@ -12,7 +12,7 @@ AITask *HuntTask::act(Character &C, float DTime) {
   WeaponRange = weapon.getRange();
 
   if (C.getPos().distance(Target->getPos()) > WeaponRange) {
-    return new WalkTask(Target->getTilePos());
+    return WalkTask::Beside(Target->getTilePos());
   } else {
     InCombat = true;
     return new CombatTask(Target);

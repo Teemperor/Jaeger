@@ -10,7 +10,7 @@ AITask *BuyGroceriesTask::act(Character &C, float DTime) {
     return finish("Couldn't find a seller");
 
   if (C.getTilePos().distance(Seller->getTilePos()) >= 2)
-    return new WalkTask(Seller->getTilePos());
+    return WalkTask::Beside(Seller->getTilePos());
 
   for (int i = 0; i < 10; ++i)
     C.getPrivateInventory().buyItem(Seller->getPrivateInventory(), "corn");

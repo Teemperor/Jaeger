@@ -66,7 +66,7 @@ AITask *FarmerWifeTask::actInside(Character &C) {
           return new WaitTask(3);
         }
       } else
-        return new WalkTask(nextContainer.modX(-1));
+        return WalkTask::Beside(nextContainer);
     } else {
       return new WaitTask(5);
     }

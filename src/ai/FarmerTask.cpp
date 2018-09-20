@@ -65,7 +65,7 @@ AITask *FarmerTask::actInside(Character &C) {
           return new WaitTask(3);
         }
       } else
-        return new WalkTask(nextContainer.modX(-1));
+        return WalkTask::Beside(nextContainer);
     }
   }
   return new WalkTask(BeforeHouse);
