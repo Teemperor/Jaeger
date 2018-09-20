@@ -27,6 +27,22 @@ public:
   bool IsSameState(MapSearchNode &rhs);
 
   void PrintNodeInfo();
+  void MakeSuccessor(AStarSearch<MapSearchNode> *astarsearch,
+                     int parent_x, int parent_y, int dx, int dy) {
+    const int tx = x + dx;
+    const int ty = y + dy;
+    if (!isFree(tx, ty))
+      return;
+    if (parent_x == tx + dx && parent_y == ty)
+      return;
+    // Diagnoals need all 4 involved tiles to be free.
+    if (dx != 0 && dy != 0) {
+      if (!isFree(x, ty) || !isFree(tx, y))
+        return;
+    }
+    MapSearchNode NewNode = MapSearchNode(tx, ty);
+    astarsearch->AddSuccessor(NewNode);
+  }
 
   bool isFree(int x, int y) { return TheLevel->passable(TilePos(x, y)); }
 };
@@ -71,8 +87,8 @@ bool MapSearchNode::IsGoal(MapSearchNode &nodeGoal) {
 bool MapSearchNode::GetSuccessors(AStarSearch<MapSearchNode> *astarsearch,
                                   MapSearchNode *parent_node) {
 
-  int parent_x = -1;
-  int parent_y = -1;
+  int parent_x = -100;
+  int parent_y = -100;
 
   if (parent_node) {
     parent_x = parent_node->x;
@@ -83,25 +99,15 @@ bool MapSearchNode::GetSuccessors(AStarSearch<MapSearchNode> *astarsearch,
 
   // push each possible move except allowing the search to go backwards
 
-  if ((isFree(x - 1, y)) && !((parent_x == x - 1) && (parent_y == y))) {
-    NewNode = MapSearchNode(x - 1, y);
-    astarsearch->AddSuccessor(NewNode);
-  }
-
-  if ((isFree(x, y - 1)) && !((parent_x == x) && (parent_y == y - 1))) {
-    NewNode = MapSearchNode(x, y - 1);
-    astarsearch->AddSuccessor(NewNode);
-  }
-
-  if ((isFree(x + 1, y)) && !((parent_x == x + 1) && (parent_y == y))) {
-    NewNode = MapSearchNode(x + 1, y);
-    astarsearch->AddSuccessor(NewNode);
-  }
-
-  if ((isFree(x, y + 1)) && !((parent_x == x) && (parent_y == y + 1))) {
-    NewNode = MapSearchNode(x, y + 1);
-    astarsearch->AddSuccessor(NewNode);
-  }
+  MakeSuccessor(astarsearch, parent_x, parent_y, -1, 0);
+  MakeSuccessor(astarsearch, parent_x, parent_y,  1, 0);
+  MakeSuccessor(astarsearch, parent_x, parent_y,  0, -1);
+  MakeSuccessor(astarsearch, parent_x, parent_y,  0,  1);
+  // Diagonals
+  MakeSuccessor(astarsearch, parent_x, parent_y, -1, -1);
+  MakeSuccessor(astarsearch, parent_x, parent_y,  1,  1);
+  MakeSuccessor(astarsearch, parent_x, parent_y,  1, -1);
+  MakeSuccessor(astarsearch, parent_x, parent_y, -1,  1);
 
   return true;
 }
