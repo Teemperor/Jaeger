@@ -47,7 +47,7 @@ class LevelGen {
   void decorateMarketplace(TileRect A);
 
   void makeHouse(TileRect A, int depth,
-                 Level::Type ConnectsTo = Level::Type::House);
+                 Level::Type ConnectsTo);
 
   void makeMine(int x, int y);
 
@@ -103,6 +103,8 @@ class LevelGen {
   bool generateSettlement(TileRect Area);
   bool generateSettlementPiece(TileRect Area, int iteration = 0);
 
+  void generateFarmHouse();
+  void generateGuardHouse();
   void generateHouse();
 
   void makeMineResources();

@@ -37,7 +37,7 @@ class Level {
   float ResourceUpdateCounter = ResourceUpdateTime;
 
 public:
-  enum class Type { Overworld, Mine, House };
+  enum class Type { Overworld, Mine, FarmerHouse, GuardHouse, LordHouse };
 
 private:
   Type type;

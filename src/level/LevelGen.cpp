@@ -471,8 +471,6 @@ void LevelGen::generateHouse() {
   }
   makeChest(doorX + 2, h - 3);
 
-  build(w - 2, 3, "open_barrel");
-
   for (int y = 1; y < h - 2; ++y) {
     overlay(0, y, "sand_walltop_vertical");
     overlay(w - 1, y, "sand_walltop_vertical");
@@ -480,9 +478,7 @@ void LevelGen::generateHouse() {
     if (y <= 2)
       continue;
 
-    if (chance() > 0.7f)
-      build(w - 2, y, "open_barrel");
-    else if (chance() > 0.7f)
+    if (chance() > 0.3f)
       overlay(w - 2, y, "torch_wall_right");
 
     if (chance() > 0.9f)
@@ -510,35 +506,55 @@ void LevelGen::generateHouse() {
       Connection(Level::Type::Overworld, TilePos(*level, doorX, doorY));
   level->get(doorX, doorY).setData(data.tile("planks"));
   overlay(doorX, doorY, "door_light");
+}
 
-  CharacterAI::Behavior behavior;
-  if (chance() < 0.5)
-    behavior = CharacterAI::Behavior::Farmer;
-  else
-    behavior = CharacterAI::Behavior::VillageGuard;
+void LevelGen::generateFarmHouse() {
+  generateHouse();
+  const int w = level->getWidth();
+  const int h = level->getHeight();
+  GameData &data = level->getData();
 
+
+  int doorX = level->getWidth() / 2;
+  int doorY = level->getHeight() - 2;
   Character *C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
-                               behavior, Character::BodyType::Pale);
+                               CharacterAI::Behavior::Farmer, Character::BodyType::Pale);
   makeHair(*C);
   C->setFaction(CurrentFaction);
-  switch (behavior) {
-  case CharacterAI::Behavior::Farmer:
-    equipFarmer(*C);
-    C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
-                      CharacterAI::Behavior::FarmerWife,
-                      Character::BodyType::Pale);
-    makeHairFemale(*C);
-    equipFarmerWife(*C);
-    C->setFaction(CurrentFaction);
-    break;
-  case CharacterAI::Behavior::VillageGuard:
-    C->getPrivateInventory().addGold(50);
-    equipGuard(*C);
-    break;
-  default:
-    break;
+  equipFarmer(*C);
+
+  C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
+                    CharacterAI::Behavior::FarmerWife,
+                    Character::BodyType::Pale);
+  makeHairFemale(*C);
+  equipFarmerWife(*C);
+  C->setFaction(CurrentFaction);
+
+
+  build(w - 2, 3, "open_barrel");
+  for (int y = 1; y < h - 2; ++y) {
+    if (y <= 2)
+      continue;
+
+    if (chance() > 0.7f)
+      build(w - 2, y, "open_barrel");
   }
 }
+
+void LevelGen::generateGuardHouse() {
+  generateHouse();
+
+  int doorX = level->getWidth() / 2;
+  int doorY = level->getHeight() - 2;
+
+  Character *C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
+                               CharacterAI::Behavior::VillageGuard, Character::BodyType::Pale);
+  makeHair(*C);
+  C->setFaction(CurrentFaction);
+  C->getPrivateInventory().addGold(50);
+  equipGuard(*C);
+}
+
 
 bool LevelGen::hasSurrounding(
     int x, int y, const std::string &group,
@@ -582,10 +598,15 @@ Level *LevelGen::generate(World &world, GameData &data, Faction *OwningFaction,
     level = new Level(world, type, 200, 200, data);
     generateOverworld();
     break;
-  case Level::Type::House:
+  case Level::Type::FarmerHouse:
     assert(C);
     level = new Level(world, type, C->TargetW, C->TargetH, data);
-    generateHouse();
+    generateFarmHouse();
+    break;
+  case Level::Type::GuardHouse:
+    assert(C);
+    level = new Level(world, type, C->TargetW, C->TargetH, data);
+    generateGuardHouse();
     break;
   case Level::Type::Mine:
     level =
@@ -672,7 +693,8 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
   } else if (iteration < 4 && Area.biggerThan(3, 5) && !Area.biggerThan(6, 7)) {
     auto UsedArea = Area.resize(-1, -1);
     auto HouseArea = UsedArea.resize(0, -1);
-    makeHouse(HouseArea, 2);
+    makeHouse(HouseArea, 2, chance() < 0.5f ? Level::Type::FarmerHouse :
+        Level::Type::GuardHouse);
     int DoorX = UsedArea.getX() + (UsedArea.getW() - 1) / 2;
     int GardenY = UsedArea.getLowerY() - 1;
 
