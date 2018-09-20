@@ -13,6 +13,8 @@ class Item {
   double NextAvailableTime = 0;
 
 public:
+  typedef ItemData::Coins Coins;
+
   explicit Item(ItemData &Data, World &W);
   Item() = default;
 
@@ -61,7 +63,7 @@ public:
 
   int attack() const { return Data->attack(); }
 
-  int value() const { return Data->value(); }
+  Coins price() const { return Data->price(); }
 };
 
 #endif // ITEM_H

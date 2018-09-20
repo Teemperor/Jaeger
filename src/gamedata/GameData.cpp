@@ -52,7 +52,8 @@ void GameData::parseItemData(const std::string &path) {
     if (item.find("value") != item.end()) {
       value = item["value"];
     }
-    Items[id]->setValue(value);
+    Items[id]->setPrice(value);
+
     int armor = 0;
     if (item.find("armor") != item.end()) {
       armor = item["armor"];

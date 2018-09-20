@@ -7,8 +7,43 @@ class Inventory {
   const static unsigned Size = 16;
   std::array<Item, Size> Slots;
   bool CanStoreItems = true;
-
 public:
+  typedef Item::Coins Coins;
+private:
+  Coins Gold;
+public:
+  void addGold(Coins C) {
+    Gold += C;
+  }
+
+  bool removeGold(Coins C) {
+    if (C > Gold)
+      return false;
+    Gold -= C;
+    return true;
+  }
+
+  bool canBuyItem(const Inventory &Other, const Item &I) const {
+    if (full())
+      return false;
+    if (!Other.contains(I))
+      return false;
+    return Gold >= I.price();
+  }
+
+  bool buyItem(Inventory &Other, Item &I) {
+    if (!canBuyItem(Other, I))
+      return false;
+    Item Copy = I;
+    Other.remove(I);
+    this->add(Copy);
+
+    this->removeGold(I.price());
+    Other.addGold(I.price());
+
+    return true;
+  }
+
   bool add(const Item &I) {
     for (auto &Slot : Slots) {
       if (Slot.empty()) {
@@ -59,7 +94,7 @@ public:
 
   const Item &at(std::size_t I) const { return Slots.at(I); }
 
-  bool contains(Item &I) const {
+  bool contains(const Item &I) const {
     return std::find(Slots.begin(), Slots.end(), I) != Slots.end();
   }
 

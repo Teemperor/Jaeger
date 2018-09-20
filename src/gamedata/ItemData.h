@@ -10,11 +10,12 @@ class GameData;
 class ItemData {
 public:
   enum Kind { Pants, Armor, Helmet, Shield, Weapon, Consumable, KindLimit };
+  typedef unsigned Coins;
 
 private:
   int armor_ = 0;
   int attack_ = 0;
-  int value_ = 0;
+  Coins value_ = 0;
   double cooldown_ = 1;
   sf::Sprite sprite_;
   sf::Sprite icon_;
@@ -80,9 +81,9 @@ public:
 
   void setAttack(int attack) { attack_ = attack; }
 
-  int value() const { return value_; }
+  Coins price() const { return value_; }
 
-  void setValue(int value) { value_ = value; }
+  void setPrice(Coins value) { value_ = value; }
 };
 
 #endif // MAMBO_ITEMDATA_H
