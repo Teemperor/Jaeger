@@ -3,8 +3,8 @@
 
 #include "Controlable.h"
 #include "Creature.h"
-#include "Inventory.h"
-#include "Item.h"
+#include "items/Inventory.h"
+#include "items/Item.h"
 #include "TilePos.h"
 #include <ai/AITask.h>
 

@@ -72,8 +72,8 @@ set(SOURCE_FILES
     src/Controlable.cpp
     src/stb_perlin.h
     src/stb_perlin.cpp
-    src/Item.h
-    src/Item.cpp
+    src/items/Item.h
+    src/items/Item.cpp
     src/stlastar.h
     src/fsa.h
     src/Perlin2D.h
@@ -85,8 +85,8 @@ set(SOURCE_FILES
     src/Creature.cpp
     src/TilePos.h
     src/TilePos.cpp
-    src/Inventory.cpp
-    src/Inventory.h
+    src/items/Inventory.cpp
+    src/items/Inventory.h
     src/gamedata/RandomRange.cpp
     src/gamedata/RandomRange.h
     src/level/TileRect.cpp

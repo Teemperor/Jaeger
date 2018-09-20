@@ -1,5 +1,5 @@
 #include "InventoryWindow.h"
-#include <Item.h>
+#include <items/Item.h>
 
 InventoryWindow::InventoryWindow(GameData &Data) {
 

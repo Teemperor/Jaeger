@@ -1,4 +1,4 @@
-#include <Inventory.h>
+#include <items/Inventory.h>
 #include <iostream>
 
 void Inventory::takeAll(Inventory &Other) {

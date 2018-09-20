@@ -2,7 +2,7 @@
 #define MAMBO_ITEMBAG_H
 
 #include "GameObject.h"
-#include "Inventory.h"
+#include "items/Inventory.h"
 
 class ItemBag : public GameObject {
   Inventory I;

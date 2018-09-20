@@ -1,7 +1,7 @@
 #ifndef PLAYERCONTROLS_H
 #define PLAYERCONTROLS_H
 
-#include <Inventory.h>
+#include <items/Inventory.h>
 #include <SFML/Window.hpp>
 #include <Vec2.h>
 #include <vector>

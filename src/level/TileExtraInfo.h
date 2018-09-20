@@ -1,7 +1,7 @@
 #ifndef TILEEXTRAINFO_H
 #define TILEEXTRAINFO_H
 
-#include <Inventory.h>
+#include <items/Inventory.h>
 #include <TilePos.h>
 
 class TileData;
