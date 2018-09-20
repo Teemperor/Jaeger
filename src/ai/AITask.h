@@ -24,7 +24,7 @@ class CharacterAI {
 
 public:
   enum class Behavior { Farmer, FarmerWife, VillageGuard, Bandit };
-  CharacterAI(Behavior b);
+  explicit CharacterAI(Behavior b);
 
   void act(Character &C, float DTime);
 };
