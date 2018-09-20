@@ -5,6 +5,7 @@
 #include <cmath>
 #include <initializer_list>
 #include <tuple>
+#include <limits>
 
 class Vec2;
 class Level;
@@ -56,6 +57,8 @@ public:
   }
 
   float distance(const TilePos &Other) {
+    if (&Other.getLevel() != &getLevel())
+      return std::numeric_limits<float>::max();
     int dx = X - Other.X;
     int dy = Y - Other.Y;
     return static_cast<float>(std::sqrt(dx * dx + dy * dy));

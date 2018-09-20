@@ -4,6 +4,7 @@
 
 #include <Character.h>
 #include <set>
+#include <ai/Faction.h>
 
 #include "stb_perlin.h"
 
@@ -107,6 +108,7 @@ void LevelGen::makeHouse(TileRect A, int depth, Level::Type ConnectsTo) {
   openConnections.emplace_back(ConnectsTo, TilePos(*level, doorX, doorY));
   openConnections.back().TargetW = w * 2;
   openConnections.back().TargetH = h * 2;
+  openConnections.back().OwningFaction = CurrentFaction;
 
   overlay(x, y + h - 1 - depth, "brown_roof_angular_left_lower");
   overlay(x + w - 1, y + h - 1 - depth, "brown_roof_angular_right_lower");
@@ -504,8 +506,6 @@ void LevelGen::generateHouse() {
     }
   }
 
-  auto F = new Faction(true);
-
   int doorY = h - 1;
   BackConnection =
       Connection(Level::Type::Overworld, TilePos(*level, doorX, doorY));
@@ -521,10 +521,15 @@ void LevelGen::generateHouse() {
   Character *C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
                     behavior, Character::BodyType::Pale);
   makeHair(*C);
-  C->setFaction(F);
+  C->setFaction(CurrentFaction);
   switch(behavior) {
   case CharacterAI::Behavior::Farmer:
     equipFarmer(*C);
+    C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
+                      CharacterAI::Behavior::FarmerWife, Character::BodyType::Pale);
+    makeHairFemale(*C);
+    equipFarmerWife(*C);
+    C->setFaction(CurrentFaction);
     break;
   case CharacterAI::Behavior::VillageGuard:
     equipGuard(*C);
@@ -564,11 +569,12 @@ LevelGen::LevelGen(unsigned seed)
   Elevation = 0.3f + chance() * 0.2f;
 }
 
-Level *LevelGen::generate(World &world, GameData &data, Level::Type type,
+Level *LevelGen::generate(World &world, GameData &data, Faction *OwningFaction, Level::Type type,
                           const Connection *C) {
   this->world = &world;
   this->data = &data;
 
+  CurrentFaction = OwningFaction;
   level = nullptr;
   switch (type) {
   case Level::Type::Overworld:
@@ -640,6 +646,17 @@ void LevelGen::connectWalkways4(int x, int y) {
   connectWalkways(x, y, 0, 1);
   connectWalkways(x, y, 0, -1);
 }
+
+bool LevelGen::generateSettlement(TileRect Area) {
+  if (!isFree(Area))
+    return false;
+  CurrentFaction = new Faction(true);
+  world->addFaction(CurrentFaction);
+  auto Result = generateSettlementPiece(Area);
+  CurrentFaction = nullptr;
+  return Result;
+}
+
 
 bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
   if (!isFree(Area))
@@ -731,9 +748,8 @@ void LevelGen::generateSettlements() {
     int w = 7 + chanceInt(4);
     int h = 7 + chanceInt(4);
 
-    if (generateSettlementPiece(TileRect(x, y, w, h))) {
+    if (generateSettlement(TileRect(x, y, w, h)))
       --Count;
-    }
   }
 }
 
@@ -969,7 +985,7 @@ void LevelGen::generateMine() {
 
   for (int x = 0; x < w; ++x) {
     for (int y = 0; y < h; ++y) {
-      if (TilePos(x, y).distance(TilePos(DoorX, DoorY)) < 6)
+      if (TilePos(*level, x, y).distance(TilePos(*level, DoorX, DoorY)) < 6)
         continue;
       if (x == DoorX && y == DoorY)
         continue;
@@ -1047,21 +1063,21 @@ void LevelGen::placeOrcCamp(int w, int h) {
 
       build(x, y, "fireplace");
 
-      auto F = new Faction(false);
-
+      CurrentFaction = new Faction(false);
+      world->addFaction(CurrentFaction);
       Character *C;
       C = new Character(*level, Vec2(TilePos(x - 1, y)),
                         CharacterAI::Behavior::Bandit, Character::BodyType::Green);
-      C->setFaction(F);
+      C->setFaction(CurrentFaction);
       C = new Character(*level, Vec2(TilePos(x + 1, y)),
                         CharacterAI::Behavior::Bandit,
                         Character::BodyType::Green);
-      C->setFaction(F);
+      C->setFaction(CurrentFaction);
       C = new Character(*level, Vec2(TilePos(x + 1, y + 1)),
                         CharacterAI::Behavior::Bandit,
                         Character::BodyType::Green);
-      C->setFaction(F);
-      world->addFaction(F);
+      C->setFaction(CurrentFaction);
+      CurrentFaction = nullptr;
       return;
     }
   }
@@ -1090,6 +1106,27 @@ void LevelGen::makeHair(Character &C) {
   C.setHair(Style);
 }
 
+void LevelGen::makeHairFemale(Character &C) {
+  const std::vector<std::string> Styles = {
+      "long_hair1_",
+      "long_hair2_",
+      "long_hair3_",
+      "long_hair4_",
+      "long_hair5_",
+      "long_hair6_",
+      "long_hair7_",
+  };
+  const std::vector<std::string> Color = {
+      "brown",
+      "red",
+      "yellow",
+      "black",
+  };
+  std::string Style = Styles.at(chanceInt(Styles.size()))
+                      + Color.at(chanceInt(Color.size()));
+  C.setHair(Style);
+}
+
 void LevelGen::equipGuard(Character &C) {
   C.addItem("leather_pants");
   C.addItem("leather_armor");
@@ -1107,11 +1144,20 @@ void LevelGen::equipGuard(Character &C) {
 void LevelGen::equipFarmer(Character &C) {
   C.addItem("leather_pants");
   std::vector<std::string> Tops = {
-    "shoulder_bag",
+    "shoulder_bag_brown",
     "shirt1_brown",
     "shirt2_brown",
     "shirt3_brown"
   };
-  C.addItem();
+  C.addItem(Tops.at(chanceInt(Tops.size())));
+}
 
+void LevelGen::equipFarmerWife(Character &C) {
+  C.addItem("leather_pants");
+  std::vector<std::string> Tops = {
+      "top_female_brown",
+      "short_top_female_brown",
+      "dress_brown"
+  };
+  C.addItem(Tops.at(chanceInt(Tops.size())));
 }

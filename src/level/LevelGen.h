@@ -24,8 +24,10 @@ class LevelGen {
   void makeBush(int x, int y, float random);
 
   void makeHair(Character &C);
+  void makeHairFemale(Character &C);
   void equipGuard(Character &C);
   void equipFarmer(Character &C);
+  void equipFarmerWife(Character &C);
 
 
   void makeQuadLines(TileRect A, std::string T) {
@@ -102,6 +104,7 @@ class LevelGen {
 
   void connectWalkways(int x, int y, int dx, int dy);
   void connectWalkways4(int x, int y);
+  bool generateSettlement(TileRect Area);
   bool generateSettlementPiece(TileRect Area, int iteration = 0);
 
   void generateHouse();
@@ -113,6 +116,8 @@ class LevelGen {
   void placeOrcCamp(int w, int h);
 
   void makeStalagmite(int x, int y);
+
+  Faction *CurrentFaction = nullptr;
 
   enum TileCompare {
     CMP_S, // Same group
@@ -149,6 +154,7 @@ public:
     int TargetW = 0;
     int TargetH = 0;
     Directions Direction;
+    Faction *OwningFaction = nullptr;
     Connection(Level::Type Target, TilePos P, Directions D = Directions::Up)
         : targetType(Target), pos(P), Direction(D) {
     }
@@ -162,7 +168,7 @@ private:
 public:
   explicit LevelGen(unsigned seed);
 
-  Level *generate(World &world, GameData &data, Level::Type type, const Connection *C);
+  Level *generate(World &world, GameData &data, Faction *OwningFaction, Level::Type type, const Connection *C);
 
   const std::vector<Connection> &getOpenConnections() const {
     return openConnections;

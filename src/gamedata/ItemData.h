@@ -11,8 +11,8 @@ class ItemData {
 public:
   enum Kind {
     Pants,
-    Helmet,
     Armor,
+    Helmet,
     Shield,
     Weapon,
     Consumable,

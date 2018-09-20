@@ -2,7 +2,7 @@
 #define WORLD_H
 
 #include "Level.h"
-#include <Faction.h>
+#include <ai/Faction.h>
 
 #include <vector>
 

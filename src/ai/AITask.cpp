@@ -5,6 +5,8 @@
 #include "WaitTask.h"
 #include "ListTask.h"
 #include "FarmerTask.h"
+#include "FarmerWifeTask.h"
+#include "CombatTask.h"
 
 #include <PathFinder.h>
 #include <iostream>
@@ -20,30 +22,9 @@ AITask::AITask() = default;
 AITask::~AITask() = default;
 
 
-class CombatTask : public AITask {
-  Creature *Target;
 
-public:
-  explicit CombatTask(Creature *Target) : Target(Target) {}
 
-  AITask *act(Character &C, float DTime) override;
-};
 
-AITask *CombatTask::act(Character &C, float DTime) {
-  if (Target->isDead())
-    return finish("Target dead");
-
-  const Item &weapon = C.getEquipped(ItemData::Weapon);
-
-  if (C.getPos().distance(Target->getPos()) > weapon.getRange())
-    return finish("Enemy too far away");
-
-  if (&Target->getLevel() != &C.getLevel())
-    return finish("Enemey in different level");
-
-  C.tryShootAt(*Target);
-  return nullptr;
-}
 
 class HuntTask : public AITask {
   Creature *Target;
@@ -160,6 +141,9 @@ CharacterAI::CharacterAI(Behavior b) {
   switch(b) {
     case Behavior::Farmer:
       Tasks.push_back(new FarmerTask());
+      break;
+    case Behavior::FarmerWife:
+      Tasks.push_back(new FarmerWifeTask());
       break;
     case Behavior::VillageGuard:
       Tasks.push_back(new VillageGuardTask());

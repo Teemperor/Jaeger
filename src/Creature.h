@@ -3,7 +3,7 @@
 
 #include <list>
 
-#include "Faction.h"
+#include "ai/Faction.h"
 #include "GameObject.h"
 #include "SpellEffect.h"
 
@@ -63,7 +63,14 @@ public:
     return TheFaction->isEnemyFaction(*Other.TheFaction);
   }
 
-  void setFaction(Faction *NewFaction) { TheFaction = NewFaction; }
+  Faction *getFaction() {
+    return TheFaction;
+  }
+
+  void setFaction(Faction *NewFaction) {
+    assert(NewFaction);
+    TheFaction = NewFaction;
+  }
 
   void damage(int Dmg) override { Health -= Dmg; }
 

@@ -16,7 +16,7 @@ AITask *WalkTask::act(Character &C, float DTime) {
   if (WalkPath.empty())
     return finish("Couldn't find a path");
 
-  if (Vec2(WalkPath.back()).distance(C.getPos()) < 5.0f)
+  if (Vec2(WalkPath.back()).distance(C.getPos()) < 3.0f)
     WalkPath.pop_back();
 
   if (WalkPath.empty()) {
