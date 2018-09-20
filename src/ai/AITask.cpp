@@ -7,6 +7,9 @@
 #include "FarmerTask.h"
 #include "FarmerWifeTask.h"
 #include "CombatTask.h"
+#include "VillageGuardTask.h"
+#include "HuntTask.h"
+#include "DefenseTask.h"
 
 #include <PathFinder.h>
 #include <iostream>
@@ -21,116 +24,6 @@ AITask::AITask() = default;
 
 AITask::~AITask() = default;
 
-
-
-
-
-
-class HuntTask : public AITask {
-  Creature *Target;
-  float WeaponRange = 0;
-  bool InCombat = false;
-
-public:
-  explicit HuntTask(Creature *Target) : Target(Target) {}
-  AITask *act(Character &C, float DTime) override;
-
-  bool actInactive(Character &C) override {
-    if (Target->isDead())
-      return true;
-    return !InCombat && C.getPos().distance(Target->getPos()) < WeaponRange;
-  }
-};
-
-AITask *HuntTask::act(Character &C, float DTime) {
-  if (Target->isDead())
-    return finish("Target is dead");
-
-  InCombat = false;
-
-  const Item &weapon = C.getEquipped(ItemData::Weapon);
-  WeaponRange = weapon.getRange();
-
-  if (C.getPos().distance(Target->getPos()) > WeaponRange) {
-    return new WalkTask(Target->getTilePos());
-  } else {
-    InCombat = true;
-    return new CombatTask(Target);
-  }
-}
-
-class DefenseTask : public AITask {
-  bool First = true;
-  TilePos Start;
-public:
-  AITask *act(Character &C, float DTime) override;
-};
-
-AITask *DefenseTask::act(Character &C, float DTime) {
-  if (First) {
-    Start = C.getTilePos();
-    First = false;
-  }
-
-  auto ClosestEnemies = C.getClosestEnemies(16 * 20);
-  if (!ClosestEnemies.empty()) {
-    return new HuntTask(ClosestEnemies.front());
-  }
-  return new WalkTask(Start);
-}
-
-class VillageGuardTask : public AITask {
-  bool First = true;
-  TilePos House;
-  TilePos BeforeHouse;
-
-  std::random_device rd;
-  std::mt19937 gen;
-  std::normal_distribution<> PosDis;
-
-public:
-  VillageGuardTask() : rd(), gen(rd()), PosDis(0, 20) {
-  }
-  AITask *act(Character &C, float DTime) override;
-};
-
-static bool sameLevel(TilePos a, TilePos b) {
-  return &a.getLevel() == &b.getLevel();
-}
-
-static TilePos getFrontOfHouse(TilePos p) {
-  auto &L = p.getLevel();
-  for (auto C : L.getConnections()) {
-    if (C.getTargetLevel()->getType() == Level::Type::Overworld) {
-      return C.getTargetPos();
-    }
-  }
-  return TilePos();
-}
-
-AITask *VillageGuardTask::act(Character &C, float DTime) {
-  if (First) {
-    House = C.getTilePos();
-    BeforeHouse = getFrontOfHouse(C.getTilePos()).modY(1);
-    First = false;
-  }
-
-  if (sameLevel(House, C.getTilePos())) {
-    return new WalkTask(BeforeHouse);
-  } else if (sameLevel(BeforeHouse, C.getTilePos())) {
-    int dx = (int)PosDis(gen);
-    int dy = (int)PosDis(gen);
-
-    TilePos Target(BeforeHouse.getLevel(),
-                                BeforeHouse.getX() + dx,
-                                BeforeHouse.getY() + dy);
-    TilePos Out;
-    if (C.getLevel().getTeleportTarget(Target, Out))
-      return nullptr;
-    return new ListTask({new WalkTask(Target), new WaitTask(5)});
-  }
-  return nullptr;
-}
 
 void CharacterAI::popBack() {
   delete Tasks.back();
