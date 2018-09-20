@@ -532,6 +532,7 @@ void LevelGen::generateHouse() {
     C->setFaction(CurrentFaction);
     break;
   case CharacterAI::Behavior::VillageGuard:
+    C->getPrivateInventory().addGold(50);
     equipGuard(*C);
     break;
   default:

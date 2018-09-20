@@ -119,7 +119,7 @@ set(SOURCE_FILES
     src/ai/FarmerWifeTask.h
     src/ai/SellTask.cpp
     src/ai/SellTask.h
-    src/ai/VillageGuardTask.cpp src/ai/VillageGuardTask.h src/ai/HuntTask.cpp src/ai/HuntTask.h src/ai/DefenseTask.cpp src/ai/DefenseTask.h)
+    src/ai/VillageGuardTask.cpp src/ai/VillageGuardTask.h src/ai/HuntTask.cpp src/ai/HuntTask.h src/ai/DefenseTask.cpp src/ai/DefenseTask.h src/ai/BuyGroceriesTask.cpp src/ai/BuyGroceriesTask.h)
 
 add_library(argos_core ${SOURCE_FILES})
 target_link_libraries(argos_core ${SFML_LIBRARIES})

@@ -2,7 +2,7 @@
   "items" : [
     { "id" : "small_health_potion", "kind" : "consumable", "effect" : "heal", "effectStr" : "3", "effectDuration" : "10"},
 
-    { "id" : "corn", "kind" : "consumable", "effect" : "heal", "effectStr" : "3", "effectDuration" : "10"},
+    { "id" : "corn", "kind" : "consumable", "value" : 3, "effect" : "heal", "effectStr" : "3", "effectDuration" : "10"},
 
     { "id" : "ninja_pants", "kind" : "pants", "sprite" : "black_pants"},
     { "id" : "leather_pants", "kind" : "pants", "sprite" : "brown_pants"},

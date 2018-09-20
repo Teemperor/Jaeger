@@ -14,6 +14,8 @@ class VillageGuardTask : public AITask {
   std::mt19937 gen;
   std::normal_distribution<> PosDis;
 
+  unsigned Rounds = 0;
+
 public:
   VillageGuardTask() : rd(), gen(rd()), PosDis(0, 20) {}
   AITask *act(Character &C, float DTime) override;

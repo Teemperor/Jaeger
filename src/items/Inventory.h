@@ -31,6 +31,14 @@ public:
     return Gold >= I.price();
   }
 
+  bool buyItem(Inventory &Other, const std::string &ID) {
+    for (Item &I : Other) {
+      if (!I.empty() && I.getID() == ID)
+        return buyItem(Other, I);
+    }
+    return false;
+  }
+
   bool buyItem(Inventory &Other, Item &I) {
     if (!canBuyItem(Other, I))
       return false;
@@ -38,8 +46,8 @@ public:
     Other.remove(I);
     this->add(Copy);
 
-    this->removeGold(I.price());
-    Other.addGold(I.price());
+    this->removeGold(Copy.price());
+    Other.addGold(Copy.price());
 
     return true;
   }

@@ -2,6 +2,7 @@
 #include "ListTask.h"
 #include "WaitTask.h"
 #include "WalkTask.h"
+#include "BuyGroceriesTask.h"
 
 #include <Character.h>
 #include <level/Level.h>
@@ -30,6 +31,10 @@ AITask *VillageGuardTask::act(Character &C, float DTime) {
   if (sameLevel(House, C.getTilePos())) {
     return new WalkTask(BeforeHouse);
   } else if (sameLevel(BeforeHouse, C.getTilePos())) {
+    if (Rounds > 2) {
+      Rounds = 0;
+      return new BuyGroceriesTask();
+    }
     int dx = (int)PosDis(gen);
     int dy = (int)PosDis(gen);
 
@@ -38,6 +43,7 @@ AITask *VillageGuardTask::act(Character &C, float DTime) {
     TilePos Out;
     if (C.getLevel().getTeleportTarget(Target, Out))
       return nullptr;
+    Rounds++;
     return new ListTask({new WalkTask(Target), new WaitTask(5)});
   }
   return nullptr;
