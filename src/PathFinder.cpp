@@ -7,6 +7,7 @@
 struct SearchInfo {
   Level *TheLevel = nullptr;
   bool Adjacent = false;
+  TilePos Goal;
 };
 static thread_local SearchInfo CurrentSearchInfo;
 
@@ -46,7 +47,12 @@ public:
     astarsearch->AddSuccessor(NewNode);
   }
 
-  bool isFree(int x, int y) { return CurrentSearchInfo.TheLevel->passable(TilePos(x, y)); }
+  bool isFree(int x, int y) {
+    TilePos T(*CurrentSearchInfo.TheLevel, x, y);
+    if (CurrentSearchInfo.Adjacent && T == CurrentSearchInfo.Goal)
+      return true;
+    return CurrentSearchInfo.TheLevel->passable(T);
+  }
 };
 
 bool MapSearchNode::IsSameState(MapSearchNode &rhs) {
@@ -68,11 +74,6 @@ float MapSearchNode::GoalDistanceEstimate(MapSearchNode &nodeGoal) {
 }
 
 bool MapSearchNode::IsGoal(MapSearchNode &nodeGoal) {
-  if (CurrentSearchInfo.Adjacent) {
-    int dx = x - nodeGoal.x;
-    int dy = y - nodeGoal.y;
-    return std::abs(dx) <= 1 xor std::abs(dy) <= 1;
-  }
   return (x == nodeGoal.x) && (y == nodeGoal.y);
 }
 
@@ -119,7 +120,8 @@ PathFinder::PathFinder(Level &Level) {}
 void PathFinder::findPathImpl(TilePos start, TilePos end, bool Adjacent,
                               std::vector<TilePos> &result) {
   CurrentSearchInfo.TheLevel = &start.getLevel();
-  CurrentSearchInfo.Adjacent = false; // Adjacent;
+  CurrentSearchInfo.Adjacent = Adjacent;
+  CurrentSearchInfo.Goal = end;
 
   // Our sample problem defines the world as a 2d array representing a terrain
   // Each element contains an integer from 0 to 5 which indicates the cost
@@ -166,6 +168,10 @@ void PathFinder::findPathImpl(TilePos start, TilePos end, bool Adjacent,
       steps++;
     }
     std::reverse(result.begin(), result.end());
+
+    while (!result.empty() && !result.back().getLevel().passable(result.back())) {
+      result.pop_back();
+    }
 
     // cout << "Solution steps " << steps << endl;
 

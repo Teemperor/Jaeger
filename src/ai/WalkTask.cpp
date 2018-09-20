@@ -47,5 +47,5 @@ void WalkTask::debugDraw(Character &C, sf::RenderTarget &target) {
 }
 
 WalkTask *WalkTask::Beside(TilePos Target) {
-  return new WalkTask(Target.modX(-1), true);
+  return new WalkTask(Target, true);
 }
