@@ -19,9 +19,7 @@ public:
     return false;
   }
 
-  void disableItemStorage() {
-    CanStoreItems = false;
-  }
+  void disableItemStorage() { CanStoreItems = false; }
 
   unsigned emptySpaces() const;
 
@@ -45,9 +43,7 @@ public:
     return true;
   }
 
-  bool canStoreItems() const {
-    return CanStoreItems;
-  }
+  bool canStoreItems() const { return CanStoreItems; }
 
   bool remove(const Item &I) {
     for (auto &Slot : Slots) {
@@ -59,13 +55,9 @@ public:
     return false;
   }
 
-  Item& at(std::size_t I) {
-    return Slots.at(I);
-  }
+  Item &at(std::size_t I) { return Slots.at(I); }
 
-  const Item& at(std::size_t I) const {
-    return Slots.at(I);
-  }
+  const Item &at(std::size_t I) const { return Slots.at(I); }
 
   bool contains(Item &I) const {
     return std::find(Slots.begin(), Slots.end(), I) != Slots.end();

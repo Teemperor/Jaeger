@@ -1,6 +1,6 @@
 #include "HuntTask.h"
-#include "WalkTask.h"
 #include "CombatTask.h"
+#include "WalkTask.h"
 
 AITask *HuntTask::act(Character &C, float DTime) {
   if (Target->isDead())

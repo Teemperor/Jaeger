@@ -7,6 +7,7 @@
 class ListTask : public AITask {
 
   std::vector<AITask *> TasksLeft;
+
 public:
   explicit ListTask(std::initializer_list<AITask *> Tasks) {
     for (auto &T : Tasks)
@@ -21,4 +22,4 @@ public:
   AITask *act(Character &C, float DTime) override;
 };
 
-#endif //MAMBO_LISTTASK_H
+#endif // MAMBO_LISTTASK_H

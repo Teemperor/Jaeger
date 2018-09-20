@@ -2,9 +2,9 @@
 #define ARGOS_LEVEL_H
 
 #include "GameObject.h"
+#include "LevelConnection.h"
 #include "Tile.h"
 #include "TileMap.h"
-#include "LevelConnection.h"
 #include <TilePos.h>
 #include <gamedata/GameData.h>
 

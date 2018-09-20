@@ -3,9 +3,9 @@
 
 #include <list>
 
-#include "ai/Faction.h"
 #include "GameObject.h"
 #include "SpellEffect.h"
+#include "ai/Faction.h"
 
 class Creature : public GameObject {
   Faction *TheFaction = nullptr;
@@ -63,9 +63,7 @@ public:
     return TheFaction->isEnemyFaction(*Other.TheFaction);
   }
 
-  Faction *getFaction() {
-    return TheFaction;
-  }
+  Faction *getFaction() { return TheFaction; }
 
   void setFaction(Faction *NewFaction) {
     assert(NewFaction);
@@ -74,21 +72,13 @@ public:
 
   void damage(int Dmg) override { Health -= Dmg; }
 
-  int getHealth() const {
-    return Health;
-  }
+  int getHealth() const { return Health; }
 
-  int getMaxHealth() const {
-    return MaxHealth;
-  }
+  int getMaxHealth() const { return MaxHealth; }
 
-  int getFatigue() const {
-    return Fatigue;
-  }
+  int getFatigue() const { return Fatigue; }
 
-  int getMaxFatigue() const {
-    return MaxFatigue;
-  }
+  int getMaxFatigue() const { return MaxFatigue; }
 
   bool isDead() const { return Health <= 0; }
 };

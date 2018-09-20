@@ -9,15 +9,7 @@ class GameData;
 
 class ItemData {
 public:
-  enum Kind {
-    Pants,
-    Armor,
-    Helmet,
-    Shield,
-    Weapon,
-    Consumable,
-    KindLimit
-  };
+  enum Kind { Pants, Armor, Helmet, Shield, Weapon, Consumable, KindLimit };
 
 private:
   int armor_ = 0;
@@ -44,13 +36,9 @@ public:
 
   Kind kind() { return kind_; }
 
-  void setID(std::string ID) {
-    id_ = ID;
-  }
+  void setID(std::string ID) { id_ = ID; }
 
-  const std::string &getID() const {
-    return id_;
-  }
+  const std::string &getID() const { return id_; }
 
   void setUseEffect(const SpellEffect *E, RandomRange S, RandomRange D) {
     UseEffect = E;
@@ -58,17 +46,11 @@ public:
     UseDuration = D;
   }
 
-  bool hasEffect() {
-    return UseEffect != nullptr;
-  }
+  bool hasEffect() { return UseEffect != nullptr; }
 
-  void setFatigueCost(int V) {
-    FatigueCost = V;
-  }
+  void setFatigueCost(int V) { FatigueCost = V; }
 
-  int getFatigueCost() const {
-    return FatigueCost;
-  }
+  int getFatigueCost() const { return FatigueCost; }
 
   AppliedSpellEffect getEffect(Creature *User) const {
     assert(UseEffect);

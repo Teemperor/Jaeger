@@ -1,7 +1,7 @@
 #include "TileExtraInfo.h"
 
-#include <level/World.h>
 #include <gamedata/TileData.h>
+#include <level/World.h>
 
 TileExtraInfo::TileExtraInfo() {}
 

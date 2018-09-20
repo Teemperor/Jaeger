@@ -18,8 +18,7 @@ class Tile {
 public:
   Tile() = default;
 
-  explicit Tile(TileData *Data) : Data(Data) {
-  }
+  explicit Tile(TileData *Data) : Data(Data) {}
 
   const std::string &name() const {
     if (Data)
@@ -44,9 +43,7 @@ public:
     }
   }
 
-  bool isResource() const {
-    return Data && Data->isResource();
-  }
+  bool isResource() const { return Data && Data->isResource(); }
 
   Inventory *getInventory() {
     if (Data && Data->hasInventory()) {

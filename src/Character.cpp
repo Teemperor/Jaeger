@@ -6,7 +6,8 @@
 #include <combat/Projectile.h>
 
 Character::Character(Level &level, Vec2 pos, CharacterAI::Behavior behavior,
-                     BodyType type) : Creature(level), MyAI(behavior) {
+                     BodyType type)
+    : Creature(level), MyAI(behavior) {
   setBodyType(type);
   BubbleSprite = getGameData().getSprite("speech_bubble_exclamation");
   Shadow = getGameData().getSprite("shadow");
@@ -139,7 +140,8 @@ struct ClosestInventory {
   GameObject *target;
   ClosestInventory(GameObject *target) : target(target) {}
 
-  inline bool operator()(const InventoryLocation &a, const InventoryLocation &b) {
+  inline bool operator()(const InventoryLocation &a,
+                         const InventoryLocation &b) {
     return a.InvPos.distance(target->getPos()) <
            b.InvPos.distance(target->getPos());
   }
@@ -190,7 +192,8 @@ void Character::update(float dtime) {
     setWalking(walking);
 
     std::vector<GameObject *> PossibleTargets;
-    auto ClosestEnemies = getClosestEnemies(Equipped[ItemData::Weapon].getRange());
+    auto ClosestEnemies =
+        getClosestEnemies(Equipped[ItemData::Weapon].getRange());
     for (auto &e : ClosestEnemies) {
       PossibleTargets.push_back(e);
     }
@@ -204,7 +207,7 @@ void Character::update(float dtime) {
 
   Creature::update(dtime);
 
-  //Talking = !isControlled();
+  // Talking = !isControlled();
   if (OldWalkingValue != Walking) {
     WalkingStartTime = getLevel().getTime();
     OldWalkingValue = Walking;
@@ -223,7 +226,8 @@ std::vector<Creature *> Character::getClosestEnemies(float distance) {
   std::vector<Creature *> ClosestEnemies;
   for (GameObject *o : getLevel().getObjects()) {
     if (auto C = dynamic_cast<Creature *>(o)) {
-      if (!C->isDead() && isEnemy(*C) && C->getPos().distance(getPos()) < distance) {
+      if (!C->isDead() && isEnemy(*C) &&
+          C->getPos().distance(getPos()) < distance) {
         ClosestEnemies.push_back(C);
       }
     }
@@ -263,8 +267,7 @@ bool Character::tryShootAt(GameObject &o) {
   if (!trySpendFatigue(weapon.getFatigueCost()))
     return false;
   if (weapon.tryUse(getLevel()) && weapon.hasProjectiles()) {
-    new Projectile(*weapon.getProjectileData(), getLevel(), getPos(), *this,
-                   o);
+    new Projectile(*weapon.getProjectileData(), getLevel(), getPos(), *this, o);
     return true;
   }
   return false;
@@ -298,4 +301,3 @@ void Character::addItem(const std::string &Name) {
 void Character::setHair(const std::string &Name) {
   HairSprite = getLevel().getData().getSprite(Name);
 }
-

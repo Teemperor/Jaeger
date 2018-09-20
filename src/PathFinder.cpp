@@ -28,9 +28,7 @@ public:
 
   void PrintNodeInfo();
 
-  bool isFree(int x, int y) {
-    return TheLevel->passable(TilePos(x, y));
-  }
+  bool isFree(int x, int y) { return TheLevel->passable(TilePos(x, y)); }
 };
 
 bool MapSearchNode::IsSameState(MapSearchNode &rhs) {
@@ -114,7 +112,7 @@ bool MapSearchNode::GetSuccessors(AStarSearch<MapSearchNode> *astarsearch,
 
 float MapSearchNode::GetCost(MapSearchNode &successor) { return 1; }
 
-PathFinder::PathFinder(Level &Level) { }
+PathFinder::PathFinder(Level &Level) {}
 
 void PathFinder::findPathImpl(TilePos start, TilePos end,
                               std::vector<TilePos> &result) {
@@ -181,8 +179,8 @@ void PathFinder::findPathImpl(TilePos start, TilePos end,
   astarsearch.EnsureMemoryFreed();
 }
 
-void
-PathFinder::findPath(TilePos Start, TilePos End, std::vector<TilePos> &Result) {
+void PathFinder::findPath(TilePos Start, TilePos End,
+                          std::vector<TilePos> &Result) {
   if (&Start.getLevel() == &End.getLevel()) {
     findPathImpl(Start, End, Result);
     return;

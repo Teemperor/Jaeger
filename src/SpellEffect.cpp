@@ -34,8 +34,10 @@ const std::vector<SpellEffect> &SpellEffects::getList() {
             SpellEffect("switchPos", "Switch Positions",
                         [](Creature *Caster, Creature *Target,
                            SpellEffect::StrengthUnit) {
-                          Target->getLevel().getWorld().queryTeleport(Target, Caster->getTilePos());
-                          Caster->getLevel().getWorld().queryTeleport(Caster, Target->getTilePos());
+                          Target->getLevel().getWorld().queryTeleport(
+                              Target, Caster->getTilePos());
+                          Caster->getLevel().getWorld().queryTeleport(
+                              Caster, Target->getTilePos());
                         },
                         1, 100)};
   }

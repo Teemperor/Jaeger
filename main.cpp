@@ -37,16 +37,15 @@ int main() {
   Faction playerFaction(true);
 
   Character *player1 = new Character(level, Vec2(60 * 16, 170 * 16),
-                               CharacterAI::Behavior::Bandit);
+                                     CharacterAI::Behavior::Bandit);
   player1->setFaction(&playerFaction);
-  //Character *player2 = new Character(level, Vec2(44 * 16, 52 * 16));
-  //player2->setFaction(&playerFaction);
+  // Character *player2 = new Character(level, Vec2(44 * 16, 52 * 16));
+  // player2->setFaction(&playerFaction);
 
   for (int i = 0; i < 0; i++) {
     Vec2 pos = Vec2(200 + rand() % 700, 200 + rand() % 700);
     if (level.passable(pos))
-      new Character(level, Vec2(TilePos(pos)),
-                    CharacterAI::Behavior::Bandit);
+      new Character(level, Vec2(TilePos(pos)), CharacterAI::Behavior::Bandit);
     else {
       --i;
       continue;
@@ -58,8 +57,8 @@ int main() {
   GameUI gui(Data, 1);
   player1->setPlayerControls(&gui.getControls());
 
-  //GameUI gui2(Data, 2);
-  //player2->setPlayerControls(&gui2.getControls());
+  // GameUI gui2(Data, 2);
+  // player2->setPlayerControls(&gui2.getControls());
 
   sf::Clock clock;
 
@@ -85,7 +84,7 @@ int main() {
         view = Window.getView();
         view.zoom(0.3f);
       }
-      //gui2.handleEvent(event);
+      // gui2.handleEvent(event);
       gui.handleEvent(event);
     }
     viewCenter.x = player1->getPos().getX();
@@ -113,7 +112,7 @@ int main() {
     Level &currentLevel = player1->getLevel();
     currentLevel.render(Window, viewCenter);
 
-    //gui2.draw(Window, elapsed.asSeconds());
+    // gui2.draw(Window, elapsed.asSeconds());
     gui.draw(Window, elapsed.asSeconds());
 
     Window.display();

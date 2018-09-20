@@ -18,9 +18,7 @@ class GameObject {
 protected:
   bool ShouldBeRemoved = false;
   explicit GameObject(Level &l);
-  void setInventory(Inventory *I) {
-    Inv = I;
-  }
+  void setInventory(Inventory *I) { Inv = I; }
 
 public:
   virtual ~GameObject();
@@ -33,9 +31,7 @@ public:
     return TilePos(*TheLevel, Pos.getX() / 16, Pos.getY() / 16);
   }
 
-  Inventory *getInventory() {
-    return Inv;
-  }
+  Inventory *getInventory() { return Inv; }
 
   virtual void damage(int Dmg) {}
 

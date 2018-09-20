@@ -1,10 +1,9 @@
 #ifndef MAMBO_INVENTORYWINDOW_H
 #define MAMBO_INVENTORYWINDOW_H
 
-
+#include <Character.h>
 #include <SFML/Graphics.hpp>
 #include <gamedata/GameData.h>
-#include <Character.h>
 
 class InventoryWindow {
   sf::Sprite InventoryBackground, EquipGlow, SelectGlow;
@@ -34,43 +33,31 @@ public:
     OffsetY = y;
   }
 
-  void setInventory(Inventory *I) {
-    Inv = I;
-  }
+  void setInventory(Inventory *I) { Inv = I; }
 
-  Inventory *getInventory() {
-    return Inv;
-  }
+  Inventory *getInventory() { return Inv; }
 
   Item &getSelectedItem() {
     assert(Inv);
     return Inv->at(selectedItem());
   }
 
-  bool isOnLeftBorder() const {
-    return InvX == 0;
-  }
+  bool isOnLeftBorder() const { return InvX == 0; }
 
-  bool isOnRightBorder() const {
-    return InvX == 3;
-  }
+  bool isOnRightBorder() const { return InvX == 3; }
 
-  void moveToLeft() {
-    InvX = 0;
-  }
+  void moveToLeft() { InvX = 0; }
 
-  void moveToRight() {
-    InvX = 3;
-  }
+  void moveToRight() { InvX = 3; }
 
   void moveControl(int x, int y) {
     InvX += x;
     InvY += y;
 
     // Handle wrapping.
-    while(InvX < 0)
+    while (InvX < 0)
       InvX += InventoryWidth;
-    while(InvY < 0)
+    while (InvY < 0)
       InvY += InventoryWidth;
     InvX %= InventoryWidth;
     InvY %= InventoryWidth;
@@ -81,5 +68,4 @@ public:
   }
 };
 
-
-#endif //MAMBO_INVENTORYWINDOW_H
+#endif // MAMBO_INVENTORYWINDOW_H

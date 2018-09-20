@@ -1,10 +1,10 @@
 #ifndef PLAYERCONTROLS_H
 #define PLAYERCONTROLS_H
 
-#include <SFML/Window.hpp>
-#include <vector>
 #include <Inventory.h>
+#include <SFML/Window.hpp>
 #include <Vec2.h>
+#include <vector>
 
 class GameObject;
 class Character;
@@ -14,11 +14,8 @@ struct InventoryLocation {
   // Where the inventory is located on the current level.
   Vec2 InvPos = {0, 0};
   InventoryLocation() = default;
-  InventoryLocation(Inventory *Inv, Vec2 Pos) : Inv(Inv), InvPos(Pos) {
-  }
-  bool valid() {
-    return Inv != nullptr;
-  }
+  InventoryLocation(Inventory *Inv, Vec2 Pos) : Inv(Inv), InvPos(Pos) {}
+  bool valid() { return Inv != nullptr; }
 };
 
 class PlayerControls {
@@ -87,7 +84,8 @@ public:
     }
   }
 
-  void setPossibleInventoryTargets(const std::vector<InventoryLocation> &targets) {
+  void
+  setPossibleInventoryTargets(const std::vector<InventoryLocation> &targets) {
     this->possibleInventories = targets;
     if (!possibleInventories.empty())
       TargetInv = possibleInventories.front();

@@ -1,8 +1,8 @@
 #ifndef GAMEUI_H
 #define GAMEUI_H
 
-#include "PlayerControls.h"
 #include "InventoryWindow.h"
+#include "PlayerControls.h"
 #include "StatusBar.h"
 
 #include <cassert>
@@ -11,9 +11,9 @@
 #include <gamedata/GameData.h>
 
 class GameUI {
-  sf::Sprite combatSelection, itemSelection,
-      HealthBarStart, HealthBarMid, HealthBarEnd,
-      StaminaBarStart, StaminaBarMid, StaminaBarEnd, StatusBackground;
+  sf::Sprite combatSelection, itemSelection, HealthBarStart, HealthBarMid,
+      HealthBarEnd, StaminaBarStart, StaminaBarMid, StaminaBarEnd,
+      StatusBackground;
   PlayerControls controls;
 
   bool InventoryOpen = false;

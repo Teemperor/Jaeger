@@ -1,5 +1,5 @@
-#include <Item.h>
 #include "InventoryWindow.h"
+#include <Item.h>
 
 InventoryWindow::InventoryWindow(GameData &Data) {
 
@@ -31,8 +31,7 @@ void InventoryWindow::draw(sf::RenderTarget &target, bool Focused) {
 
     if (!I.empty()) {
       sf::Sprite s = I.icon();
-      s.setOrigin(s.getLocalBounds().width / 2,
-                  s.getLocalBounds().height / 2);
+      s.setOrigin(s.getLocalBounds().width / 2, s.getLocalBounds().height / 2);
       s.scale(Scale, Scale);
       s.setPosition(OffsetX + (CenterX + s.getOrigin().x) * Scale,
                     OffsetY + (CenterY + s.getOrigin().y) * Scale);
@@ -64,4 +63,3 @@ void InventoryWindow::draw(sf::RenderTarget &target, bool Focused) {
     }
   }
 }
-

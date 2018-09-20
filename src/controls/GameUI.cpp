@@ -28,8 +28,6 @@ GameUI::GameUI(GameData &Data, unsigned PlayerNumber) : controls(PlayerNumber) {
 
   int InvSize = 350;
 
-
-
   MyWindow = new InventoryWindow(Data);
   MyWindow->setOffset(InvSize, InvSize * (PlayerNumber - 1));
   FocusedWindow = MyWindow;
@@ -100,41 +98,41 @@ void GameUI::handleEvent(sf::Event event) {
     }
     if (InventoryOpen && FocusedWindow) {
       bool HasOtherInv = getControls().getInventoryTarget().valid();
-      switch(KeyCode) {
-        case sf::Keyboard::A:
-          if (HasOtherInv && FocusedWindow->isOnLeftBorder()) {
-            if (FocusedWindow == MyWindow) {
-              FocusedWindow = OtherWindow;
-              FocusedWindow->moveToRight();
-            } else if (FocusedWindow == OtherWindow){
-              FocusedWindow = MyWindow;
-              FocusedWindow->moveToRight();
-            }
-          } else {
-            FocusedWindow->moveControl(-1, 0);
+      switch (KeyCode) {
+      case sf::Keyboard::A:
+        if (HasOtherInv && FocusedWindow->isOnLeftBorder()) {
+          if (FocusedWindow == MyWindow) {
+            FocusedWindow = OtherWindow;
+            FocusedWindow->moveToRight();
+          } else if (FocusedWindow == OtherWindow) {
+            FocusedWindow = MyWindow;
+            FocusedWindow->moveToRight();
           }
-          break;
-        case sf::Keyboard::D:
-          if (HasOtherInv && FocusedWindow->isOnRightBorder()) {
-            if (FocusedWindow == MyWindow) {
-              FocusedWindow = OtherWindow;
-              FocusedWindow->moveToLeft();
-            } else if (FocusedWindow == OtherWindow){
-              FocusedWindow = MyWindow;
-              FocusedWindow->moveToLeft();
-            }
-          } else {
-            FocusedWindow->moveControl(1, 0);
+        } else {
+          FocusedWindow->moveControl(-1, 0);
+        }
+        break;
+      case sf::Keyboard::D:
+        if (HasOtherInv && FocusedWindow->isOnRightBorder()) {
+          if (FocusedWindow == MyWindow) {
+            FocusedWindow = OtherWindow;
+            FocusedWindow->moveToLeft();
+          } else if (FocusedWindow == OtherWindow) {
+            FocusedWindow = MyWindow;
+            FocusedWindow->moveToLeft();
           }
-          break;
-        case sf::Keyboard::W:
-          FocusedWindow->moveControl(0, -1);
-          break;
-        case sf::Keyboard::S:
-          FocusedWindow->moveControl(0, 1);
-          break;
-        default:
-          break;
+        } else {
+          FocusedWindow->moveControl(1, 0);
+        }
+        break;
+      case sf::Keyboard::W:
+        FocusedWindow->moveControl(0, -1);
+        break;
+      case sf::Keyboard::S:
+        FocusedWindow->moveControl(0, 1);
+        break;
+      default:
+        break;
       }
 
       if (KeyCode == sf::Keyboard::Space) {
@@ -159,8 +157,7 @@ void GameUI::handleEvent(sf::Event event) {
             if (!I.empty()) {
               if (I.kind() == ItemData::Consumable) {
                 C->useItem(I);
-              }
-              else {
+              } else {
                 if (C->equipped(I)) {
                   C->unequipItem(I);
                 } else {

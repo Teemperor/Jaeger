@@ -90,9 +90,9 @@ void Level::update(float dtime) {
   NewObjects.clear();
 
   std::sort(Objects.begin(), Objects.end(),
-      [](const GameObject *O1, const GameObject *O2) {
-    return O1->getPos().getY() < O2->getPos().getY();
-  });
+            [](const GameObject *O1, const GameObject *O2) {
+              return O1->getPos().getY() < O2->getPos().getY();
+            });
 
   ResourceUpdateCounter += dtime;
   if (ResourceUpdateCounter >= ResourceUpdateTime) {
@@ -130,7 +130,7 @@ void Level::foreachTilePos(std::function<bool(int, int)> lambda) {
 
 TilePos Level::searchClosestMatchingTile(TilePos Start,
                                          std::function<bool(int, int)> lambda,
-int MaxDistance) {
+                                         int MaxDistance) {
 
   for (int d = 0; d < MaxDistance; ++d) {
     int StartX = Start.getX() - d;

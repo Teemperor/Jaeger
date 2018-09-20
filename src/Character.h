@@ -18,7 +18,8 @@ public:
 
   enum class BodyType { Pale, Normal, Tanned, Green };
 
-  Character(Level &level, Vec2 pos, CharacterAI::Behavior behavior, BodyType type = BodyType::Normal);
+  Character(Level &level, Vec2 pos, CharacterAI::Behavior behavior,
+            BodyType type = BodyType::Normal);
 
   void setHair(const std::string &Name);
   void setBodyType(BodyType t);
@@ -46,8 +47,7 @@ public:
 
   void addItem(const Item &I) {
     if (Inv.add(I)) {
-      if (I.kind() != ItemData::Consumable &&
-          Equipped[I.kind()].empty()) {
+      if (I.kind() != ItemData::Consumable && Equipped[I.kind()].empty()) {
         equipItem(I);
       }
     }
@@ -69,14 +69,13 @@ public:
 
   std::vector<Creature *> getClosestEnemies(float distance);
 
-  const Item &getEquipped(ItemData::Kind Kind) {
-    return Equipped.at(Kind);
-  }
+  const Item &getEquipped(ItemData::Kind Kind) { return Equipped.at(Kind); }
 
   void useItem(Item &item);
 
   void walkToward(Vec2 pos, float dtime, bool backwards = false);
   bool tryShootAt(GameObject &o);
+
 private:
   std::vector<Item> Equipped;
 
@@ -91,14 +90,13 @@ private:
     return Result;
   }
 
-  void onDeath() {
-    setInventory(&Inv);
-  }
+  void onDeath() { setInventory(&Inv); }
 
   void setWalking(bool v);
   static constexpr float WalkSpeed = 45;
   BodyType TheBodyType = BodyType::Pale;
-  sf::Sprite Sprite, HairSprite, TalkingSprite, BubbleSprite, Shadow, Gravestone, Selection;
+  sf::Sprite Sprite, HairSprite, TalkingSprite, BubbleSprite, Shadow,
+      Gravestone, Selection;
   bool Talking = false;
   bool Walking = false;
   bool OldWalkingValue = false;

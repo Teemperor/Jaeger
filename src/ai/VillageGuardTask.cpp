@@ -1,7 +1,7 @@
 #include "VillageGuardTask.h"
-#include "WalkTask.h"
 #include "ListTask.h"
 #include "WaitTask.h"
+#include "WalkTask.h"
 
 #include <Character.h>
 #include <level/Level.h>
@@ -33,8 +33,7 @@ AITask *VillageGuardTask::act(Character &C, float DTime) {
     int dx = (int)PosDis(gen);
     int dy = (int)PosDis(gen);
 
-    TilePos Target(BeforeHouse.getLevel(),
-                   BeforeHouse.getX() + dx,
+    TilePos Target(BeforeHouse.getLevel(), BeforeHouse.getX() + dx,
                    BeforeHouse.getY() + dy);
     TilePos Out;
     if (C.getLevel().getTeleportTarget(Target, Out))

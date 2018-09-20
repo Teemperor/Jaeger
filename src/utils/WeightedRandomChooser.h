@@ -1,14 +1,14 @@
 #ifndef MAMBO_WEIGHTEDRANDOMCHOOSER_H
 #define MAMBO_WEIGHTEDRANDOMCHOOSER_H
 
-#include <vector>
-#include <random>
 #include <cassert>
+#include <random>
+#include <vector>
 
-template<typename T>
-class WeightedRandomChooser {
+template <typename T> class WeightedRandomChooser {
   std::vector<std::pair<T, unsigned>> Data;
   unsigned WeightSum = 0;
+
 public:
   void add(T D, unsigned Weight) {
     Data.push_back(std::make_pair(D, Weight));
@@ -32,10 +32,7 @@ public:
     return Data.back().first;
   }
 
-  bool empty() {
-    return WeightSum == 0;
-  }
+  bool empty() { return WeightSum == 0; }
 };
 
-
-#endif //MAMBO_WEIGHTEDRANDOMCHOOSER_H
+#endif // MAMBO_WEIGHTEDRANDOMCHOOSER_H

@@ -1,10 +1,9 @@
 #ifndef MAMBO_VILLAGEGUARDTASK_H
 #define MAMBO_VILLAGEGUARDTASK_H
 
-
-#include <random>
-#include <TilePos.h>
 #include "AITask.h"
+#include <TilePos.h>
+#include <random>
 
 class VillageGuardTask : public AITask {
   bool First = true;
@@ -16,10 +15,8 @@ class VillageGuardTask : public AITask {
   std::normal_distribution<> PosDis;
 
 public:
-  VillageGuardTask() : rd(), gen(rd()), PosDis(0, 20) {
-  }
+  VillageGuardTask() : rd(), gen(rd()), PosDis(0, 20) {}
   AITask *act(Character &C, float DTime) override;
 };
 
-
-#endif //MAMBO_VILLAGEGUARDTASK_H
+#endif // MAMBO_VILLAGEGUARDTASK_H

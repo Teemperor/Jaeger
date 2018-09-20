@@ -3,8 +3,8 @@
 #include "World.h"
 
 #include <Character.h>
-#include <set>
 #include <ai/Faction.h>
+#include <set>
 
 #include "stb_perlin.h"
 
@@ -175,42 +175,42 @@ void LevelGen::generateWaterAndLand() {
   TileMap<int> water(w, h, 0);
 
   for (int x = 0; x < w; ++x) {
-      for (int y = 0; y < h; ++y) {
-          float height = getHeight(x, y);
-          level->get(x, y).setData(data.tile("grass"));
-          if (height <= 0) {
-              water.get(x, y) = 1;
-            }
-        }
+    for (int y = 0; y < h; ++y) {
+      float height = getHeight(x, y);
+      level->get(x, y).setData(data.tile("grass"));
+      if (height <= 0) {
+        water.get(x, y) = 1;
+      }
     }
+  }
 
   bool Changed = true;
   while (Changed) {
-      Changed = false;
-      for (int x = 0; x < w; ++x) {
-          for (int y = 0; y < h; ++y) {
-              if (water.get(x, y) == 0)
-                continue;
-              int SurroundingGrass = countSurroundingTiles<int>(
-                                       water, x, y, [](const int &T) { return T == 0; });
-              if (SurroundingGrass >= 5) {
-                  Changed = true;
-                  water.get(x, y) = 0;
-                }
-            }
+    Changed = false;
+    for (int x = 0; x < w; ++x) {
+      for (int y = 0; y < h; ++y) {
+        if (water.get(x, y) == 0)
+          continue;
+        int SurroundingGrass = countSurroundingTiles<int>(
+            water, x, y, [](const int &T) { return T == 0; });
+        if (SurroundingGrass >= 5) {
+          Changed = true;
+          water.get(x, y) = 0;
         }
+      }
     }
+  }
 
   for (int x = 0; x < w; ++x) {
-      for (int y = 0; y < h; ++y) {
-          if (water.get(x, y)) {
-              if (chance() > 0.01f)
-                level->get(x, y).setData(data.tile("water_c"));
-              else
-                floor(x, y, "water_rock");
-            }
-        }
+    for (int y = 0; y < h; ++y) {
+      if (water.get(x, y)) {
+        if (chance() > 0.01f)
+          level->get(x, y).setData(data.tile("water_c"));
+        else
+          floor(x, y, "water_rock");
+      }
     }
+  }
 }
 
 void LevelGen::formatWaterTiles() {
@@ -218,29 +218,29 @@ void LevelGen::formatWaterTiles() {
   int h = level->getHeight();
 
   for (int x = 0; x < w; ++x) {
-      for (int y = 0; y < h; ++y) {
-          if (level->get(x, y).group() == "water") {
-              if (hasSurrounding(
-                    x, y, "water",
-              {CMP_A, CMP_D, CMP_A, CMP_S, CMP_S, CMP_A, CMP_S, CMP_A}))
-                floor(x, y, "water_outer_up");
-              if (hasSurrounding(
-                    x, y, "water",
-              {CMP_A, CMP_S, CMP_A, CMP_S, CMP_S, CMP_A, CMP_D, CMP_A}))
-                floor(x, y, "water_outer_down");
-              if (hasSurrounding(
-                    x, y, "water",
-              {CMP_A, CMP_S, CMP_A, CMP_D, CMP_S, CMP_A, CMP_S, CMP_A}))
-                floor(x, y, "water_outer_left");
-              if (hasSurrounding(
-                    x, y, "water",
-              {CMP_A, CMP_S, CMP_A, CMP_S, CMP_D, CMP_A, CMP_S, CMP_A}))
-                floor(x, y, "water_outer_right");
+    for (int y = 0; y < h; ++y) {
+      if (level->get(x, y).group() == "water") {
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_D, CMP_A, CMP_S, CMP_S, CMP_A, CMP_S, CMP_A}))
+          floor(x, y, "water_outer_up");
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_S, CMP_A, CMP_S, CMP_S, CMP_A, CMP_D, CMP_A}))
+          floor(x, y, "water_outer_down");
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_S, CMP_A, CMP_D, CMP_S, CMP_A, CMP_S, CMP_A}))
+          floor(x, y, "water_outer_left");
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_S, CMP_A, CMP_S, CMP_D, CMP_A, CMP_S, CMP_A}))
+          floor(x, y, "water_outer_right");
 
-              if (hasSurrounding(
-                    x, y, "water",
-              {CMP_A, CMP_D, CMP_A, CMP_D, CMP_S, CMP_A, CMP_S, CMP_A}))
-                floor(x, y, "water_outer_up_left");
+        if (hasSurrounding(
+                x, y, "water",
+                {CMP_A, CMP_D, CMP_A, CMP_D, CMP_S, CMP_A, CMP_S, CMP_A}))
+          floor(x, y, "water_outer_up_left");
         if (hasSurrounding(
                 x, y, "water",
                 {CMP_A, CMP_D, CMP_A, CMP_S, CMP_D, CMP_A, CMP_S, CMP_A}))
@@ -330,9 +330,9 @@ void LevelGen::placeTreeBorder() {
 }
 
 namespace {
-  class Area {
-  public:
-    int x1, y1, x2, y2;
+class Area {
+public:
+  int x1, y1, x2, y2;
   Area(int x1, int y1, int x2, int y2) : x1(x1), y1(y1), x2(x2), y2(y2) {}
 
   void foreach (std::function<void(int, int)> F) {
@@ -426,7 +426,6 @@ bool LevelGen::makeCamp() {
   return true;
 }
 
-
 void LevelGen::generateHouse() {
   const int w = level->getWidth();
   const int h = level->getHeight();
@@ -519,14 +518,15 @@ void LevelGen::generateHouse() {
     behavior = CharacterAI::Behavior::VillageGuard;
 
   Character *C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
-                    behavior, Character::BodyType::Pale);
+                               behavior, Character::BodyType::Pale);
   makeHair(*C);
   C->setFaction(CurrentFaction);
-  switch(behavior) {
+  switch (behavior) {
   case CharacterAI::Behavior::Farmer:
     equipFarmer(*C);
     C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
-                      CharacterAI::Behavior::FarmerWife, Character::BodyType::Pale);
+                      CharacterAI::Behavior::FarmerWife,
+                      Character::BodyType::Pale);
     makeHairFemale(*C);
     equipFarmerWife(*C);
     C->setFaction(CurrentFaction);
@@ -569,8 +569,8 @@ LevelGen::LevelGen(unsigned seed)
   Elevation = 0.3f + chance() * 0.2f;
 }
 
-Level *LevelGen::generate(World &world, GameData &data, Faction *OwningFaction, Level::Type type,
-                          const Connection *C) {
+Level *LevelGen::generate(World &world, GameData &data, Faction *OwningFaction,
+                          Level::Type type, const Connection *C) {
   this->world = &world;
   this->data = &data;
 
@@ -587,8 +587,8 @@ Level *LevelGen::generate(World &world, GameData &data, Faction *OwningFaction, 
     generateHouse();
     break;
   case Level::Type::Mine:
-    level = new Level(world, type, 50 + chanceInt(100),
-                      50 + chanceInt(100), data);
+    level =
+        new Level(world, type, 50 + chanceInt(100), 50 + chanceInt(100), data);
     generateMine();
     break;
   }
@@ -601,18 +601,19 @@ Level *LevelGen::generate(World &world, GameData &data, Faction *OwningFaction, 
 static bool isWalkway(const Tile &t) {
   if (!t.passable())
     return false;
-  return t.name() == "grass_stones" || t.group() == "stone" || t.group() == "earth";
+  return t.name() == "grass_stones" || t.group() == "stone" ||
+         t.group() == "earth";
 }
 
-static bool isWalkwaySurrounded(Level &l, int x, int y, int ignore_x, int ignore_y) {
+static bool isWalkwaySurrounded(Level &l, int x, int y, int ignore_x,
+                                int ignore_y) {
   for (int ix = -1; ix <= 1; ++ix)
     for (int iy = -1; iy <= 1; ++iy)
       if (ix != ignore_x && iy != ignore_y)
         if (isWalkway(l.getBuilding(x + ix, y + iy)))
-        return true;
+          return true;
   return false;
 }
-
 
 void LevelGen::connectWalkways(int x, int y, int dx, int dy) {
   int rx = x;
@@ -657,7 +658,6 @@ bool LevelGen::generateSettlement(TileRect Area) {
   return Result;
 }
 
-
 bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
   if (!isFree(Area))
     return false;
@@ -676,9 +676,9 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
     int GardenY = UsedArea.getLowerY() - 1;
 
     if (chance() < 0.3f) {
-        makeLine(TilePos(UsedArea.getX(), GardenY),
-                 TilePos(UsedArea.getX() + HouseArea.getW() - 1,
-                         GardenY), "wood_fence_piece");
+      makeLine(TilePos(UsedArea.getX(), GardenY),
+               TilePos(UsedArea.getX() + HouseArea.getW() - 1, GardenY),
+               "wood_fence_piece");
       build2(DoorX, GardenY, "wood_fence_gate_open");
     } else if (chance() < 0.4f)
       build(DoorX + 1, GardenY, "wood_bench_top");
@@ -808,7 +808,6 @@ void LevelGen::decorateMarketplace(TileRect A) {
     if (makeStall(A.getX() + chanceInt(A.getW()),
                   A.getY() + chanceInt(A.getH())))
       ++placed;
-
   }
 }
 
@@ -1067,7 +1066,8 @@ void LevelGen::placeOrcCamp(int w, int h) {
       world->addFaction(CurrentFaction);
       Character *C;
       C = new Character(*level, Vec2(TilePos(x - 1, y)),
-                        CharacterAI::Behavior::Bandit, Character::BodyType::Green);
+                        CharacterAI::Behavior::Bandit,
+                        Character::BodyType::Green);
       C->setFaction(CurrentFaction);
       C = new Character(*level, Vec2(TilePos(x + 1, y)),
                         CharacterAI::Behavior::Bandit,
@@ -1085,36 +1085,8 @@ void LevelGen::placeOrcCamp(int w, int h) {
 
 void LevelGen::makeHair(Character &C) {
   const std::vector<std::string> Styles = {
-    "short_hair1_",
-    "short_hair2_",
-    "short_hair3_",
-    "beard1_",
-    "beard2_",
-    "beard3_",
-    "beard4_",
-    "beard5_",
-    "beard6_",
-  };
-  const std::vector<std::string> Color = {
-    "brown",
-    "red",
-    "yellow",
-    "black",
-  };
-  std::string Style = Styles.at(chanceInt(Styles.size()))
-                      + Color.at(chanceInt(Color.size()));
-  C.setHair(Style);
-}
-
-void LevelGen::makeHairFemale(Character &C) {
-  const std::vector<std::string> Styles = {
-      "long_hair1_",
-      "long_hair2_",
-      "long_hair3_",
-      "long_hair4_",
-      "long_hair5_",
-      "long_hair6_",
-      "long_hair7_",
+      "short_hair1_", "short_hair2_", "short_hair3_", "beard1_", "beard2_",
+      "beard3_",      "beard4_",      "beard5_",      "beard6_",
   };
   const std::vector<std::string> Color = {
       "brown",
@@ -1122,8 +1094,24 @@ void LevelGen::makeHairFemale(Character &C) {
       "yellow",
       "black",
   };
-  std::string Style = Styles.at(chanceInt(Styles.size()))
-                      + Color.at(chanceInt(Color.size()));
+  std::string Style =
+      Styles.at(chanceInt(Styles.size())) + Color.at(chanceInt(Color.size()));
+  C.setHair(Style);
+}
+
+void LevelGen::makeHairFemale(Character &C) {
+  const std::vector<std::string> Styles = {
+      "long_hair1_", "long_hair2_", "long_hair3_", "long_hair4_",
+      "long_hair5_", "long_hair6_", "long_hair7_",
+  };
+  const std::vector<std::string> Color = {
+      "brown",
+      "red",
+      "yellow",
+      "black",
+  };
+  std::string Style =
+      Styles.at(chanceInt(Styles.size())) + Color.at(chanceInt(Color.size()));
   C.setHair(Style);
 }
 
@@ -1143,21 +1131,14 @@ void LevelGen::equipGuard(Character &C) {
 
 void LevelGen::equipFarmer(Character &C) {
   C.addItem("leather_pants");
-  std::vector<std::string> Tops = {
-    "shoulder_bag_brown",
-    "shirt1_brown",
-    "shirt2_brown",
-    "shirt3_brown"
-  };
+  std::vector<std::string> Tops = {"shoulder_bag_brown", "shirt1_brown",
+                                   "shirt2_brown", "shirt3_brown"};
   C.addItem(Tops.at(chanceInt(Tops.size())));
 }
 
 void LevelGen::equipFarmerWife(Character &C) {
   C.addItem("leather_pants");
-  std::vector<std::string> Tops = {
-      "top_female_brown",
-      "short_top_female_brown",
-      "dress_brown"
-  };
+  std::vector<std::string> Tops = {"top_female_brown", "short_top_female_brown",
+                                   "dress_brown"};
   C.addItem(Tops.at(chanceInt(Tops.size())));
 }

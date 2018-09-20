@@ -1,12 +1,12 @@
 #ifndef ARGOS_TILEDATA_H
 #define ARGOS_TILEDATA_H
 
+#include "ItemGroup.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <fstream>
 #include <iostream>
 #include <unordered_map>
-#include "ItemGroup.h"
 
 class TileData {
 
@@ -36,9 +36,7 @@ public:
 
   const std::string &group() const { return group_; }
 
-  std::string getResources() const {
-    return Resources;
-  }
+  std::string getResources() const { return Resources; }
 
   void setResources(const std::string &I) {
     enableInventory();
@@ -46,21 +44,13 @@ public:
     IsResource = true;
   }
 
-  unsigned int getResourceCounter() const {
-    return ResourceCounter;
-  }
+  unsigned int getResourceCounter() const { return ResourceCounter; }
 
-  bool isResource() const {
-    return IsResource;
-  }
+  bool isResource() const { return IsResource; }
 
-  void enableInventory() {
-    HasInventory = true;
-  }
+  void enableInventory() { HasInventory = true; }
 
-  bool hasInventory() const {
-    return HasInventory;
-  }
+  bool hasInventory() const { return HasInventory; }
 
   void passable(bool v) { passable_ = v; }
 

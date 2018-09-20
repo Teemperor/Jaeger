@@ -70,7 +70,6 @@ void GameData::parseItemData(const std::string &path) {
       Items[id]->setSprite(getSprite(sprite));
     }
 
-
     if (item.find("effect") != item.end()) {
       std::string EffectName = item["effect"];
       std::string Str = item["effectStr"];
@@ -97,7 +96,6 @@ void GameData::parseItemData(const std::string &path) {
     ItemGroups[id] = new ItemGroup(this);
     ItemGroups[id]->add(1, id, 1);
   }
-
 
   for (auto group : data["itemgroups"]) {
     std::string id = group["id"];

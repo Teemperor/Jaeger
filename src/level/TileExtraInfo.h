@@ -1,8 +1,8 @@
 #ifndef TILEEXTRAINFO_H
 #define TILEEXTRAINFO_H
 
-#include <TilePos.h>
 #include <Inventory.h>
+#include <TilePos.h>
 
 class TileData;
 
@@ -18,13 +18,9 @@ public:
 
   void updateResources(World &W, TileData &D, unsigned Seed);
 
-  void createInventory() {
-    HasInventory = true;
-  }
+  void createInventory() { HasInventory = true; }
 
-  bool hasInventory() const {
-    return HasInventory;
-  }
+  bool hasInventory() const { return HasInventory; }
 
   Inventory &getInventory() {
     assert(hasInventory());
@@ -38,9 +34,7 @@ public:
     teleports = true;
   }
 
-  const TilePos &getTeleportTarget() const {
-    return teleportTarget;
-  }
+  const TilePos &getTeleportTarget() const { return teleportTarget; }
 };
 
 #endif // TILEEXTRAINFO_H

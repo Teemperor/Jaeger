@@ -13,7 +13,7 @@ void StatusBar::draw(sf::RenderTarget &Target, float dtime) {
     ShadowValue += ShadowValueChange * ShadowDirection;
   }
 
-  int Barlength = (int)(ShadowValue / (float) Max * Length);
+  int Barlength = (int)(ShadowValue / (float)Max * Length);
   sf::Sprite S;
   int Pos = 0;
 
@@ -28,7 +28,7 @@ void StatusBar::draw(sf::RenderTarget &Target, float dtime) {
     S = BarMid;
   }
 
-  Barlength = (int)(Value / (float) Max * Length);
+  Barlength = (int)(Value / (float)Max * Length);
   S = BarStart;
   Pos = 0;
   for (int I = 0; I < Barlength; ++I) {
@@ -40,5 +40,4 @@ void StatusBar::draw(sf::RenderTarget &Target, float dtime) {
     Pos += S.getLocalBounds().width;
     S = BarMid;
   }
-
 }

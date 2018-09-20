@@ -4,8 +4,8 @@
 #include <cassert>
 #include <cmath>
 #include <initializer_list>
-#include <tuple>
 #include <limits>
+#include <tuple>
 
 class Vec2;
 class Level;
@@ -75,9 +75,7 @@ public:
     return *TheLevel;
   }
 
-  bool valid() const {
-    return hasLevel();
-  }
+  bool valid() const { return hasLevel(); }
 };
 
 #endif // TILEPOS_H

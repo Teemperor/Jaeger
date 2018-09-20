@@ -3,8 +3,8 @@
 
 WorldGen::WorldGen() {}
 
-
-static void fillOpenConnections(LevelGen &gen, World &world, GameData &D, unsigned Seed) {
+static void fillOpenConnections(LevelGen &gen, World &world, GameData &D,
+                                unsigned Seed) {
   for (auto &conn : gen.getOpenConnections()) {
     LevelGen gen2(Seed++);
     gen2.generate(world, D, conn.OwningFaction, conn.targetType, &conn);
@@ -21,7 +21,6 @@ static void fillOpenConnections(LevelGen &gen, World &world, GameData &D, unsign
         .setTeleportTarget(out2);
   }
 }
-
 
 World *WorldGen::generate(GameData &d) {
   World *world = new World(d);

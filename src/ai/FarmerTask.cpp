@@ -26,7 +26,6 @@ static bool sameLevel(TilePos a, TilePos b) {
   return &a.getLevel() == &b.getLevel();
 }
 
-
 AITask *FarmerTask::act(Character &C, float DTime) {
   if (First) {
     House = C.getTilePos();
@@ -44,18 +43,23 @@ AITask *FarmerTask::act(Character &C, float DTime) {
 
 AITask *FarmerTask::actInside(Character &C) {
   if (hasCorn(C)) {
-    TilePos nextContainer = C.getLevel().searchClosestMatchingTile(C.getTilePos(),
-                                                                   [&C](int x, int y) {
-                                                                     Tile &T = C.getLevel().getBuilding(x, y);
-                                                                     if (T.name() == "open_barrel") {
-                                                                       if (T.getInventory() && !T.getInventory()->full())
-                                                                         return true;
-                                                                     }
-                                                                     return false;
-                                                                   }, 8);
+    TilePos nextContainer = C.getLevel().searchClosestMatchingTile(
+        C.getTilePos(),
+        [&C](int x, int y) {
+          Tile &T = C.getLevel().getBuilding(x, y);
+          if (T.name() == "open_barrel") {
+            if (T.getInventory() && !T.getInventory()->full())
+              return true;
+          }
+          return false;
+        },
+        8);
     if (nextContainer.valid()) {
       if (Vec2(nextContainer).distance(C.getTilePos()) <= 30) {
-        Inventory *Inv = C.getLevel().getBuilding(nextContainer.getX(), nextContainer.getY()).getInventory();
+        Inventory *Inv =
+            C.getLevel()
+                .getBuilding(nextContainer.getX(), nextContainer.getY())
+                .getInventory();
         if (Inv) {
           Inv->takeAll(C.getPrivateInventory());
           return new WaitTask(3);
@@ -71,18 +75,22 @@ AITask *FarmerTask::actOutside(Character &C) {
   if (C.getPrivateInventory().full()) {
     return new WalkTask(House);
   } else {
-    TilePos nextCorn = C.getLevel().searchClosestMatchingTile(C.getTilePos(),
-                                                            [&C](int x, int y) {
-                                                              Tile &T = C.getLevel().getBuilding2(x, y);
-                                                              if (T.name() == "corn") {
-                                                                if (T.getInventory() && !T.getInventory()->empty())
-                                                                  return true;
-                                                              }
-                                                              return false;
-                                                            }, 30);
+    TilePos nextCorn = C.getLevel().searchClosestMatchingTile(
+        C.getTilePos(),
+        [&C](int x, int y) {
+          Tile &T = C.getLevel().getBuilding2(x, y);
+          if (T.name() == "corn") {
+            if (T.getInventory() && !T.getInventory()->empty())
+              return true;
+          }
+          return false;
+        },
+        30);
     if (nextCorn.valid()) {
       if (Vec2(nextCorn).distance(C.getTilePos()) <= 10) {
-        Inventory *Inv = C.getLevel().getBuilding2(nextCorn.getX(), nextCorn.getY()).getInventory();
+        Inventory *Inv = C.getLevel()
+                             .getBuilding2(nextCorn.getX(), nextCorn.getY())
+                             .getInventory();
         if (Inv) {
           C.getPrivateInventory().takeAll(*Inv);
           return new WaitTask(1);

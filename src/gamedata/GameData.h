@@ -2,10 +2,10 @@
 #define ARGOS_GAMEDATA_H
 
 #include "ItemData.h"
+#include "ItemGroup.h"
 #include "ProjectileData.h"
 #include "TextureAtlas.h"
 #include "TileData.h"
-#include "ItemGroup.h"
 #include <Logger.h>
 #include <SFML/Graphics/Sprite.hpp>
 #include <cassert>

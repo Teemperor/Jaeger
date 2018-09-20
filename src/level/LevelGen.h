@@ -4,9 +4,9 @@
 #include "Level.h"
 #include "TileRect.h"
 
+#include <Character.h>
 #include <Perlin2D.h>
 #include <random>
-#include <Character.h>
 
 class World;
 
@@ -28,7 +28,6 @@ class LevelGen {
   void equipGuard(Character &C);
   void equipFarmer(Character &C);
   void equipFarmerWife(Character &C);
-
 
   void makeQuadLines(TileRect A, std::string T) {
     makeLine(TilePos(A.getX(), A.getY()),
@@ -85,14 +84,11 @@ class LevelGen {
   std::mt19937 gen;
   std::uniform_real_distribution<float> dis;
 
-  template<typename T>
-  T chanceInt(T limit) {
+  template <typename T> T chanceInt(T limit) {
     return static_cast<T>(limit * chance());
   }
 
-  float chance() {
-    return dis(gen);
-  }
+  float chance() { return dis(gen); }
 
   void generateWaterAndLand();
   void formatWaterTiles();
@@ -145,19 +141,13 @@ public:
   struct Connection {
     Level::Type targetType;
     TilePos pos;
-    enum class Directions {
-      Up,
-      Down,
-      Left,
-      Right
-    };
+    enum class Directions { Up, Down, Left, Right };
     int TargetW = 0;
     int TargetH = 0;
     Directions Direction;
     Faction *OwningFaction = nullptr;
     Connection(Level::Type Target, TilePos P, Directions D = Directions::Up)
-        : targetType(Target), pos(P), Direction(D) {
-    }
+        : targetType(Target), pos(P), Direction(D) {}
     Connection() = default;
   };
 
@@ -168,15 +158,14 @@ private:
 public:
   explicit LevelGen(unsigned seed);
 
-  Level *generate(World &world, GameData &data, Faction *OwningFaction, Level::Type type, const Connection *C);
+  Level *generate(World &world, GameData &data, Faction *OwningFaction,
+                  Level::Type type, const Connection *C);
 
   const std::vector<Connection> &getOpenConnections() const {
     return openConnections;
   }
 
-  const Connection &getBackConnection() const {
-    return BackConnection;
-  }
+  const Connection &getBackConnection() const { return BackConnection; }
 };
 
 #endif // ARGOS_LEVELGEN_H

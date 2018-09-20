@@ -12,10 +12,11 @@ class WalkTask : public AITask {
   bool inTargetLevel(Character &C) {
     return &C.getLevel() == &Target.getLevel();
   }
+
 public:
   explicit WalkTask(TilePos Target) : Target(Target) {}
 
   AITask *act(Character &C, float DTime) override;
 };
 
-#endif //MAMBO_WALKTASK_H
+#endif // MAMBO_WALKTASK_H

@@ -1,7 +1,7 @@
 #include "ai/Faction.h"
 
-#include <level/Level.h>
 #include <Character.h>
+#include <level/Level.h>
 
 Faction::Faction(bool Friendly) : FriendlyByDefault(Friendly) {}
 

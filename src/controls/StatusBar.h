@@ -1,7 +1,6 @@
 #ifndef MAMBO_STATUSBAR_H
 #define MAMBO_STATUSBAR_H
 
-
 #include <SFML/Graphics.hpp>
 #include <gamedata/GameData.h>
 
@@ -30,16 +29,11 @@ public:
     OffY = Y;
   }
 
-  void setMax(int M) {
-    Max = M;
-  }
+  void setMax(int M) { Max = M; }
 
-  void setValue(int V) {
-    Value = V;
-  }
+  void setValue(int V) { Value = V; }
 
   void draw(sf::RenderTarget &Target, float dtime);
 };
 
-
-#endif //MAMBO_STATUSBAR_H
+#endif // MAMBO_STATUSBAR_H

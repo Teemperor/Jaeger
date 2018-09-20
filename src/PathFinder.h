@@ -13,6 +13,7 @@ class PathFinder {
   friend class MapSearchNode;
 
   void findPathImpl(TilePos start, TilePos end, std::vector<TilePos> &result);
+
 public:
   explicit PathFinder(Level &Level);
   void findPath(TilePos Start, TilePos End, std::vector<TilePos> &Result);

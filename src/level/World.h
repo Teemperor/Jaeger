@@ -27,13 +27,9 @@ public:
     ToTeleport.emplace_back(o, target);
   }
 
-  void addFaction(Faction *F) {
-    Factions.push_back(F);
-  }
+  void addFaction(Faction *F) { Factions.push_back(F); }
 
-  GameData &getGameData() {
-    return Data;
-  }
+  GameData &getGameData() { return Data; }
 
   void addLevel(Level *level) { levels_.push_back(level); }
 

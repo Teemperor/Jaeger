@@ -1,15 +1,14 @@
 #include "AITask.h"
 
 #include "Character.h"
-#include "WalkTask.h"
-#include "WaitTask.h"
-#include "ListTask.h"
+#include "CombatTask.h"
+#include "DefenseTask.h"
 #include "FarmerTask.h"
 #include "FarmerWifeTask.h"
-#include "CombatTask.h"
-#include "VillageGuardTask.h"
 #include "HuntTask.h"
-#include "DefenseTask.h"
+#include "ListTask.h"
+#include "VillageGuardTask.h"
+#include "WaitTask.h"
 
 #include <PathFinder.h>
 #include <iostream>
@@ -24,26 +23,25 @@ AITask::AITask() = default;
 
 AITask::~AITask() = default;
 
-
 void CharacterAI::popBack() {
   delete Tasks.back();
   Tasks.pop_back();
 }
 
 CharacterAI::CharacterAI(Behavior b) {
-  switch(b) {
-    case Behavior::Farmer:
-      Tasks.push_back(new FarmerTask());
-      break;
-    case Behavior::FarmerWife:
-      Tasks.push_back(new FarmerWifeTask());
-      break;
-    case Behavior::VillageGuard:
-      Tasks.push_back(new VillageGuardTask());
-      break;
-    case Behavior::Bandit:
-      Tasks.push_back(new DefenseTask());
-      break;
+  switch (b) {
+  case Behavior::Farmer:
+    Tasks.push_back(new FarmerTask());
+    break;
+  case Behavior::FarmerWife:
+    Tasks.push_back(new FarmerWifeTask());
+    break;
+  case Behavior::VillageGuard:
+    Tasks.push_back(new VillageGuardTask());
+    break;
+  case Behavior::Bandit:
+    Tasks.push_back(new DefenseTask());
+    break;
   }
 }
 

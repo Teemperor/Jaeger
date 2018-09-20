@@ -1,7 +1,6 @@
 #ifndef MAMBO_HUNTTASK_H
 #define MAMBO_HUNTTASK_H
 
-
 #include "AITask.h"
 
 class Creature;
@@ -18,5 +17,4 @@ public:
   bool actInactive(Character &C) override;
 };
 
-
-#endif //MAMBO_HUNTTASK_H
+#endif // MAMBO_HUNTTASK_H
