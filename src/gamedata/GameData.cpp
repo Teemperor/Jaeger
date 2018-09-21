@@ -48,7 +48,7 @@ void GameData::parseItemData(const std::string &path) {
     }
     Items[id]->setCooldown(cooldown);
 
-    int value = 1;
+    ItemData::Coins value = 1U;
     if (item.find("value") != item.end()) {
       value = item["value"];
     }

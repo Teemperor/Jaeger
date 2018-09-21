@@ -49,7 +49,7 @@ class LevelGen {
   void makeHouse(TileRect A, int depth,
                  Level::Type ConnectsTo);
 
-  void makeMine(int x, int y);
+  bool makeMine(int x, int y);
 
   void generateSettlements();
 

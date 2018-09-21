@@ -379,14 +379,18 @@ void LevelGen::generateOverworld() {
 
   generateSettlements();
 
-  for (int i = 0; i < 100 + chance() * 35; ++i) {
-    makeMine(chanceInt(level->getWidth()), chanceInt(level->getHeight()));
+  unsigned Mines = static_cast<unsigned>(chance() * 5 + 2);
+  for (int i = 0; i < 1000 && Mines > 0; ++i) {
+    if (Mines == 0)
+      break;
+    if (makeMine(chanceInt(level->getWidth()), chanceInt(level->getHeight())))
+      --Mines;
   }
 
-  int camps = 0;
-  for (int i = 0; i < chance() * 25 && camps < 3; ++i) {
+  unsigned Camps = static_cast<unsigned>(chance() * 5 + 2);
+  for (int i = 0; i < 1000 && Camps > 0; ++i) {
     if (makeCamp())
-      camps++;
+      Camps--;
   }
 
   placeVegetation();
@@ -882,15 +886,16 @@ void LevelGen::makeMineFloorClutter() {
   }
 }
 
-void LevelGen::makeMine(int x, int y) {
+bool LevelGen::makeMine(int x, int y) {
   TileRect Area(x - 1, y - 3, 3, 9);
   if (!isFree(Area))
-    return;
+    return false;
   makeFloor(Area.resize(-1, -4).moveY(1), "earth");
   makeHouse(Area.resize(0, -6), 1, Level::Type::Mine);
   build(x, y, "railtracks_vertical");
   build(x, y + 1, "railtracks_vertical");
   build(x, y + 1, "railtracks_end_bottom");
+  return true;
 }
 
 void LevelGen::generateMine() {
