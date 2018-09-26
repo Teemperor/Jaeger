@@ -126,6 +126,11 @@
     { "id" : "wood_fence_gate_open" , "tile" : [45, 23] },
     { "id" : "wood_fence_piece" , "tile" : [47, 23] },
 
+    { "id" : "bed_left_1" , "tile" : [14, 2] },
+    { "id" : "bed_left_2" , "tile" : [15, 2] },
+
+    { "id" : "bed_vertical_1" , "tile" : [14, 3] },
+
     { "id" : "stall_table_mid1" , "tile" : [10, 4] },
     { "id" : "stall_table_mid2" , "tile" : [11, 4] },
     { "id" : "stall_table_mid3" , "tile" : [12, 4] },

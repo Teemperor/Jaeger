@@ -109,6 +109,10 @@
 
     { "id" : "shelf", "passable" : false, "sprites" : ["shelf_small", "shelf_medium", "shelf_big"], "inventory" : true},
 
+    { "id" : "bed_left", "passable" : false, "sprites" : ["bed_left_1", "bed_left_2"]},
+
+    { "id" : "bed_vertical", "passable" : false, "sprites" : ["bed_vertical_1"]},
+
     { "id" : "planks", "group" : "planks", "passable" : true, "sprites" : ["planks1", "planks2"]},
 
     { "id" : "small_bush", "group" : "bush", "passable" : true, "sprites" : ["small_bush1", "small_bush2", "small_bush3", "small_bush4"]},

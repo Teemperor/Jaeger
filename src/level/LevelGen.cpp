@@ -548,15 +548,16 @@ void LevelGen::generateFarmHouse() {
 void LevelGen::generateGuardHouse() {
   generateHouse();
 
-  int doorX = level->getWidth() / 2;
-  int doorY = level->getHeight() - 2;
+  for (int y = 3; y < level->getHeight() - 4; y+=2) {
+    build(1, y, "bed_left");
 
-  Character *C = new Character(*level, Vec2(TilePos(doorX, doorY - 2)),
-                               CharacterAI::Behavior::VillageGuard, Character::BodyType::Pale);
-  makeHair(*C);
-  C->setFaction(CurrentFaction);
-  C->getPrivateInventory().addGold(50);
-  equipGuard(*C);
+    Character *C = new Character(*level, Vec2(TilePos(1, y + 1)),
+                                 CharacterAI::Behavior::VillageGuard, Character::BodyType::Pale);
+    makeHair(*C);
+    C->setFaction(CurrentFaction);
+    C->getPrivateInventory().addGold(50);
+    equipGuard(*C);
+  }
 }
 
 
