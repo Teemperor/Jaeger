@@ -249,6 +249,11 @@ bool Character::tryShootAt(GameObject &o) {
     return false;
   if (!trySpendFatigue(weapon.getFatigueCost()))
     return false;
+
+  if (auto F = o.getFaction()) {
+    F->addEnemy(getFaction());
+  }
+
   if (weapon.tryUse(getLevel()) && weapon.hasProjectiles()) {
     new Projectile(*weapon.getProjectileData(), getLevel(), getPos(), *this, o);
     return true;

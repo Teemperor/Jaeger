@@ -8,6 +8,7 @@
 class GameData;
 class Level;
 class Inventory;
+class Faction;
 
 class GameObject {
 
@@ -29,6 +30,10 @@ public:
   Vec2 getPos() const { return Pos; }
   TilePos getTilePos() const {
     return TilePos(*TheLevel, Pos.getX() / 16, Pos.getY() / 16);
+  }
+
+  virtual Faction *getFaction() {
+    return nullptr;
   }
 
   Inventory *getInventory() { return Inv; }

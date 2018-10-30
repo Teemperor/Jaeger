@@ -63,7 +63,7 @@ public:
     return TheFaction->isEnemyFaction(*Other.TheFaction);
   }
 
-  Faction *getFaction() { return TheFaction; }
+  Faction *getFaction() override { return TheFaction; }
 
   void setFaction(Faction *NewFaction) {
     assert(NewFaction);

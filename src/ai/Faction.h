@@ -24,6 +24,12 @@ public:
   }
   bool isFriendlyToOthers() const { return FriendlyByDefault; }
 
+  void addEnemy(Faction *O) {
+    if (!O)
+      return;
+    Enemies.insert(O);
+  }
+
   void registerFoodOffer(Character *C) { OfferingFood.insert(C); }
   void unregisterFoodOffer(Character *C) { OfferingFood.erase(C); }
   Character *closestFoodOffer(TilePos p);
