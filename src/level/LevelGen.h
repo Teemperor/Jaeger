@@ -26,6 +26,8 @@ class LevelGen {
   void makeHair(Character &C);
   void makeHairFemale(Character &C);
   void equipGuard(Character &C);
+  void equipOrc(Character &C);
+
   void equipFarmer(Character &C);
   void equipFarmerWife(Character &C);
 

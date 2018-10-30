@@ -1098,14 +1098,20 @@ void LevelGen::placeOrcCamp(int w, int h) {
                         CharacterAI::Behavior::Bandit,
                         Character::BodyType::Green);
       C->setFaction(CurrentFaction);
+      equipOrc(*C);
+
       C = new Character(*level, Vec2(TilePos(x + 1, y)),
                         CharacterAI::Behavior::Bandit,
                         Character::BodyType::Green);
       C->setFaction(CurrentFaction);
+      equipOrc(*C);
+
       C = new Character(*level, Vec2(TilePos(x + 1, y + 1)),
                         CharacterAI::Behavior::Bandit,
                         Character::BodyType::Green);
       C->setFaction(CurrentFaction);
+      equipOrc(*C);
+
       CurrentFaction = nullptr;
       return;
     }
@@ -1155,6 +1161,15 @@ void LevelGen::equipGuard(Character &C) {
     C.addItem("magic_staff");
 
   C.addItem("steel_buckler");
+  C.addItem("small_health_potion");
+}
+
+
+void LevelGen::equipOrc(Character &C) {
+  C.addItem("leather_pants");
+  C.addItem("leather_armor");
+  C.addItem("steel_buckler");
+  C.addItem("wood_bow");
   C.addItem("small_health_potion");
 }
 
