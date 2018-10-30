@@ -34,6 +34,8 @@ AITask *WalkTask::act(Character &C, float DTime) {
 }
 
 void WalkTask::debugDraw(Character &C, sf::RenderTarget &target) {
+  return;
+
   std::vector<sf::Vertex> line;
   for (int i = 0; i < (int)WalkPath.size() - 1; i++) {
     Vec2 currentPos = WalkPath[i];
