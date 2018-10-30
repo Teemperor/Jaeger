@@ -689,13 +689,13 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
   if (!isFree(Area))
     return false;
 
-  if (iteration >= 6)
+  if (iteration >= 9)
     return false;
 
   if (iteration == 0) {
     makeFloor(Area, "stone");
     decorateMarketplace(Area);
-  } else if (iteration < 4 && Area.biggerThan(3, 5) && !Area.biggerThan(6, 7)) {
+  } else if (iteration < 7 && Area.biggerThan(3, 5) && !Area.biggerThan(6, 7)) {
     auto UsedArea = Area.resize(-1, -1);
     auto HouseArea = UsedArea.resize(0, -1);
     makeHouse(HouseArea, 2, chance() < 0.5f ? Level::Type::FarmerHouse :
@@ -717,7 +717,7 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
              "grass_stones");
     connectWalkways4(UsedArea.getX(), UsedArea.getLowerY());
     connectWalkways4(UsedArea.getRightX(), UsedArea.getLowerY());
-  } else if (iteration > 4) {
+  } else if (iteration >= 7) {
     auto UsedArea = Area.resize(-1, -1);
     makeFloor(UsedArea, "earth");
 
@@ -767,7 +767,7 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
 }
 
 void LevelGen::generateSettlements() {
-  int Count = 3;
+  int Count = 1;
   for (int i = 0; i < 4000; i++) {
     if (Count == 0)
       break;
