@@ -15,10 +15,12 @@ class VillageGuardTask : public AITask {
   std::normal_distribution<> PosDis;
 
   unsigned Rounds = 0;
+  bool StartedToHunt = false;
 
 public:
   VillageGuardTask() : rd(), gen(rd()), PosDis(0, 20) {}
   AITask *act(Character &C, float DTime) override;
+  virtual bool actInactive(Character &C);
 };
 
 #endif // MAMBO_VILLAGEGUARDTASK_H

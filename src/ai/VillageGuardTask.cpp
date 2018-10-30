@@ -3,6 +3,7 @@
 #include "WaitTask.h"
 #include "WalkTask.h"
 #include "BuyGroceriesTask.h"
+#include "HuntTask.h"
 
 #include <Character.h>
 #include <level/Level.h>
@@ -22,6 +23,15 @@ static TilePos getFrontOfHouse(TilePos p) {
 }
 
 AITask *VillageGuardTask::act(Character &C, float DTime) {
+  if (!StartedToHunt) {
+    auto ClosestEnemies = C.getClosestEnemies(16 * 20);
+    if (!ClosestEnemies.empty()) {
+      StartedToHunt = true;
+      return new HuntTask(ClosestEnemies.front());
+    }
+  }
+
+  StartedToHunt = false;
   if (First) {
     House = C.getTilePos();
     BeforeHouse = getFrontOfHouse(C.getTilePos()).modY(1);
@@ -47,4 +57,15 @@ AITask *VillageGuardTask::act(Character &C, float DTime) {
     return new ListTask({new WalkTask(Target), new WaitTask(5)});
   }
   return nullptr;
+}
+
+bool VillageGuardTask::actInactive(Character &C) {
+  if (!StartedToHunt) {
+    auto ClosestEnemies = C.getClosestEnemies(16 * 20);
+    if (!ClosestEnemies.empty()) {
+      return true;
+    }
+  }
+
+  return false;
 }
