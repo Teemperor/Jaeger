@@ -743,8 +743,8 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
     if (chance() < 0.2f)
       continue;
     for (int Try = 0; Try < 5; ++Try) {
-      int NewW = static_cast<int>(chanceInt(2) + 4);
-      int NewH = static_cast<int>(chanceInt(2) + 7);
+      int NewW = chanceInt(2) + 4;
+      int NewH = chanceInt(2) + 7;
       TileRect New = Area;
       New.setW(NewW);
       New.setH(NewH);
