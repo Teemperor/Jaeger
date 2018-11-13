@@ -20,7 +20,7 @@ class VillageGuardTask : public AITask {
 public:
   VillageGuardTask() : rd(), gen(rd()), PosDis(0, 20) {}
   AITask *act(Character &C, float DTime) override;
-  virtual bool actInactive(Character &C);
+  bool actInactive(Character &C) override;
 };
 
 #endif // MAMBO_VILLAGEGUARDTASK_H
