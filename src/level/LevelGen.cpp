@@ -118,6 +118,51 @@ void LevelGen::makeHouse(TileRect A, int depth, Level::Type ConnectsTo) {
   build(x + w - 1, y + h - 1, "sand_wall_lower_right");
 }
 
+void LevelGen::makeCastle(TileRect A, int depth, Level::Type ConnectsTo) {
+  int x = A.getX();
+  int y = A.getY();
+  const int ypd = y + depth;
+  int w = A.getW();
+  int h = A.getH();
+
+  for (int ix = x; ix < x + w; ix++) {
+    for (int iy = y; iy < y + h; iy++) {
+      if (iy == ypd || iy == y) {
+        overlay(ix, iy, "castle_wall_t1");
+      }
+
+      if (ix == x) {
+        build(ix, iy, "castle_wall_l");
+      } else if (ix == x + w - 1) {
+        build(ix, iy, "castle_wall_r");
+      } else if (iy == y + h - 1) {
+        floor(ix, iy, "castle_wall_bc");
+      } else if (iy > y) {
+        build(ix, iy, "castle_wall_c");
+      }
+    }
+  }
+
+  int doorX = x + (w - 1) / 2;
+  int doorY = y + h - 1;
+  floor(doorX, doorY, "castle_wall_bc_free");
+  build(doorX, doorY, "door_open");
+
+  openConnections.emplace_back(ConnectsTo, TilePos(*level, doorX, doorY));
+  openConnections.back().TargetW = w * 2;
+  openConnections.back().TargetH = h * 2;
+  openConnections.back().OwningFaction = CurrentFaction;
+
+  //overlay(x, y + h - 1 - depth, "brown_roof_angular_left_lower");
+  //overlay(x + w - 1, y + h - 1 - depth, "brown_roof_angular_right_lower");
+  overlay(x, ypd, "castle_wall_tl");
+  overlay(x + w - 1, ypd, "castle_wall_tr");
+  overlay(x, y, "castle_wall_tl");
+  overlay(x + w - 1, y, "castle_wall_tr");
+  build(x, y + h - 1, "castle_wall_bl");
+  build(x + w - 1, y + h - 1, "castle_wall_br");
+}
+
 void LevelGen::floor(int x, int y, std::string tileName) {
   level->get(x, y).setData(data->tile(tileName));
 }
@@ -512,12 +557,92 @@ void LevelGen::generateHouse() {
   overlay(doorX, doorY, "door_light");
 }
 
-void LevelGen::generateFarmHouse() {
-  generateHouse();
+void LevelGen::generateCastle() {
   const int w = level->getWidth();
   const int h = level->getHeight();
   GameData &data = level->getData();
 
+  int doorX = (w - 1) / 2;
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h - 1; ++y) {
+      level->get(x, y).setData(data.tile("castle_floor"));
+    }
+  }
+
+  for (int x = 0; x < w; ++x) {
+    overlay(x, 0, "sand_walltop_horizontal");
+    floor(x, 1, "sand_wall_mid");
+    floor(x, 2, "sand_wall_lower_mid");
+
+    if (x != doorX) {
+      if (x == doorX - 1) {
+        overlay(x, h - 2, "sand_walltop_leftend");
+        overlay(x, h - 1, "sand_wall_right");
+      } else if (x == doorX + 1) {
+        overlay(x, h - 2, "sand_walltop_rightend");
+        overlay(x, h - 1, "sand_wall_left");
+      } else {
+        overlay(x, h - 2, "sand_walltop_horizontal");
+        overlay(x, h - 1, "sand_wall_mid");
+      }
+    }
+
+    if (chance() > 0.8f)
+      build(doorX - 1, h - 3, "pot_plant");
+    if (chance() > 0.8f)
+      build(doorX + 1, h - 3, "pot_plant");
+
+    if (x && x != w - 1) {
+      if (chance() > 0.9f)
+        build(x, 1, "brown_window_round");
+      if (chance() > 0.7f)
+        build(x, 2, "shelf");
+    }
+  }
+  makeChest(doorX + 2, h - 3);
+
+  for (int y = 1; y < h - 2; ++y) {
+    overlay(0, y, "sand_walltop_vertical");
+    overlay(w - 1, y, "sand_walltop_vertical");
+
+    if (y <= 2)
+      continue;
+
+    if (chance() > 0.3f)
+      overlay(w - 2, y, "torch_wall_right");
+
+    if (chance() > 0.9f)
+      overlay(1, y, "torch_wall_left");
+  }
+  overlay(0, 0, "sand_walltop_leftup");
+  overlay(w - 1, 0, "sand_walltop_rightup");
+  overlay(0, h - 2, "sand_walltop_leftbottom");
+  overlay(w - 1, h - 2, "sand_walltop_rightbottom");
+
+  build((w - 1) / 2, 1, "clock");
+  build((w - 1) / 2, 2, "fireplace_inside");
+
+  for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h - 1; ++y) {
+      if (!level->passable(TilePos(x, y)))
+        continue;
+      if (chance() > 0.999f)
+        build(x, y, "wood_table");
+    }
+  }
+
+  int doorY = h - 1;
+  BackConnection =
+      Connection(Level::Type::Overworld, TilePos(*level, doorX, doorY));
+  level->get(doorX, doorY).setData(data.tile("castle_floor"));
+  overlay(doorX, doorY, "door_light");
+}
+
+void LevelGen::generateFarmHouse() {
+  generateHouse();
+  const int w = level->getWidth();
+  const int h = level->getHeight();
 
   int doorX = level->getWidth() / 2;
   int doorY = level->getHeight() - 2;
@@ -560,6 +685,17 @@ void LevelGen::generateGuardHouse() {
   }
 }
 
+
+void LevelGen::generateLordHouse() {
+  generateCastle();
+
+  Character *C = new Character(*level, Vec2(TilePos(3, 3)),
+                               CharacterAI::Behavior::Bandit, Character::BodyType::Pale);
+  makeHair(*C);
+  C->setFaction(CurrentFaction);
+  C->getPrivateInventory().addGold(50);
+  equipLord(*C);
+}
 
 bool LevelGen::hasSurrounding(
     int x, int y, const std::string &group,
@@ -607,6 +743,11 @@ Level *LevelGen::generate(World &world, GameData &data, Faction *OwningFaction,
     assert(C);
     level = new Level(world, type, C->TargetW, C->TargetH, data);
     generateFarmHouse();
+    break;
+  case Level::Type::LordHouse:
+    assert(C);
+    level = new Level(world, type, C->TargetW, C->TargetH, data);
+    generateLordHouse();
     break;
   case Level::Type::GuardHouse:
     assert(C);
@@ -668,6 +809,8 @@ void LevelGen::connectWalkways(int x, int y, int dx, int dy) {
   }
 }
 
+static const int LordHouseHeight = 8;
+
 void LevelGen::connectWalkways4(int x, int y) {
   connectWalkways(x, y, -1, 0);
   connectWalkways(x, y, 1, 0);
@@ -678,14 +821,22 @@ void LevelGen::connectWalkways4(int x, int y) {
 bool LevelGen::generateSettlement(TileRect Area) {
   if (!isFree(Area))
     return false;
+
   CurrentFaction = new Faction(true);
   world->addFaction(CurrentFaction);
-  auto Result = generateSettlementPiece(Area);
+  SettlementData data;
+
+  TileRect LordHouseArea = Area.resize(Area.getW(), LordHouseHeight);
+  makeCastle(LordHouseArea, 3, Level::Type::LordHouse);
+
+  Area = Area.moveY(LordHouseHeight).modHeight(-LordHouseHeight);
+  auto Result = generateSettlementPiece(Area, data);
   CurrentFaction = nullptr;
   return Result;
 }
 
-bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
+bool LevelGen::generateSettlementPiece(TileRect Area, SettlementData &data,
+    int iteration) {
   if (!isFree(Area))
     return false;
 
@@ -696,8 +847,8 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
     makeFloor(Area, "stone");
     decorateMarketplace(Area);
   } else if (iteration < 7 && Area.biggerThan(3, 5) && !Area.biggerThan(6, 7)) {
-    auto UsedArea = Area.resize(-1, -1);
-    auto HouseArea = UsedArea.resize(0, -1);
+    auto UsedArea = Area.addSize(-1, -1);
+    auto HouseArea = UsedArea.addSize(0, -1);
     makeHouse(HouseArea, 2, chance() < 0.5f ? Level::Type::FarmerHouse :
         Level::Type::GuardHouse);
     int DoorX = UsedArea.getX() + (UsedArea.getW() - 1) / 2;
@@ -718,10 +869,10 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
     connectWalkways4(UsedArea.getX(), UsedArea.getLowerY());
     connectWalkways4(UsedArea.getRightX(), UsedArea.getLowerY());
   } else if (iteration >= 7) {
-    auto UsedArea = Area.resize(-1, -1);
+    auto UsedArea = Area.addSize(-1, -1);
     makeFloor(UsedArea, "earth");
 
-    UsedArea = UsedArea.resize(0, -1);
+    UsedArea = UsedArea.addSize(0, -1);
     for (int x = UsedArea.getX(); x <= UsedArea.getRightX(); ++x) {
       for (int y = UsedArea.getY(); y <= UsedArea.getLowerY(); ++y) {
         if (chance() < 0.9f)
@@ -733,10 +884,10 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
   iteration++;
 
   std::vector<std::pair<int, int>> Offsets = {
+      std::make_pair(0, -1),
       std::make_pair(-1, 0),
       std::make_pair(1, 0),
       std::make_pair(0, 1),
-      std::make_pair(0, -1),
   };
 
   for (auto O : Offsets) {
@@ -759,7 +910,7 @@ bool LevelGen::generateSettlementPiece(TileRect Area, int iteration) {
       else if (O.second == 1)
         New = New.moveY(Area.getH() + 1);
 
-      if (generateSettlementPiece(New, iteration))
+      if (generateSettlementPiece(New, data, iteration))
         break;
     }
   }
@@ -774,7 +925,7 @@ void LevelGen::generateSettlements() {
     int x = chanceInt(level->getWidth());
     int y = chanceInt(level->getHeight());
     int w = 7 + chanceInt(4);
-    int h = 7 + chanceInt(4);
+    int h = 7 + chanceInt(4) + LordHouseHeight;
 
     if (generateSettlement(TileRect(x, y, w, h)))
       --Count;
@@ -829,7 +980,7 @@ bool LevelGen::makeStall(int x, int y) {
 void LevelGen::decorateMarketplace(TileRect A) {
   A = A.moveX(1);
   A = A.moveY(2);
-  A = A.resize(-2, -2);
+  A = A.addSize(-2, -2);
 
   unsigned placed = 0;
   for (int i = 0; i < 1000 && placed < 5; ++i) {
@@ -891,8 +1042,8 @@ bool LevelGen::makeMine(int x, int y) {
   TileRect Area(x - 1, y - 3, 3, 9);
   if (!isFree(Area))
     return false;
-  makeFloor(Area.resize(-1, -4).moveY(1), "earth");
-  makeHouse(Area.resize(0, -6), 1, Level::Type::Mine);
+  makeFloor(Area.addSize(-1, -4).moveY(1), "earth");
+  makeHouse(Area.addSize(0, -6), 1, Level::Type::Mine);
   build(x, y, "railtracks_vertical");
   build(x, y + 1, "railtracks_vertical");
   build(x, y + 1, "railtracks_end_bottom");
@@ -1067,6 +1218,8 @@ void LevelGen::makeChest(int x, int y) {
 }
 
 void LevelGen::makeStalagmite(int x, int y) {
+  if (!isFree(TileRect(x - 1, y - 1, 3, 3)))
+    return;
   if (chance() < 0.4f)
     build(x, y, "stalagmite_small");
   else {
@@ -1173,6 +1326,11 @@ void LevelGen::equipOrc(Character &C) {
   C.addItem("small_health_potion");
 }
 
+void LevelGen::equipLord(Character &C) {
+  C.addItem("leather_pants");
+  C.addItem("leather_armor");
+}
+
 void LevelGen::equipFarmer(Character &C) {
   C.addItem("leather_pants");
   std::vector<std::string> Tops = {"shoulder_bag_brown", "shirt1_brown",
@@ -1186,3 +1344,4 @@ void LevelGen::equipFarmerWife(Character &C) {
                                    "dress_brown"};
   C.addItem(Tops.at(chanceInt(Tops.size())));
 }
+

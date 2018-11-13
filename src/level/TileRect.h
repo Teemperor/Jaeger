@@ -28,13 +28,26 @@ public:
     return copy;
   }
 
+  TileRect modHeight(int h) const {
+    TileRect copy = *this;
+    copy.h += h;
+    return copy;
+  }
+
   TileRect moveY(int v) const {
     TileRect copy = *this;
     copy.y += v;
     return copy;
   }
 
-  TileRect resize(int dw, int dh) {
+  TileRect resize(int w, int h) {
+    TileRect copy = *this;
+    copy.w = w;
+    copy.h = h;
+    return copy;
+  }
+
+  TileRect addSize(int dw, int dh) {
     TileRect copy = *this;
     copy.w += dw;
     copy.h += dh;

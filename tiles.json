@@ -131,6 +131,20 @@
     { "id" : "pine_darkgreen_lower", "group" : "tree", "passable" : false, "sprites" : ["pine_darkgreen_lower"]},
     { "id" : "pine_darkgreen_upper", "group" : "tree", "passable" : true, "sprites" : ["pine_darkgreen_upper"]},
 
+    { "id" : "castle_wall_tl", "group" : "castle", "passable" : false},
+    { "id" : "castle_wall_tr", "group" : "castle", "passable" : false},
+    { "id" : "castle_wall_t1", "group" : "castle", "passable" : false},
+    { "id" : "castle_wall_t2", "group" : "castle", "passable" : false},
+    { "id" : "castle_wall_l", "group" : "castle", "passable" : false},
+    { "id" : "castle_wall_c", "group" : "castle", "passable" : false},
+    { "id" : "castle_wall_r", "group" : "castle", "passable" : false},
+    { "id" : "castle_wall_bl", "group" : "castle", "passable" : false},
+    { "id" : "castle_wall_bc", "group" : "castle", "passable" : false},
+    { "id" : "castle_wall_bc_free", "passable" : true, "tile" : [20, 15], "sprites" : ["castle_wall_bc_free"]},
+    { "id" : "castle_wall_br", "group" : "castle", "passable" : false},
+    { "id" : "castle_floor", "group" : "castle", "passable" : true},
+
+
     { "id" : "sand_walltop_leftup", "group" : "building", "passable" : false, "sprites" : ["sand_walltop_leftup"]},
     { "id" : "sand_walltop_leftbottom", "group" : "building", "passable" : false, "sprites" : ["sand_walltop_leftbottom"]},
     { "id" : "sand_walltop_rightup", "group" : "building", "passable" : false, "sprites" : ["sand_walltop_rightup"]},

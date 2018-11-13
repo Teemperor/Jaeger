@@ -263,6 +263,18 @@
     { "id" : "wood_table4" , "tile" : [7, 45] },
     { "id" : "wood_table5" , "tile" : [7, 41] },
 
+    { "id" : "castle_wall_tl", "tile" : [21, 14] },
+    { "id" : "castle_wall_tr", "tile" : [26, 14] },
+    { "id" : "castle_wall_t1", "tile" : [25, 14] },
+    { "id" : "castle_wall_t2", "tile" : [22, 14] },
+    { "id" : "castle_wall_l", "tile" : [24, 15] },
+    { "id" : "castle_wall_c", "tile" : [25, 15] },
+    { "id" : "castle_wall_r", "tile" : [26, 15] },
+    { "id" : "castle_wall_bl", "tile" : [21, 15] },
+    { "id" : "castle_wall_bc", "tile" : [20, 15] },
+    { "id" : "castle_wall_br", "tile" : [23, 15] },
+    { "id" : "castle_floor", "tile" : [26, 18] },
+
 
     { "id" : "clock_mid" , "tile" : [26, 8] },
     { "id" : "clock_left" , "tile" : [27, 8] },

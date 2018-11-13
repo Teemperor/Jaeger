@@ -27,6 +27,7 @@ class LevelGen {
   void makeHairFemale(Character &C);
   void equipGuard(Character &C);
   void equipOrc(Character &C);
+  void equipLord(Character &C);
 
   void equipFarmer(Character &C);
   void equipFarmerWife(Character &C);
@@ -49,6 +50,9 @@ class LevelGen {
   void decorateMarketplace(TileRect A);
 
   void makeHouse(TileRect A, int depth,
+                 Level::Type ConnectsTo);
+
+  void makeCastle(TileRect A, int depth,
                  Level::Type ConnectsTo);
 
   bool makeMine(int x, int y);
@@ -102,12 +106,18 @@ class LevelGen {
 
   void connectWalkways(int x, int y, int dx, int dy);
   void connectWalkways4(int x, int y);
+
+  struct SettlementData {
+  };
+
   bool generateSettlement(TileRect Area);
-  bool generateSettlementPiece(TileRect Area, int iteration = 0);
+  bool generateSettlementPiece(TileRect Area, SettlementData &data, int iteration = 0);
 
   void generateFarmHouse();
   void generateGuardHouse();
+  void generateLordHouse();
   void generateHouse();
+  void generateCastle();
 
   void makeMineResources();
   void makeMineFloorClutter();
