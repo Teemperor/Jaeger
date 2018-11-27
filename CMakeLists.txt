@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
-project(mambo)
+project(jaeger)
 
 enable_testing()
 
@@ -119,12 +119,20 @@ set(SOURCE_FILES
     src/ai/FarmerWifeTask.h
     src/ai/SellTask.cpp
     src/ai/SellTask.h
-    src/ai/VillageGuardTask.cpp src/ai/VillageGuardTask.h src/ai/HuntTask.cpp src/ai/HuntTask.h src/ai/DefenseTask.cpp src/ai/DefenseTask.h src/ai/BuyGroceriesTask.cpp src/ai/BuyGroceriesTask.h)
+    src/ai/VillageGuardTask.cpp
+    src/ai/VillageGuardTask.h
+    src/ai/HuntTask.cpp
+    src/ai/HuntTask.h
+    src/ai/DefenseTask.cpp
+    src/ai/DefenseTask.h
+    src/ai/BuyGroceriesTask.cpp
+    src/ai/BuyGroceriesTask.h
+)
 
-add_library(argos_core ${SOURCE_FILES})
-target_link_libraries(argos_core ${SFML_LIBRARIES})
+add_library(jaeger_core ${SOURCE_FILES})
+target_link_libraries(jaeger_core ${SFML_LIBRARIES})
 
-add_executable(argos main.cpp)
-target_link_libraries(argos argos_core)
+add_executable(jaeger main.cpp)
+target_link_libraries(jaeger argos_core)
 
 add_subdirectory(unittests)
